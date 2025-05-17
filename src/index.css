@@ -2,5 +2,7 @@
 
 @theme {
   --color-logo-background: #212121;
-  --color-logo-text: oklch(87.9% 0.169 91.605);
+  --color-logo-white: #faf9f6;
+  --color-logo-red: #e40c14;
+  --color-logo-black: #050301;
 }
