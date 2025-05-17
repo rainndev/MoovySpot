@@ -1,0 +1,6 @@
+@import "tailwindcss";
+
+@theme {
+  --color-logo-background: #212121;
+  --color-logo-text: oklch(87.9% 0.169 91.605);
+}
