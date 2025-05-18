@@ -3,18 +3,18 @@ import { RiMovie2AiFill } from "react-icons/ri";
 
 const Navigation = () => {
   return (
-    <div className="fixed top-0 left-0 bg-logo-black/5 w-full flex items-center justify-center border-b border-logo-white/20 backdrop-blur-xs p-5 z-10">
-      <header className=" flex justify-between items-center w-full   max-w-7xl">
+    <div className="bg-logo-black/5 border-logo-white/20 fixed top-0 left-0 z-10 flex w-full items-center justify-center border-b p-5 backdrop-blur-xs">
+      <header className="flex w-full max-w-7xl items-center justify-between">
         {/* logo */}
-        <div className="font-bold flex items-center">
+        <div className="flex items-center font-bold">
           <p>MoovySpot</p>
-          <span className="ml-2 text-logo-blue text-2xl">
+          <span className="text-logo-blue ml-2 text-2xl">
             <RiMovie2AiFill />
           </span>
         </div>
         {/* nav links */}
         <div>
-          <ul className="flex items-center space-x-10 text-logo-white">
+          <ul className="text-logo-white flex items-center space-x-10">
             <li>Home</li>
             <li>Tv Shows</li>
             <li>Movies</li>
@@ -23,7 +23,7 @@ const Navigation = () => {
         </div>
         {/* Search bar */}
         <div className="flex items-center space-x-2">
-          <div className="p-2 rounded-full bg-logo-white/10">
+          <div className="bg-logo-white/10 rounded-full p-2">
             <BiSearchAlt className="text-xl" />
           </div>
         </div>

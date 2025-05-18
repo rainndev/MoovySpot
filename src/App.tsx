@@ -3,9 +3,9 @@ import Navigation from "./pages/Navigation";
 
 const App = () => {
   return (
-    <div className="w-full h-[100dvh] bg-logo-black flex flex-col items-center justify-center text-logo-white  ">
+    <div className="bg-logo-black text-logo-white flex h-[100dvh] w-full flex-col items-center justify-center">
       <Navigation />
-      <div className="h-full w-full flex items-center justify-center">
+      <div className="flex h-full w-full items-center justify-center">
         <Homepage />
       </div>
     </div>
