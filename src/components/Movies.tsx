@@ -34,10 +34,10 @@ const Movies = () => {
   console.log("page", page);
   return (
     <div className="z-5 h-full max-w-7xl">
-      <h1 className="mb-10 font-[ClashDisplay] text-3xl font-semibold text-white">
+      <h1 className="mb-10 font-[ClashDisplay] text-[clamp(1.5rem,3vw,1.875rem)] font-semibold text-white">
         Popular Movies
       </h1>
-      <div className="grid grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
         {data.results.map((movie: any) => (
           <div key={movie.id} className="group bg-logo overflow-hidden p-4">
             <img
