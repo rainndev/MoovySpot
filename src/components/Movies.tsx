@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useState } from "react";
+import { FaStar } from "react-icons/fa";
 
 const fetchMovies = async (page: number) => {
   const apiKey = import.meta.env.VITE_TMDB_API_KEY;
@@ -38,20 +39,26 @@ const Movies = () => {
       </h1>
       <div className="grid grid-cols-4 gap-4">
         {data.results.map((movie: any) => (
-          <div
-            key={movie.id}
-            className="bg-logo overflow-hidden rounded-lg p-4"
-          >
+          <div key={movie.id} className="group bg-logo overflow-hidden p-4">
             <img
               loading="lazy"
               src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
               alt={movie.title}
               className="w-full rounded-lg opacity-90 shadow-lg"
             />
+
             <h2 className="mt-2 text-xl font-medium text-white">
               {movie.title}
             </h2>
-            <p className="text-gray-400">{movie.release_date}</p>
+            <div className="mt-2 flex items-center justify-between">
+              <p className="text-gray-400">
+                {movie.release_date.split("-")[0]}
+              </p>
+              <div className="flex items-center text-yellow-400">
+                <FaStar />
+                <p className="ml-2">{movie.vote_average}</p>
+              </div>
+            </div>
           </div>
         ))}
       </div>

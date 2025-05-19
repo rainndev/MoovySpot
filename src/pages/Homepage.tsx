@@ -1,6 +1,6 @@
 import Movies from "@/components/Movies";
 import Search from "@/components/Search";
-import { ThreeDMarqueeBG } from "@/components/ThreeDMarquee";
+import { ThreeDMarqueeBG } from "@/components/ThreeDMarqueeBG";
 
 const Homepage = () => {
   return (
