@@ -36,7 +36,7 @@ export function ThreeDMarqueeDemo() {
     "https://assets.aceternity.com/world-map.webp",
   ];
   return (
-    <div className="h-full  bg-gray-950/5  ">
+    <div className="h-full">
       <ThreeDMarquee images={images} />
     </div>
   );
