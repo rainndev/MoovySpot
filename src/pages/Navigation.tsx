@@ -19,8 +19,8 @@ const Navigation = () => {
             <Link to="/">
               <li className="hover:text-logo-blue cursor-pointer">Home</li>
             </Link>
-            <Link to="/upcoming">
-              <li className="hover:text-logo-blue cursor-pointer">Upcoming</li>
+            <Link to="/favorites">
+              <li className="hover:text-logo-blue cursor-pointer">Favorites</li>
             </Link>
           </ul>
         </div>
