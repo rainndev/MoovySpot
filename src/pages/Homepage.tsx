@@ -1,11 +1,11 @@
 import Movies from "@/components/Movies";
 import Search from "@/components/Search";
-import { ThreeDMarqueeDemo } from "@/components/ThreeDMarqueeDemo";
+import { ThreeDMarqueeBG } from "@/components/ThreeDMarquee";
 
 const Homepage = () => {
   return (
     <div className="h-full w-full">
-      <ThreeDMarqueeDemo />
+      <ThreeDMarqueeBG />
       <div className="bg-logo-blue/2 absolute top-0 left-0 h-full w-full">
         <div className="from-logo-blue/5 flex h-full w-full flex-col items-center justify-center bg-gradient-to-t from-5% to-transparent">
           <Search />
