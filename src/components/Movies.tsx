@@ -39,7 +39,10 @@ const Movies = () => {
       </h1>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
         {data.results.map((movie: any) => (
-          <div key={movie.id} className="group bg-logo overflow-hidden p-4">
+          <div
+            key={movie.id}
+            className="group bg-logo overflow-hidden sm:p-2 md:p-3"
+          >
             <img
               loading="lazy"
               src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
