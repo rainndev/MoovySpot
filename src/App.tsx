@@ -2,6 +2,7 @@ import Favorites from "./pages/Favorites";
 import Homepage from "./pages/Homepage";
 import Navigation from "./pages/Navigation";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import WatchMovie from "./pages/WatchMovie";
 
 const App = () => {
   return (
@@ -9,12 +10,11 @@ const App = () => {
       <div className="bg-logo-black text-logo-white flex h-[100dvh] w-full flex-col items-center justify-center">
         <Navigation />
 
-        <div className="flex min-h-screen w-full items-center justify-center">
-          <Routes>
-            <Route path="/" element={<Homepage />} />
-            <Route path="/favorites" element={<Favorites />} />
-          </Routes>
-        </div>
+        <Routes>
+          <Route path="/" element={<Homepage />} />
+          <Route path="/favorites" element={<Favorites />} />
+          <Route path="/watch/:id" element={<WatchMovie />} />
+        </Routes>
       </div>
     </Router>
   );
