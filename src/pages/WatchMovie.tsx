@@ -43,11 +43,11 @@ const WatchMovie = () => {
     );
 
   if (!data) return;
-  const { genres, title } = data;
+  const { genres, title, overview } = data;
 
   console.log("genres", genres);
   return (
-    <section className="relative flex min-h-[100dvh] w-full items-center justify-center overflow-auto p-10">
+    <section className="relative flex min-h-[100dvh] w-full items-center justify-center overflow-auto p-20">
       {/* Dotted Background FIRST, behind everything */}
       <div className="bg-logo-blue border-logo-gray absolute top-0 flex h-full w-full items-center justify-center border-b bg-[radial-gradient(rgba(80,79,79,0.5)_1px,#1E1E1E_1px)] bg-[size:10px_10px] opacity-30" />
 
@@ -55,14 +55,14 @@ const WatchMovie = () => {
       <div className="bg-logo-black pointer-events-none absolute inset-0 flex items-center justify-center [mask-image:radial-gradient(ellipse_at_center,transparent_20%,#14c4b4)]" />
 
       {/* video watch container */}
-      <div className="mt-20 flex h-full w-full max-w-7xl flex-col items-center justify-center">
+      <div className="z-2 flex h-full w-full max-w-7xl flex-col items-center justify-center not-first:mt-20">
         {/* title */}
-        <h1 className="z-2 mb-5 w-full text-start font-[ClashDisplay] text-4xl">
+        <h1 className="mb-5 w-full text-start font-[ClashDisplay] text-4xl">
           {title}
         </h1>
 
         {/* genres */}
-        <div className="z-2 mb-5 flex w-full items-center justify-start gap-2">
+        <div className="mb-2 flex w-full items-center justify-start gap-2">
           {genres.map((genre: Genre, i: number) => (
             <span
               className="bg-logo-blue/15 border-logo-white/10 rounded-sm border px-2 py-1"
@@ -72,9 +72,16 @@ const WatchMovie = () => {
             </span>
           ))}
         </div>
+        <p className="text-logo-white/85 mb-5 w-full text-start font-[SansationLight] text-base">
+          {overview}
+        </p>
         {/* video */}
-        <div className="border-logo-white/5 shadow-5xl flex aspect-video w-full items-center justify-center rounded-2xl border-3 bg-[#212121] p-10 backdrop-blur-sm">
-          <div>test</div>
+        <div className="border-logo-white/5 shadow-5xl flex aspect-video w-full items-center justify-center overflow-hidden rounded-2xl border-3 bg-[#212121] backdrop-blur-sm">
+          <iframe
+            className="h-full w-full rounded-2xl border-0"
+            allowFullScreen
+            src={`https://player.videasy.net/movie/${id}`}
+          ></iframe>
         </div>
       </div>
     </section>
