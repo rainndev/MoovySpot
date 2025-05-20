@@ -1,34 +1,18 @@
+import { useMoviesQueryOptions } from "@/query-options/QueryOptions";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import { useState } from "react";
 import { FaStar } from "react-icons/fa";
-
-const fetchMovies = async (page: number) => {
-  const apiKey = import.meta.env.VITE_TMDB_API_KEY;
-  const baseUrl = import.meta.env.VITE_TMDB_API_BASE_URL;
-
-  try {
-    const response = await axios(
-      `${baseUrl}/movie/popular?api_key=${apiKey}&language=en-US&page=${page}`,
-    );
-
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching movies:", error);
-    throw new Error("Failed to fetch movies");
-  }
-};
 
 const Movies = () => {
   const [page, setPage] = useState(1);
 
-  const { data, isLoading, error, isError } = useQuery({
-    queryKey: [`movie${page}`],
-    queryFn: () => fetchMovies(page),
-  });
+  const { data, isLoading, error, isError } = useQuery(
+    useMoviesQueryOptions(page),
+  );
 
   if (isLoading) return <div>Loading...</div>;
-  if (isError) return <div>Error: {error.message}</div>;
+  if (isError)
+    return <div className="h-full w-full">Error: {error.message}</div>;
 
   console.log("data", data);
   console.log("page", page);
