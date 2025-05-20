@@ -14,6 +14,15 @@ export function ThreeDMarqueeBG() {
 
   if (page1.isLoading && page2.isLoading) return;
 
+  if (page1.isError && page2.isError)
+    return (
+      <div className="flex h-full w-full items-center justify-center">
+        Error: {page1.error.message} {page2.error.message}
+      </div>
+    );
+
+  if (!page1.data || !page2.data) return;
+
   // merge page1 and page2 data
   const movieData = [...page1.data?.results, ...page2.data?.results];
 
