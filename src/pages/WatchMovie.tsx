@@ -1,5 +1,6 @@
 import { useMoviesByIdOptions } from "@/query-options/QueryOptions";
 import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
 import { useParams } from "react-router-dom";
 
 interface Genre {
@@ -7,8 +8,17 @@ interface Genre {
   name: string;
 }
 
+const serverOptions = [
+  "https://player.videasy.net/movie/",
+  "https://vidsrc.cc/v2/embed/movie/",
+  "https://vidsrc.net/embed/movie/?tmdb=",
+];
+
 const WatchMovie = () => {
   const { id } = useParams();
+  const [server, setServer] = useState(
+    `https://player.videasy.net/movie/${id}`,
+  );
 
   if (!id)
     return (
@@ -45,7 +55,6 @@ const WatchMovie = () => {
   if (!data) return;
   const { genres, title, overview } = data;
 
-  console.log("genres", genres);
   return (
     <section className="hide-scrollbar flex h-full w-full max-w-7xl flex-col items-center justify-center overflow-auto p-5 md:mt-20">
       {/* Dotted Background FIRST, behind everything */}
@@ -75,29 +84,26 @@ const WatchMovie = () => {
           {overview}
         </p>
         {/* video */}
-        <div className="border-logo-white/5 shadow-5xl flex aspect-video w-full items-center justify-center overflow-hidden rounded-2xl border-3 bg-[#212121] backdrop-blur-sm">
+        <div className="border-logo-white/5 shadow-5xl flex aspect-video w-full items-center justify-center overflow-hidden rounded-2xl border-3 backdrop-blur-sm">
           <iframe
-            className="h-full w-full rounded-2xl border-0"
+            className="absolute top-0 left-0 h-full w-full"
             allowFullScreen
-            src={`https://player.videasy.net/movie/${id}`}
+            frameBorder="0"
+            src={server}
           ></iframe>
         </div>
       </div>
 
       {/* Server */}
       <div className="z-2 w-full space-y-2 space-x-2 py-5">
-        <p className="bg-logo-white/10 inline-block rounded-sm px-3 py-1">
-          Server 1
-        </p>
-        <p className="bg-logo-white/10 inline-block rounded-sm px-3 py-1">
-          Server 2
-        </p>
-        <p className="bg-logo-white/10 inline-block rounded-sm px-3 py-1">
-          Server 2
-        </p>
-        <p className="bg-logo-white/10 inline-block rounded-sm px-3 py-1">
-          Server 2
-        </p>
+        {serverOptions.map((option, i) => (
+          <p
+            onClick={() => setServer(`${option}${id}`)}
+            className="bg-logo-white/10 hover:bg-logo-blue/20 active:bg-logo-blue/20 inline-block cursor-pointer rounded-sm px-3 py-1"
+          >
+            Server {i + 1}
+          </p>
+        ))}
       </div>
     </section>
   );
