@@ -1,3 +1,4 @@
+import LoadingAnimation from "@/components/LoadingAnimation";
 import { useMoviesByIdOptions } from "@/query-options/QueryOptions";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
@@ -38,12 +39,7 @@ const WatchMovie = () => {
     useMoviesByIdOptions(+id),
   );
 
-  if (isLoading)
-    return (
-      <div className="flex h-full w-full items-center justify-center">
-        Loading...
-      </div>
-    );
+  if (isLoading) return <LoadingAnimation />;
 
   if (isError)
     return (

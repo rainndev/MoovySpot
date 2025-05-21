@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { FaStar } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import LoadingAnimation from "./LoadingAnimation";
 
 const Movies = () => {
   const [page, setPage] = useState(1);
@@ -11,7 +12,7 @@ const Movies = () => {
     useMoviesQueryOptions(page),
   );
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <LoadingAnimation />;
   if (isError)
     return <div className="h-full w-full">Error: {error.message}</div>;
 
