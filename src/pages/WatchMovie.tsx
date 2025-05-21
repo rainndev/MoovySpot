@@ -1,5 +1,5 @@
 import LoadingAnimation from "@/components/LoadingAnimation";
-import { useMoviesByIdOptions } from "@/query-options/QueryOptions";
+import { useOptionsById } from "@/query-options/QueryOptions";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
@@ -36,7 +36,7 @@ const WatchMovie = () => {
     );
 
   const { data, isLoading, error, isError } = useQuery(
-    useMoviesByIdOptions(+id),
+    useOptionsById("movie", +id),
   );
 
   if (isLoading) return <LoadingAnimation />;

@@ -3,10 +3,10 @@ import axios from "axios";
 const apiKey = import.meta.env.VITE_TMDB_API_KEY;
 const baseUrl = import.meta.env.VITE_TMDB_API_BASE_URL;
 
-const fetchMovies = async (page: number = 1) => {
+const fetchMovies = async (type: string = "movie", page: number = 1) => {
   try {
     const response = await axios(
-      `${baseUrl}/movie/popular?api_key=${apiKey}&language=en-US&page=${page}`,
+      `${baseUrl}/${type}/popular?api_key=${apiKey}&language=en-US&page=${page}`,
     );
 
     return response.data;
@@ -17,16 +17,16 @@ const fetchMovies = async (page: number = 1) => {
 };
 
 //for movies query
-export const useMoviesQueryOptions = (page?: number) => ({
-  queryKey: [`movie-${page}`],
-  queryFn: () => fetchMovies(page),
+export const useQueryOptions = (type: string, page?: number) => ({
+  queryKey: [`${type}-${page}`],
+  queryFn: () => fetchMovies(type, page),
 });
 
 //for watch movie query
-const watchById = async (id: number) => {
+const watchById = async (type: string = "movie", id: number) => {
   try {
     const response = await axios(
-      `${baseUrl}/movie/${id}?api_key=${apiKey}&language=en-US`,
+      `${baseUrl}/${type}/${id}?api_key=${apiKey}&language=en-US`,
     );
 
     return response.data;
@@ -37,7 +37,7 @@ const watchById = async (id: number) => {
 };
 
 //for watch movie query
-export const useMoviesByIdOptions = (id: number) => ({
+export const useOptionsById = (type: string, id: number) => ({
   queryKey: [`movie-${id}`],
-  queryFn: () => watchById(id),
+  queryFn: () => watchById(type, id),
 });

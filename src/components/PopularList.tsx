@@ -1,7 +1,16 @@
 import ScrollContainer from "react-indiana-drag-scroll";
 import { FaStar } from "react-icons/fa";
 import { Link } from "react-router-dom";
-const PopularList = ({ data }: any) => {
+
+interface PopularListProps {
+  data: any;
+  type: string;
+}
+const PopularList = ({ data, type }: PopularListProps) => {
+  if (!data) return;
+
+  console.log(data);
+
   return (
     <ScrollContainer className="flex space-x-2 active:cursor-grabbing md:space-x-4">
       {data.results.map((movie: any) => (
@@ -26,7 +35,9 @@ const PopularList = ({ data }: any) => {
             </h2>
             <div className="mt-1 mb-4 flex items-center justify-between text-[clamp(.7rem,3vw,1rem)]">
               <p className="text-gray-400">
-                {movie.release_date.split("-")[0]}
+                {type === "movie"
+                  ? movie.release_date.split("-")[0]
+                  : movie.first_air_date.split("-")[0]}
               </p>
               <div className="flex items-center text-yellow-400">
                 <FaStar />

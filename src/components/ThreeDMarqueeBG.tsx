@@ -1,6 +1,6 @@
 "use client";
 import { ThreeDMarquee } from "@/components/ui/3d-marquee";
-import { useMoviesQueryOptions } from "@/query-options/QueryOptions";
+import { useQueryOptions } from "@/query-options/QueryOptions";
 import { useQueries } from "@tanstack/react-query";
 
 interface Movie {
@@ -9,7 +9,7 @@ interface Movie {
 
 export function ThreeDMarqueeBG() {
   const [page1, page2] = useQueries({
-    queries: [useMoviesQueryOptions(1), useMoviesQueryOptions(2)],
+    queries: [useQueryOptions("movie", 1), useQueryOptions("movie", 2)],
   });
 
   if (page1.isLoading && page2.isLoading) return;
