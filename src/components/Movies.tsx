@@ -33,7 +33,7 @@ const Movies = () => {
                 loading="lazy"
                 src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
                 alt={movie.title}
-                className="w-full rounded-lg opacity-90 shadow-lg"
+                className="w-full rounded-lg object-cover opacity-90 shadow-lg"
               />
 
               <h2 className="mt-2 text-xl font-medium text-white">
