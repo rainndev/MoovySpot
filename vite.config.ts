@@ -17,6 +17,13 @@ export default defineConfig({
   },
 
   build: {
-    sourcemap: false, // ⛔ disables .map files in production
+    sourcemap: false,
+    minify: "terser",
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true,
+      },
+    },
   },
 });
