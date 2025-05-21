@@ -66,11 +66,11 @@ const WatchMovie = () => {
       {/* video watch container */}
       <div className="z-2 flex h-full w-full flex-col items-center justify-center not-first:mt-20">
         {/* title */}
-        <h1 className="mb-5 w-full text-start font-[ClashDisplay] text-4xl">
+        <h1 className="mb-5 w-full text-start font-[ClashDisplay] text-[clamp(1.8rem,3vw,2.25rem)]">
           {title}
         </h1>
         {/* genres */}
-        <div className="mb-2 flex w-full items-center justify-start gap-2">
+        <div className="mb-2 flex w-full items-center justify-start gap-2 text-[clamp(.8rem,3vw,1rem)]">
           {genres.map((genre: Genre, i: number) => (
             <span
               className="bg-logo-blue/15 border-logo-white/10 rounded-sm border px-2 py-1"
@@ -80,7 +80,7 @@ const WatchMovie = () => {
             </span>
           ))}
         </div>
-        <p className="text-logo-white/85 mb-5 w-full text-start font-[SansationLight] text-base">
+        <p className="text-logo-white/85 mb-5 w-full text-start font-[SansationLight] text-[clamp(.9rem,3vw,1rem)]">
           {overview}
         </p>
         {/* video */}
@@ -99,7 +99,7 @@ const WatchMovie = () => {
         {serverOptions.map((option, i) => (
           <p
             onClick={() => setServer(`${option}${id}`)}
-            className="bg-logo-white/10 hover:bg-logo-blue/20 active:bg-logo-blue/20 inline-block cursor-pointer rounded-sm px-3 py-1"
+            className="bg-logo-white/10 hover:bg-logo-blue/20 active:bg-logo-blue/20 inline-block cursor-pointer rounded-sm px-5 py-2 text-[clamp(.8rem,3vw,1rem)]"
           >
             Server {i + 1}
           </p>
