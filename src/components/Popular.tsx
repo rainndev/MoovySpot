@@ -5,7 +5,7 @@ import LoadingAnimation from "./LoadingAnimation";
 import PopularList from "./PopularList";
 
 interface PopularProps {
-  type: string;
+  type: "movie" | "tv";
   title_header: string;
 }
 
