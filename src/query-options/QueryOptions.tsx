@@ -3,10 +3,10 @@ import axios from "axios";
 const apiKey = import.meta.env.VITE_TMDB_API_KEY;
 const baseUrl = import.meta.env.VITE_TMDB_API_BASE_URL;
 
-const fetchMovies = async () => {
+const fetchMovies = async (page: number = 1) => {
   try {
     const response = await axios(
-      `${baseUrl}/movie/popular?api_key=${apiKey}&language=en-US&`,
+      `${baseUrl}/movie/popular?api_key=${apiKey}&language=en-US&page=${page}`,
     );
 
     return response.data;
@@ -17,9 +17,9 @@ const fetchMovies = async () => {
 };
 
 //for movies query
-export const useMoviesQueryOptions = () => ({
-  queryKey: [`movie`],
-  queryFn: () => fetchMovies(),
+export const useMoviesQueryOptions = (page?: number) => ({
+  queryKey: [`movie-${page}`],
+  queryFn: () => fetchMovies(page),
 });
 
 //for watch movie query
