@@ -13,9 +13,12 @@ const Homepage = () => {
       </div>
 
       {/* Movies */}
-      <div className="bg-logo-black relative flex min-h-screen w-full items-center justify-center overflow-hidden p-10">
-        <Movies />
+      <div className="bg-logo-black relative flex min-h-screen w-full justify-center overflow-hidden p-2 md:p-10">
+        {/* background */}
+
         <div className="bg-logo-blue/2 from-logo-blue/5 pointer-events-none absolute top-0 left-0 h-full w-full bg-gradient-to-b from-5% to-transparent" />
+
+        <Movies />
       </div>
     </div>
   );
