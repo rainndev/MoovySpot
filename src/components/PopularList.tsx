@@ -1,7 +1,7 @@
 import ScrollContainer from "react-indiana-drag-scroll";
 import { FaStar } from "react-icons/fa";
 import { Link } from "react-router-dom";
-const MovieList = ({ data }: any) => {
+const PopularList = ({ data }: any) => {
   return (
     <ScrollContainer className="flex space-x-2 active:cursor-grabbing md:space-x-4">
       {data.results.map((movie: any) => (
@@ -40,4 +40,4 @@ const MovieList = ({ data }: any) => {
   );
 };
 
-export default MovieList;
+export default PopularList;

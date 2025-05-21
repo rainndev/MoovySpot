@@ -1,4 +1,4 @@
-import Movies from "@/components/Movies";
+import Popular from "@/components/Popular";
 import Search from "@/components/Search";
 import { ThreeDMarqueeBG } from "@/components/ThreeDMarqueeBG";
 
@@ -18,7 +18,7 @@ const Homepage = () => {
 
         <div className="bg-logo-blue/2 from-logo-blue/5 pointer-events-none absolute top-0 left-0 h-full w-full bg-gradient-to-b from-5% to-transparent" />
 
-        <Movies />
+        <Popular />
       </div>
     </div>
   );

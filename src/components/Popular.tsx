@@ -2,9 +2,9 @@ import { useMoviesQueryOptions } from "@/query-options/QueryOptions";
 import { useQuery } from "@tanstack/react-query";
 
 import LoadingAnimation from "./LoadingAnimation";
-import MovieList from "./MovieList";
+import PopularList from "./PopularList";
 
-const Movies = () => {
+const Popular = () => {
   const { data, isLoading, error, isError } = useQuery(useMoviesQueryOptions());
 
   if (isLoading) return <LoadingAnimation />;
@@ -20,10 +20,10 @@ const Movies = () => {
       {/* movies list */}
 
       <div className="z-10 h-full w-full">
-        <MovieList data={data} />
+        <PopularList data={data} />
       </div>
     </div>
   );
 };
 
-export default Movies;
+export default Popular;
