@@ -3,6 +3,7 @@ import Homepage from "./pages/Homepage";
 import Navigation from "./pages/Navigation";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import WatchMovie from "./pages/WatchMovie";
+import LoadingAnimation from "./components/LoadingAnimation";
 
 const App = () => {
   return (
