@@ -59,7 +59,9 @@ const WatchMovie = () => {
     );
 
   if (!data) return;
-  const { genres, title, overview } = data;
+  const { genres, overview } = data;
+
+  console.log("title ", data.name);
 
   return (
     <section className="hide-scrollbar flex h-full w-full max-w-7xl flex-col items-center justify-center overflow-auto p-5 md:mt-20">
@@ -73,7 +75,7 @@ const WatchMovie = () => {
       <div className="z-2 flex h-full w-full flex-col items-center justify-center not-first:mt-20">
         {/* title */}
         <h1 className="mb-5 w-full text-start font-[ClashDisplay] text-[clamp(1.8rem,3vw,2.25rem)]">
-          {title}
+          {typeParam === "movie" ? data.title : data.name}
         </h1>
         {/* genres */}
         <div className="mb-2 flex w-full items-center justify-start gap-2 text-[clamp(.8rem,3vw,1rem)]">
