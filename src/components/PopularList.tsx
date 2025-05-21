@@ -9,12 +9,12 @@ interface PopularListProps {
 const PopularList = ({ data, type }: PopularListProps) => {
   if (!data) return;
 
-  console.log(data);
+  console.log("type --- ", type, data);
 
   return (
     <ScrollContainer className="flex space-x-3 active:cursor-grabbing md:space-x-4">
       {data.results.map((movie: any) => (
-        <Link to={`/watch/${movie.id}`} key={movie.id}>
+        <Link to={`/watch/${movie.id}?type=${type}`} key={movie.id}>
           <div
             key={movie.id}
             className="group h-full w-[150px] flex-shrink-0 snap-start overflow-hidden md:w-[220px] xl:w-[300px]"
@@ -25,13 +25,13 @@ const PopularList = ({ data, type }: PopularListProps) => {
                 onDragStart={(e) => e.preventDefault()}
                 loading="lazy"
                 src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-                alt={movie.title}
+                alt={type === "movie" ? movie.title : movie.name}
                 className="scale-100 object-cover opacity-90 shadow-lg transition-all duration-300 ease-in-out hover:scale-105 hover:opacity-50 active:scale-105 active:opacity-50"
               />
             </div>
 
             <h2 className="mt-3 text-[clamp(.8rem,3vw,1.25rem)] font-medium text-white">
-              {movie.title}
+              {type === "movie" ? movie.title : movie.name}
             </h2>
             <div className="mt-1 mb-4 flex items-center justify-between text-[clamp(.7rem,3vw,1rem)]">
               <p className="text-gray-400">

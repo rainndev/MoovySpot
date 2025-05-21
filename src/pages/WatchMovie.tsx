@@ -2,23 +2,33 @@ import LoadingAnimation from "@/components/LoadingAnimation";
 import { useOptionsById } from "@/query-options/QueryOptions";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 
 interface Genre {
   id: number;
   name: string;
 }
 
-const serverOptions = [
-  "https://player.videasy.net/movie/",
-  "https://vidsrc.cc/v2/embed/movie/",
-  "https://vidsrc.net/embed/movie/?tmdb=",
-];
-
 const WatchMovie = () => {
   const { id } = useParams();
+  const [searchParams] = useSearchParams();
+  const typeParam = searchParams.get("type");
+
+  if (!typeParam)
+    return (
+      <div className="flex h-full w-full items-center justify-center">
+        Error: No type provided
+      </div>
+    );
+
+  const serverOptions = [
+    `https://player.videasy.net/${typeParam}/`,
+    `https://vidsrc.cc/v2/embed/${typeParam}/`,
+    `https://vidsrc.net/embed/${typeParam}/?tmdb=`,
+  ];
+
   const [server, setServer] = useState(
-    `https://player.videasy.net/movie/${id}`,
+    `https://player.videasy.net/${typeParam}/${id}`,
   );
 
   if (!id)
@@ -36,7 +46,7 @@ const WatchMovie = () => {
     );
 
   const { data, isLoading, error, isError } = useQuery(
-    useOptionsById("movie", +id),
+    useOptionsById(typeParam, +id),
   );
 
   if (isLoading) return <LoadingAnimation />;
