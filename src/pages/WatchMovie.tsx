@@ -98,6 +98,7 @@ const WatchMovie = () => {
       <div className="z-2 w-full space-y-2 space-x-2 py-5">
         {serverOptions.map((option, i) => (
           <p
+            key={i}
             onClick={() => setServer(`${option}${id}`)}
             className="bg-logo-white/10 hover:bg-logo-blue/20 active:bg-logo-blue/20 inline-block cursor-pointer rounded-sm px-5 py-2 text-[clamp(.8rem,3vw,1rem)]"
           >

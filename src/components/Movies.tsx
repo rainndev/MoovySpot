@@ -15,8 +15,6 @@ const Movies = () => {
   if (isError)
     return <div className="h-full w-full">Error: {error.message}</div>;
 
-  console.log("data", data);
-  console.log("page", page);
   return (
     <div className="relative">
       {/* background */}
