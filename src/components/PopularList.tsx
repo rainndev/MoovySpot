@@ -12,7 +12,7 @@ const PopularList = ({ data, type }: PopularListProps) => {
   console.log(data);
 
   return (
-    <ScrollContainer className="flex space-x-2 active:cursor-grabbing md:space-x-4">
+    <ScrollContainer className="flex space-x-3 active:cursor-grabbing md:space-x-4">
       {data.results.map((movie: any) => (
         <Link to={`/watch/${movie.id}`} key={movie.id}>
           <div
@@ -26,7 +26,7 @@ const PopularList = ({ data, type }: PopularListProps) => {
                 loading="lazy"
                 src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
                 alt={movie.title}
-                className="scale-100 object-cover opacity-90 shadow-lg transition-all duration-300 ease-in-out hover:scale-105 hover:opacity-50"
+                className="scale-100 object-cover opacity-90 shadow-lg transition-all duration-300 ease-in-out hover:scale-105 hover:opacity-50 active:scale-105 active:opacity-50"
               />
             </div>
 
