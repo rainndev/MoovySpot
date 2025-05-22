@@ -1,6 +1,6 @@
 import Popular from "@/components/Popular";
-import Search from "@/components/Search";
 import { ThreeDMarqueeBG } from "@/components/ThreeDMarqueeBG";
+import Hero from "@/components/Hero";
 
 const Homepage = () => {
   return (
@@ -8,7 +8,7 @@ const Homepage = () => {
       <ThreeDMarqueeBG />
       <div className="bg-logo-blue/2 absolute top-0 left-0 h-full w-full">
         <div className="from-logo-blue/5 flex h-full w-full flex-col items-center justify-center bg-gradient-to-t from-5% to-transparent">
-          <Search />
+          <Hero />
         </div>
       </div>
 
