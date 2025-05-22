@@ -61,7 +61,10 @@ const WatchMovie = () => {
   if (!data) return;
   const { genres, overview } = data;
 
-  console.log("title ", data.name);
+  console.log(
+    "backdrop",
+    `https://image.tmdb.org/t/p/w500/${data.backdrop_path}`,
+  );
 
   return (
     <section className="hide-scrollbar flex h-full w-full max-w-7xl flex-col items-center justify-center overflow-auto p-5 md:mt-20">

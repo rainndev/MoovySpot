@@ -19,8 +19,10 @@ const Navigation = () => {
             <Link to="/">
               <li className="hover:text-logo-blue cursor-pointer">Home</li>
             </Link>
-            <Link to="/favorites">
-              <li className="hover:text-logo-blue cursor-pointer">Favorites</li>
+            <Link to="/watchlist">
+              <li className="hover:text-logo-blue cursor-pointer">
+                Watch List
+              </li>
             </Link>
           </ul>
         </div>
