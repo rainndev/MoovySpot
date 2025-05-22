@@ -17,7 +17,7 @@ const PopularList = ({ data, type }: PopularListProps) => {
         <Link to={`/watch/${movie.id}?type=${type}`} key={movie.id}>
           <div
             key={movie.id}
-            className="group h-full w-[150px] flex-shrink-0 snap-start overflow-hidden md:w-[220px] xl:w-[300px]"
+            className="group h-full w-[150px] flex-shrink-0 snap-start overflow-hidden md:w-[180px] xl:w-[230px]"
           >
             <div className="border-logo-white/10 w-full overflow-hidden rounded-xl border-3 md:border-4">
               <img
