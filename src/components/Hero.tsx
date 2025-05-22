@@ -2,7 +2,7 @@ import HeroSearch from "./HeroSearch";
 
 const Hero = () => {
   return (
-    <div className="flex h-full max-w-7xl flex-col items-center justify-center p-30">
+    <div className="flex h-full max-w-7xl flex-col items-center justify-center p-5 md:p-30">
       {/* Title`` */}
       <div className="text-center text-pretty">
         <h1 className="font-[ClashDisplay] text-[clamp(2rem,3vw,7rem)] font-semibold">
