@@ -21,7 +21,7 @@ const WatchListChild = ({ data, type }: WatchListChildProps) => {
     }
   };
 
-  if (!data) return null;
+  if (!data || !data.results) return null;
 
   return (
     <div className="relative">

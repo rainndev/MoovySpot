@@ -5,15 +5,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useState } from "react";
+import { useWatchTypeStore } from "@/store/WatchTypeStore";
 
 const TypeNavigation = () => {
-  const [category, setCategory] = useState("movie");
+  const setWatchType = useWatchTypeStore((state) => state.setWatchType);
 
-  console.log(category);
   return (
     <div className="flex items-center justify-start py-3 text-white md:py-5">
-      <Select onValueChange={(value) => setCategory(value)}>
+      <Select onValueChange={(value: "movie" | "tv") => setWatchType(value)}>
         <SelectTrigger className="text-logo-white px-5">
           <SelectValue placeholder="Select Type" />
         </SelectTrigger>
