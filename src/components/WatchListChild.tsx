@@ -3,12 +3,12 @@ import { Link } from "react-router-dom";
 import { useRef } from "react";
 import { GoChevronLeft } from "react-icons/go";
 
-interface PopularListProps {
+interface WatchListChildProps {
   data: any;
   type: string;
 }
 
-const PopularList = ({ data, type }: PopularListProps) => {
+const WatchListChild = ({ data, type }: WatchListChildProps) => {
   const scrollRef = useRef<HTMLDivElement | null>(null);
 
   const scroll = (direction: "left" | "right") => {
@@ -81,4 +81,4 @@ const PopularList = ({ data, type }: PopularListProps) => {
   );
 };
 
-export default PopularList;
+export default WatchListChild;

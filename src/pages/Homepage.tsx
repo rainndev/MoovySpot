@@ -1,4 +1,4 @@
-import Popular from "@/components/Popular";
+import Watch from "@/components/Watch";
 import { ThreeDMarqueeBG } from "@/components/ThreeDMarqueeBG";
 import Hero from "@/components/Hero";
 import CategoryNavigation from "@/sections/homepage/CategoryNavigation";
@@ -17,18 +17,10 @@ const Homepage = () => {
       <div className="bg-logo-black relative flex min-h-screen w-full flex-col justify-center overflow-hidden p-3 md:p-10">
         <CategoryNavigation />
 
-        <Popular
-          category="popular"
-          type="movie"
-          title_header="Popular Movies"
-        />
-        <Popular category="top_rated" type="movie" title_header="Top Rated" />
-        <Popular
-          category="now_playing"
-          type="movie"
-          title_header="Now Playing"
-        />
-        <Popular category="upcoming" type="movie" title_header="Upcoming" />
+        <Watch category="popular" type="movie" title_header="Popular Movies" />
+        <Watch category="top_rated" type="movie" title_header="Top Rated" />
+        <Watch category="now_playing" type="movie" title_header="Now Playing" />
+        <Watch category="upcoming" type="movie" title_header="Upcoming" />
       </div>
     </div>
   );
