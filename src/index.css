@@ -156,5 +156,5 @@
 }
 
 .active {
-  @apply text-logo-blue;
+  @apply text-logo-blue drop-shadow-logo-blue drop-shadow-2xl md:drop-shadow-lg;
 }
