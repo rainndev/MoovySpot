@@ -36,7 +36,7 @@ const WatchListChild = ({ data, type }: WatchListChildProps) => {
       {/* Scrollable Container */}
       <div
         ref={scrollRef}
-        className="hide-scrollbar flex snap-x snap-mandatory space-x-5 overflow-x-auto overflow-y-hidden px-20 active:cursor-grabbing md:space-x-10"
+        className="hide-scrollbar flex snap-x snap-mandatory space-x-5 overflow-x-auto overflow-y-hidden px-20 active:cursor-grabbing md:space-x-8"
       >
         {data.results.map((movie: any) => (
           <Link to={`/watch/${movie.id}?type=${type}`} key={movie.id}>

@@ -20,7 +20,7 @@ const Watch = ({ type, category, title_header }: Watch) => {
     return <div className="h-full w-full">Error: {error.message}</div>;
 
   return (
-    <div className="relative mt-20 overflow-hidden">
+    <div className="relative mb-20 overflow-hidden">
       {/* header */}
       <h1 className="mb-5 w-full font-[ClashDisplay] text-[clamp(1.25rem,3vw,1.875rem)] font-medium text-white md:mb-8">
         {title_header}
