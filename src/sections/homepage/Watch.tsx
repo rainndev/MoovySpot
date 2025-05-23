@@ -1,26 +1,11 @@
-import { useQueryOptions } from "@/query-options/QueryOptions";
-import { useQuery } from "@tanstack/react-query";
-import type { WatchCategory } from "@/types/WatchTypes";
-import LoadingAnimation from "@/components/LoadingAnimation";
 import WatchCardContainer from "@/components/WatchCardContainer";
-import { useWatchTypeStore } from "@/store/WatchTypeStore";
 
 interface Watch {
-  category: WatchCategory;
+  data: any;
   title_header: string;
 }
 
-const Watch = ({ category, title_header }: Watch) => {
-  const type = useWatchTypeStore((state) => state.watchType);
-
-  const { data, isLoading, error, isError } = useQuery(
-    useQueryOptions(type, category),
-  );
-
-  if (isLoading) return <LoadingAnimation />;
-  if (isError)
-    return <div className="h-full w-full">Error: {error.message}</div>;
-
+const Watch = ({ data, title_header }: Watch) => {
   return (
     <div className="relative mb-20 overflow-hidden">
       {/* header */}

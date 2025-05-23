@@ -4,6 +4,9 @@ import Hero from "@/sections/homepage/Hero";
 import TypeNavigation from "@/sections/homepage/TypeNavigation";
 import { useWatchTypeStore } from "@/store/WatchTypeStore";
 import type { WatchCategory } from "@/types/WatchTypes";
+import { useQueries } from "@tanstack/react-query";
+import { useQueryOptions } from "@/query-options/QueryOptions";
+import LoadingAnimation from "@/components/LoadingAnimation";
 
 const Homepage = () => {
   const type = useWatchTypeStore((state) => state.watchType);
@@ -27,8 +30,23 @@ const Homepage = () => {
     ],
   };
 
-  console.log("Watch Type:", type);
-  console.log("Watch Data:", watchData[type]);
+  const queriesOptions = watchData[type].map((data) => {
+    return useQueryOptions(type, data.category);
+  });
+
+  const data = useQueries({
+    queries: queriesOptions,
+  });
+
+  if (
+    data[0].isLoading ||
+    data[1].isLoading ||
+    data[2].isLoading ||
+    data[3].isLoading
+  )
+    return <LoadingAnimation />;
+  if (data[0].isError || data[1].isError || data[2].isError || data[3].isError)
+    return <div className="h-full w-full">Error: {data[0].error?.message}</div>;
 
   return (
     <div className="h-dvh w-full">
@@ -39,15 +57,16 @@ const Homepage = () => {
         </div>
       </div>
 
-      {/* Movies */}
       <div className="bg-logo-black relative flex min-h-full w-full flex-col justify-center p-3 md:p-10">
+        {/* Type Navigation */}
         <TypeNavigation />
 
-        {watchData[type].map((data) => (
+        {/* content */}
+        {data.map((item, i) => (
           <Watch
-            key={data.category}
-            category={data.category}
-            title_header={data.title}
+            key={i}
+            data={item.data}
+            title_header={watchData[type][i].title}
           />
         ))}
       </div>

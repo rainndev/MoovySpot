@@ -26,7 +26,7 @@ const fetchData = async (
 export const useQueryOptions = (
   type: string,
   category: WatchCategory,
-  page?: number,
+  page: number = 1,
 ) => ({
   queryKey: [`${category}-${type}-${page}`],
   queryFn: () => fetchData(type, category, page),
