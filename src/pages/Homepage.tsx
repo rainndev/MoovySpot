@@ -10,6 +10,7 @@ import LoadingAnimation from "@/components/LoadingAnimation";
 
 const Homepage = () => {
   const type = useWatchTypeStore((state) => state.watchType);
+  const creatorName = import.meta.env.VITE_NAME_CREATOR;
 
   const watchData: Record<
     "movie" | "tv",
@@ -75,6 +76,10 @@ const Homepage = () => {
           />
         ))}
       </div>
+      <p className="text-logo-white/50 h-10 w-full text-center font-[SansationLight] text-[clamp(.5rem,3vw,.8rem)]">
+        &copy; {new Date().getFullYear()} MoovySpot and {creatorName}. All
+        rights reserved.
+      </p>
     </div>
   );
 };
