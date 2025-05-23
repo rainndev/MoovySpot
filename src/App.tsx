@@ -8,7 +8,7 @@ import Watchlist from "./pages/Watchlist";
 const App = () => {
   return (
     <Router>
-      <div className="bg-logo-black text-logo-white flex h-[100dvh] w-full flex-col items-center justify-center">
+      <div className="bg-logo-black text-logo-white hide-scrollbar flex h-[100dvh] w-full flex-col items-center justify-center">
         <Navigation />
         <BottomNav />
         <Routes>

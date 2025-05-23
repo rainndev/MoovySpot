@@ -1,23 +1,26 @@
 import { useQueryOptions } from "@/query-options/QueryOptions";
 import { useQuery } from "@tanstack/react-query";
-
+import type { WatchCategory } from "../types/WatchTypes";
 import LoadingAnimation from "./LoadingAnimation";
 import PopularList from "./PopularList";
 
 interface PopularProps {
   type: "movie" | "tv";
+  category: WatchCategory;
   title_header: string;
 }
 
-const Popular = ({ type, title_header }: PopularProps) => {
-  const { data, isLoading, error, isError } = useQuery(useQueryOptions(type));
+const Popular = ({ type, category, title_header }: PopularProps) => {
+  const { data, isLoading, error, isError } = useQuery(
+    useQueryOptions(type, category),
+  );
 
   if (isLoading) return <LoadingAnimation />;
   if (isError)
     return <div className="h-full w-full">Error: {error.message}</div>;
 
   return (
-    <div className="relative mb-5 overflow-hidden p-3 md:p-10">
+    <div className="relative mb-5 overflow-hidden">
       {/* header */}
       <h1 className="mb-5 w-full font-[ClashDisplay] text-[clamp(1.25rem,3vw,1.875rem)] font-medium text-white md:mb-10">
         {title_header}

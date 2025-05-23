@@ -6,21 +6,28 @@ import CategoryNavigation from "@/sections/homepage/CategoryNavigation";
 const Homepage = () => {
   return (
     <div className="h-full w-full">
-      <ThreeDMarqueeBG />
-      <div className="bg-logo-blue/2 absolute top-0 left-0 h-full w-full">
-        <div className="from-logo-blue/5 flex h-full w-full flex-col items-center justify-center bg-gradient-to-t from-5% to-transparent">
+      <div className="relative flex h-full w-full items-center justify-center overflow-hidden">
+        <ThreeDMarqueeBG />
+        <div className="absolute flex w-full items-center justify-center">
           <Hero />
-          <CategoryNavigation />
         </div>
       </div>
 
       {/* Movies */}
-      <div className="bg-logo-black relative flex min-h-screen w-full flex-col justify-center overflow-hidden">
-        {/* background */}
-        <div className="bg-logo-blue/2 from-logo-blue/5 pointer-events-none absolute top-0 left-0 h-full w-full bg-gradient-to-b from-5% to-transparent" />
-
-        <Popular type="movie" title_header="Popular Movies" />
-        <Popular type="tv" title_header="Popular Show" />
+      <div className="bg-logo-black relative flex min-h-screen w-full flex-col justify-center overflow-hidden p-3 md:p-10">
+        <CategoryNavigation />
+        <Popular
+          category="popular"
+          type="movie"
+          title_header="Popular Movies"
+        />
+        <Popular category="top_rated" type="movie" title_header="Top Rated" />
+        <Popular
+          category="now_playing"
+          type="movie"
+          title_header="Now Playing"
+        />
+        <Popular category="upcoming" type="movie" title_header="Upcoming" />
       </div>
     </div>
   );

@@ -15,9 +15,9 @@ export const ThreeDMarquee = ({
     return images.slice(start, start + chunkSize);
   });
   return (
-    <div className={cn("mx-auto block h-full overflow-hidden ", className)}>
+    <div className={cn("mx-auto block h-full overflow-hidden", className)}>
       <div className="flex size-full items-center justify-center">
-        <div className="size-[1720px] shrink-0 scale-50 sm:scale-75 lg:scale-100">
+        <div className="size-full shrink-0 scale-50 sm:scale-75 lg:scale-100">
           <div
             style={{
               transform: "rotateX(55deg) rotateY(0deg) rotateZ(-45deg)",
@@ -50,7 +50,7 @@ export const ThreeDMarquee = ({
                       key={imageIndex + image}
                       src={image}
                       alt={`Image ${imageIndex + 1}`}
-                      className="aspect-[970/700] rounded-lg object-cover ring ring-gray-950/5 hover:shadow-2xl opacity-20 grayscale-50"
+                      className="aspect-[970/700] rounded-lg object-cover opacity-20 ring ring-gray-950/5 grayscale-50 hover:shadow-2xl"
                       width={970}
                       height={700}
                     />
@@ -94,7 +94,7 @@ const GridLineHorizontal = ({
         "[mask-composite:exclude]",
         "z-30",
         "dark:bg-[linear-gradient(to_right,var(--color-dark),var(--color-dark)_50%,transparent_0,transparent)]",
-        className
+        className,
       )}
     ></div>
   );
@@ -129,7 +129,7 @@ const GridLineVertical = ({
         "[mask-composite:exclude]",
         "z-30",
         "dark:bg-[linear-gradient(to_bottom,var(--color-dark),var(--color-dark)_50%,transparent_0,transparent)]",
-        className
+        className,
       )}
     ></div>
   );

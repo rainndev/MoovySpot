@@ -1,12 +1,18 @@
+import type { WatchCategory } from "../types/WatchTypes";
+
 import axios from "axios";
 
 const apiKey = import.meta.env.VITE_TMDB_API_KEY;
 const baseUrl = import.meta.env.VITE_TMDB_API_BASE_URL;
 
-const fetchMovies = async (type: string = "movie", page: number = 1) => {
+const fetchData = async (
+  type: string = "movie",
+  category: WatchCategory,
+  page: number = 1,
+) => {
   try {
     const response = await axios(
-      `${baseUrl}/${type}/popular?api_key=${apiKey}&language=en-US&page=${page}`,
+      `${baseUrl}/${type}/${category}?api_key=${apiKey}&language=en-US&page=${page}`,
     );
 
     return response.data;
@@ -17,9 +23,13 @@ const fetchMovies = async (type: string = "movie", page: number = 1) => {
 };
 
 //for movies query
-export const useQueryOptions = (type: string, page?: number) => ({
-  queryKey: [`${type}-${page}`],
-  queryFn: () => fetchMovies(type, page),
+export const useQueryOptions = (
+  type: string,
+  category: WatchCategory,
+  page?: number,
+) => ({
+  queryKey: [`${category}-${type}-${page}`],
+  queryFn: () => fetchData(type, category, page),
 });
 
 //for watch movie query

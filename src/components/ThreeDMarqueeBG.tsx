@@ -9,7 +9,10 @@ interface Movie {
 
 export function ThreeDMarqueeBG() {
   const [page1, page2] = useQueries({
-    queries: [useQueryOptions("movie", 1), useQueryOptions("movie", 2)],
+    queries: [
+      useQueryOptions("movie", "popular", 1),
+      useQueryOptions("movie", "popular", 2),
+    ],
   });
 
   if (page1.isLoading && page2.isLoading) return;
