@@ -20,9 +20,9 @@ const Popular = ({ type, category, title_header }: PopularProps) => {
     return <div className="h-full w-full">Error: {error.message}</div>;
 
   return (
-    <div className="relative mb-5 overflow-hidden">
+    <div className="relative mt-20 overflow-hidden">
       {/* header */}
-      <h1 className="mb-5 w-full font-[ClashDisplay] text-[clamp(1.25rem,3vw,1.875rem)] font-medium text-white md:mb-10">
+      <h1 className="mb-5 w-full font-[ClashDisplay] text-[clamp(1.25rem,3vw,1.875rem)] font-medium text-white md:mb-8">
         {title_header}
       </h1>
       {/* popular movies list */}

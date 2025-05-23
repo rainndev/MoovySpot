@@ -30,7 +30,7 @@ const PopularList = ({ data, type }: PopularListProps) => {
         onClick={() => scroll("left")}
         className="text-logo-white from-logo-black absolute top-0 left-0 z-10 flex h-full w-30 cursor-pointer items-center justify-start bg-gradient-to-r to-transparent pl-2 md:w-40"
       >
-        <GoChevronLeft className="h-10 w-10" />
+        <GoChevronLeft className="h-5 w-5 md:h-10 md:w-10" />
       </div>
 
       {/* Scrollable Container */}
@@ -75,7 +75,7 @@ const PopularList = ({ data, type }: PopularListProps) => {
         onClick={() => scroll("right")}
         className="text-logo-white from-logo-black absolute top-0 right-0 z-10 flex h-full w-30 cursor-pointer items-center justify-end bg-gradient-to-l to-transparent pr-2 md:w-40"
       >
-        <GoChevronLeft className="h-10 w-10 rotate-180" />
+        <GoChevronLeft className="h-5 w-5 rotate-180 md:h-10 md:w-10" />
       </div>
     </div>
   );

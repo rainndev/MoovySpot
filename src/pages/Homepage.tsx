@@ -16,6 +16,7 @@ const Homepage = () => {
       {/* Movies */}
       <div className="bg-logo-black relative flex min-h-screen w-full flex-col justify-center overflow-hidden p-3 md:p-10">
         <CategoryNavigation />
+
         <Popular
           category="popular"
           type="movie"
