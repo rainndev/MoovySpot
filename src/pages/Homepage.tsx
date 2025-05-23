@@ -1,6 +1,7 @@
 import Popular from "@/components/Popular";
 import { ThreeDMarqueeBG } from "@/components/ThreeDMarqueeBG";
 import Hero from "@/components/Hero";
+import CategoryNavigation from "@/sections/homepage/CategoryNavigation";
 
 const Homepage = () => {
   return (
@@ -9,13 +10,13 @@ const Homepage = () => {
       <div className="bg-logo-blue/2 absolute top-0 left-0 h-full w-full">
         <div className="from-logo-blue/5 flex h-full w-full flex-col items-center justify-center bg-gradient-to-t from-5% to-transparent">
           <Hero />
+          <CategoryNavigation />
         </div>
       </div>
 
       {/* Movies */}
-      <div className="bg-logo-black relative flex min-h-screen w-full flex-col justify-center overflow-hidden p-3 md:p-10">
+      <div className="bg-logo-black relative flex min-h-screen w-full flex-col justify-center overflow-hidden">
         {/* background */}
-
         <div className="bg-logo-blue/2 from-logo-blue/5 pointer-events-none absolute top-0 left-0 h-full w-full bg-gradient-to-b from-5% to-transparent" />
 
         <Popular type="movie" title_header="Popular Movies" />
