@@ -11,9 +11,9 @@ const TypeNavigation = () => {
   const setWatchType = useWatchTypeStore((state) => state.setWatchType);
 
   return (
-    <div className="flex items-center justify-start py-3 text-white md:py-5">
+    <div className="mb-5 flex items-center justify-start py-3 text-white md:py-5">
       <Select onValueChange={(value: "movie" | "tv") => setWatchType(value)}>
-        <SelectTrigger className="text-logo-white px-5">
+        <SelectTrigger className="text-logo-white px-4">
           <SelectValue placeholder="Select Type" />
         </SelectTrigger>
         <SelectContent className="bg-logo-black text-logo-white">

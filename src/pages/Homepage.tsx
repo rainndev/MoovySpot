@@ -52,6 +52,11 @@ const Homepage = () => {
     <div className="h-dvh w-full">
       <div className="relative flex h-full w-full items-center justify-center overflow-hidden">
         <ThreeDMarqueeBG />
+
+        {/* Background */}
+        <div className="from-logo-black to-logo-black/10 absolute inset-0 z-0 bg-gradient-to-t" />
+
+        {/* Hero */}
         <div className="absolute flex w-full items-center justify-center">
           <Hero />
         </div>
