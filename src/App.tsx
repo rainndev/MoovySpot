@@ -9,8 +9,8 @@ import RecentWatch from "./pages/RecentWatch";
 const App = () => {
   return (
     <Router>
-      <div className="h-dvh w-full overflow-hidden">
-        <div className="h-full w-full">
+      <div className="hide-scrollbar h-dvh w-full">
+        <div className="h-fit w-full">
           <div className="bg-logo-black text-logo-white hide-scrollbar flex h-full w-full flex-col items-center">
             <Navigation />
             <BottomNav />

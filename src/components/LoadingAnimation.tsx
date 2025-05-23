@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 
 const LoadingAnimation = () => {
   return (
-    <div className="flex h-full w-full items-center justify-center space-x-2">
+    <div className="flex h-dvh w-full items-center justify-center space-x-2">
       {Array.from({ length: 3 }, (_, index) => (
         <motion.span
           initial={{ opacity: 0, y: -20 }}
