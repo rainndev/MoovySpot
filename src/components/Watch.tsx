@@ -2,15 +2,17 @@ import { useQueryOptions } from "@/query-options/QueryOptions";
 import { useQuery } from "@tanstack/react-query";
 import type { WatchCategory } from "../types/WatchTypes";
 import LoadingAnimation from "./LoadingAnimation";
-import WatchListChild from "./WatchListChild";
+import WatchCardContainer from "./WatchCardContainer";
+import { useWatchTypeStore } from "@/store/WatchTypeStore";
 
 interface Watch {
-  type: "movie" | "tv";
   category: WatchCategory;
   title_header: string;
 }
 
-const Watch = ({ type, category, title_header }: Watch) => {
+const Watch = ({ category, title_header }: Watch) => {
+  const type = useWatchTypeStore((state) => state.watchType);
+
   const { data, isLoading, error, isError } = useQuery(
     useQueryOptions(type, category),
   );
@@ -27,7 +29,7 @@ const Watch = ({ type, category, title_header }: Watch) => {
       </h1>
 
       <div className="z-10 h-full w-full">
-        <WatchListChild data={data} type={type} />
+        <WatchCardContainer data={data} />
       </div>
     </div>
   );

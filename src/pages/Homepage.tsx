@@ -47,7 +47,6 @@ const Homepage = () => {
           <Watch
             key={data.category}
             category={data.category}
-            type={type}
             title_header={data.title}
           />
         ))}

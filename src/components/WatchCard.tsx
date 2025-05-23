@@ -1,0 +1,54 @@
+import { Link } from "react-router-dom";
+import { FaStar } from "react-icons/fa";
+import { useWatchTypeStore } from "@/store/WatchTypeStore";
+
+interface Movie {
+  id: number;
+  title?: string;
+  name?: string;
+  poster_path: string;
+  release_date: string;
+  first_air_date: string;
+  vote_average: number;
+}
+
+interface WatchDataCardProps {
+  movie: Movie;
+}
+
+const WatchCard = ({ movie }: WatchDataCardProps) => {
+  const type = useWatchTypeStore((state) => state.watchType);
+
+  return (
+    <Link to={`/watch/${movie.id}?type=${type}`} key={movie.id}>
+      <div className="group h-full w-[140px] flex-shrink-0 snap-start overflow-hidden md:w-[180px] xl:w-[230px]">
+        <div className="border-logo-white/10 shadow-bg w-full overflow-hidden rounded-lg">
+          <img
+            onContextMenu={(e) => e.preventDefault()}
+            onDragStart={(e) => e.preventDefault()}
+            loading="lazy"
+            src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+            alt={type === "movie" ? movie.title : movie.name}
+            className="scale-100 object-cover opacity-90 shadow-lg transition-all duration-300 ease-in-out hover:scale-105 hover:opacity-50 active:scale-105 active:opacity-50"
+          />
+        </div>
+        <h2 className="mt-5 truncate text-[clamp(.8rem,3vw,1.1rem)] font-normal text-white">
+          {type === "movie" ? movie.title : movie.name}
+        </h2>
+        <div className="mt-1 mb-4 flex items-center justify-between text-[clamp(.65rem,3vw,.9rem)]">
+          <p className="text-gray-400">
+            {type === "movie"
+              ? movie.release_date.split("-")[0]
+              : movie.first_air_date.split("-")[0]}
+          </p>
+          <div className="flex items-center text-yellow-400">
+            <FaStar />
+            <p className="ml-2">{movie.vote_average.toFixed(1)}</p>
+          </div>
+        </div>
+      </div>
+    </Link>
+  );
+};
+
+export default WatchCard;
