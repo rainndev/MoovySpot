@@ -64,6 +64,12 @@ const WatchVideoContainer = () => {
   if (!data) return;
   const { genres, overview, runtime, tagline } = data;
 
+  // show date
+  const date =
+    typeParam === "movie"
+      ? data.release_date.split("-")[0]
+      : data.first_air_date.split("-")[0];
+
   console.log("data", data);
 
   console.log(
@@ -115,7 +121,7 @@ const WatchVideoContainer = () => {
               <span>
                 <CiCalendarDate />
               </span>
-              <span>{data.release_date.split("-")[0]}</span>
+              <span>{date}</span>
             </p>
 
             <p className="flex items-center gap-2">
