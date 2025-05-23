@@ -19,7 +19,7 @@ const WatchVideoContainer = () => {
 
   if (!typeParam)
     return (
-      <div className="flex h-full w-full items-center justify-center">
+      <div className="flex h-fit w-full items-center justify-center">
         Error: No type provided
       </div>
     );
@@ -86,11 +86,11 @@ const WatchVideoContainer = () => {
       <div className="bg-logo-black absolute inset-0 h-full [mask-image:radial-gradient(ellipse_at_center,transparent_20%,#14c4b4)]" />
 
       {/* video watch container */}
-      <div className="z-2">
+      <div className="z-2 w-full">
         <div className="my-20 flex h-full w-full flex-col">
           {/* tagline */}
           <p className="text-logo-white/90 mb-1 w-full text-start font-[SansationLight] text-[clamp(.7rem,3vw,.9rem)] italic">
-            {`"${tagline}"`}
+            {tagline && `"${tagline}"`}
           </p>
 
           {/* title */}
@@ -115,7 +115,7 @@ const WatchVideoContainer = () => {
               <span>
                 <CiCalendarDate />
               </span>
-              <span>2018</span>
+              <span>{data.release_date.split("-")[0]}</span>
             </p>
 
             <p className="flex items-center gap-2">

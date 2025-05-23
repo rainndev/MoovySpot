@@ -10,17 +10,15 @@ const App = () => {
   return (
     <Router>
       <div className="hide-scrollbar h-dvh w-full">
-        <div className="h-fit w-full">
-          <div className="bg-logo-black text-logo-white hide-scrollbar flex h-full w-full flex-col items-center">
-            <Navigation />
-            <BottomNav />
-            <Routes>
-              <Route path="/" element={<Homepage />} />
-              <Route path="/watchlist" element={<Watchlist />} />
-              <Route path="/recent" element={<RecentWatch />} />
-              <Route path="/watch/:id" element={<WatchVideoContainer />} />
-            </Routes>
-          </div>
+        <div className="text-logo-white hide-scrollbar bg-logo-black flex w-full flex-col items-center justify-center">
+          <Navigation />
+          <BottomNav />
+          <Routes>
+            <Route path="/" element={<Homepage />} />
+            <Route path="/watchlist" element={<Watchlist />} />
+            <Route path="/recent" element={<RecentWatch />} />
+            <Route path="/watch/:id" element={<WatchVideoContainer />} />
+          </Routes>
         </div>
       </div>
     </Router>
