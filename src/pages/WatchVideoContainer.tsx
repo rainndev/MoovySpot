@@ -9,7 +9,7 @@ interface Genre {
   name: string;
 }
 
-const WatchMovie = () => {
+const WatchVideoContainer = () => {
   const { id } = useParams();
   const [searchParams] = useSearchParams();
   const typeParam = searchParams.get("type");
@@ -121,4 +121,4 @@ const WatchMovie = () => {
   );
 };
 
-export default WatchMovie;
+export default WatchVideoContainer;
