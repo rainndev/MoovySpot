@@ -9,14 +9,14 @@ const LoadingAnimation = () => {
           animate={{ opacity: 1, y: [0, -20, 0] }}
           exit={{ opacity: 0, y: -20 }}
           transition={{
-            duration: 0.5,
+            duration: 0.7,
             repeat: Infinity,
             repeatType: "loop",
-            delay: index * 0.2,
+            delay: index * 0.1,
             ease: "easeInOut",
           }}
           key={index}
-          className="bg-logo-blue h-5 w-5 rounded-md"
+          className="bg-logo-blue h-3 w-3 rounded-md"
         />
       ))}
     </div>
