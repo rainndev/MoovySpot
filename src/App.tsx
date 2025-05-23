@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import WatchVideoContainer from "./pages/WatchVideoContainer";
 import BottomNav from "./components/BottomNav";
 import Watchlist from "./pages/Watchlist";
+import RecentWatch from "./pages/RecentWatch";
 
 const App = () => {
   return (
@@ -14,6 +15,8 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Homepage />} />
           <Route path="/watchlist" element={<Watchlist />} />
+          <Route path="/recent" element={<RecentWatch />} />
+
           <Route path="/watch/:id" element={<WatchVideoContainer />} />
         </Routes>
       </div>

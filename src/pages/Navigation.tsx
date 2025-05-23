@@ -24,6 +24,10 @@ const Navigation = () => {
                 Watch List
               </li>
             </NavLink>
+
+            <NavLink to="/recent">
+              <li className="hover:text-logo-blue cursor-pointer">Recent</li>
+            </NavLink>
           </ul>
         </div>
         {/* Search bar */}

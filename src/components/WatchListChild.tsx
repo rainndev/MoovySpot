@@ -62,7 +62,7 @@ const WatchListChild = ({ data, type }: WatchListChildProps) => {
                 </p>
                 <div className="flex items-center text-yellow-400">
                   <FaStar />
-                  <p className="ml-2">{movie.vote_average}</p>
+                  <p className="ml-2">{movie.vote_average.toFixed(1)}</p>
                 </div>
               </div>
             </div>

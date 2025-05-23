@@ -1,6 +1,7 @@
 import { GoHomeFill } from "react-icons/go";
 import { LuListVideo } from "react-icons/lu";
 import { NavLink } from "react-router-dom";
+import { FaHistory } from "react-icons/fa";
 
 const BottomNav = () => {
   return (
@@ -15,6 +16,12 @@ const BottomNav = () => {
         <NavLink to="/watchlist">
           <li>
             <LuListVideo />
+          </li>
+        </NavLink>
+
+        <NavLink to="/recent">
+          <li>
+            <FaHistory />
           </li>
         </NavLink>
       </ul>
