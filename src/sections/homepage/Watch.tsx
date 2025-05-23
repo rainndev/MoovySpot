@@ -1,8 +1,8 @@
 import { useQueryOptions } from "@/query-options/QueryOptions";
 import { useQuery } from "@tanstack/react-query";
-import type { WatchCategory } from "../types/WatchTypes";
-import LoadingAnimation from "./LoadingAnimation";
-import WatchCardContainer from "./WatchCardContainer";
+import type { WatchCategory } from "@/types/WatchTypes";
+import LoadingAnimation from "@/components/LoadingAnimation";
+import WatchCardContainer from "@/components/WatchCardContainer";
 import { useWatchTypeStore } from "@/store/WatchTypeStore";
 
 interface Watch {

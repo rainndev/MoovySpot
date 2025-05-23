@@ -1,6 +1,6 @@
-import Watch from "@/components/Watch";
-import { ThreeDMarqueeBG } from "@/components/ThreeDMarqueeBG";
-import Hero from "@/components/Hero";
+import Watch from "@/sections/homepage/Watch";
+import { ThreeDMarqueeBG } from "@/sections/homepage/ThreeDMarqueeBG";
+import Hero from "@/sections/homepage/Hero";
 import TypeNavigation from "@/sections/homepage/TypeNavigation";
 import { useWatchTypeStore } from "@/store/WatchTypeStore";
 import type { WatchCategory } from "@/types/WatchTypes";

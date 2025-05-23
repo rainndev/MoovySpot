@@ -1,4 +1,4 @@
-import HeroSearch from "./HeroSearch";
+import HeroSearch from "@/components/HeroSearch";
 
 const Hero = () => {
   return (

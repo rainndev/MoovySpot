@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { GoChevronLeft } from "react-icons/go";
-import WatchCard from "./WatchCard";
+import WatchCard from "@/components/WatchCard";
 
 interface WatchListChildProps {
   data: [] | any;
