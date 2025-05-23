@@ -154,3 +154,7 @@
 .hide-scrollbar::-webkit-scrollbar {
   display: none;
 }
+
+.active {
+  @apply text-logo-blue;
+}

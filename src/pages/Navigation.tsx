@@ -1,6 +1,6 @@
 import { BiSearchAlt } from "react-icons/bi";
 import { RiMovie2AiFill } from "react-icons/ri";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 const Navigation = () => {
   return (
@@ -16,14 +16,14 @@ const Navigation = () => {
         {/* nav links */}
         <div>
           <ul className="text-logo-white flex items-center space-x-10">
-            <Link to="/">
+            <NavLink to="/">
               <li className="hover:text-logo-blue cursor-pointer">Home</li>
-            </Link>
-            <Link to="/watchlist">
+            </NavLink>
+            <NavLink to="/watchlist">
               <li className="hover:text-logo-blue cursor-pointer">
                 Watch List
               </li>
-            </Link>
+            </NavLink>
           </ul>
         </div>
         {/* Search bar */}
