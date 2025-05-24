@@ -10,6 +10,7 @@ interface WatchCardProps {
 
 const WatchCard = ({ movie }: WatchCardProps) => {
   const type = useWatchTypeStore((state) => state.watchType);
+  const date = movie.release_date || movie.first_air_date;
 
   return (
     <Link to={formatWatchUrl(movie.id, type)} key={movie.id}>
@@ -29,8 +30,7 @@ const WatchCard = ({ movie }: WatchCardProps) => {
         </h2>
         <div className="mt-1 mb-4 flex items-center justify-between text-[clamp(.65rem,3vw,.9rem)]">
           <p className="text-gray-400">
-            {movie.release_date.split("-")[0] ||
-              movie.first_air_date.split("-")[0]}
+            {date ? new Date(date).getFullYear() : "Unknown Year"}
           </p>
           <div className="flex items-center text-yellow-400">
             <FaStar />
