@@ -4,6 +4,7 @@ import { useOptionsById, useOptionsImages } from "@/query-options/QueryOptions";
 import { useQueries } from "@tanstack/react-query";
 import { useParams, useSearchParams } from "react-router-dom";
 import { CiCalendarDate } from "react-icons/ci";
+
 import { IoMdTime } from "react-icons/io";
 import { useState } from "react";
 
@@ -20,7 +21,6 @@ const WatchVideoContainer = () => {
     `https://vidsrc.cc/v2/embed/${typeParam}/${id}`,
   );
 
-  console.log("render");
   // Error conditions shown *after* hooks
   if (!typeParam)
     return (
@@ -67,16 +67,21 @@ const WatchVideoContainer = () => {
     backdrop_path,
     release_date,
     first_air_date,
+    number_of_episodes,
+    number_of_seasons,
   } = watchData.data;
 
+  console.log("watchData", watchData.data);
+
   //date
-  const date =
-    typeParam === "movie"
-      ? release_date.split("-")[0]
-      : first_air_date.split("-")[0];
+  const fallBackDate = release_date || first_air_date;
+
+  const date = fallBackDate
+    ? new Date(fallBackDate).getFullYear()
+    : "Unknown Year";
+
   // title
-  const title =
-    typeParam === "movie" ? watchData.data.title : watchData.data.name;
+  const title = watchData.data.title || watchData.data.name;
   // backdrop
   const backdropUrl = `https://image.tmdb.org/t/p/original/${backdrop_path}`;
 
@@ -147,10 +152,24 @@ const WatchVideoContainer = () => {
               <CiCalendarDate />
               <span>{date}</span>
             </p>
-            <p className="flex items-center gap-2">
-              <IoMdTime />
-              <span>{formatRuntime(runtime)}</span>
-            </p>
+            <div className="bg-logo-white/30 w-[1px]" />
+
+            {runtime ? (
+              <p className="flex items-center gap-2">
+                <IoMdTime />
+                <span>{formatRuntime(runtime)}</span>
+              </p>
+            ) : (
+              <div className="flex flex-wrap items-center space-x-2">
+                <p className="inline-flex items-center gap-1">
+                  Episodes: <span className="ml-2">{number_of_episodes}</span>
+                </p>
+
+                <p className="inline-flex items-center gap-1">
+                  Seasons: <span className="ml-2">{number_of_seasons}</span>
+                </p>
+              </div>
+            )}
           </div>
 
           {/* overview */}
