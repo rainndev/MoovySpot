@@ -163,7 +163,7 @@ const SearchModal = ({ closeModal }: SearchModalProps) => {
               ))}
             </motion.div>
           ) : (
-            <div className="flex h-full w-full items-center justify-center p-4 px-5">
+            <div className="flex h-full w-full items-center justify-center p-4 px-5 text-[clamp(.8rem,3vw,1rem)]">
               <p className="text-logo-white">No results found</p>
             </div>
           )}
