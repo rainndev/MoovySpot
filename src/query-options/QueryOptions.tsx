@@ -51,3 +51,13 @@ export const useOptionsById = (type: string, id: number) => ({
   queryKey: [`movie-${id}`],
   queryFn: () => watchById(type, id),
 });
+
+//for watch query images
+
+export const useOptionsImages = (type: string, id: number) => ({
+  queryKey: [`${type}-images-${id}`],
+  queryFn: () =>
+    axios(`${baseUrl}/${type}/${id}/images?api_key=${apiKey}`).then(
+      (res) => res.data,
+    ),
+});
