@@ -61,3 +61,16 @@ export const useOptionsImages = (type: string, id: number) => ({
       (res) => res.data,
     ),
 });
+
+//for search query
+export const useSearchOptions = (
+  query: string,
+  page: number = 1,
+  type: string,
+) => ({
+  queryKey: [`${type}-${query}-${page}`],
+  queryFn: () =>
+    axios(
+      `${baseUrl}/search/${type}?api_key=${apiKey}&language=en-US&query=${query}&page=${page}&include_adult=false`,
+    ).then((res) => res.data),
+});
