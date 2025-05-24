@@ -5,10 +5,23 @@ import { IoSearch } from "react-icons/io5";
 import { IoIosClose } from "react-icons/io";
 import { formatImagePath, formatWatchUrl } from "@/lib/utils";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 
 interface SearchModalProps {
   closeModal: (isOpen: boolean) => void;
 }
+
+const parentVariant = {
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.2, staggerDirection: 1 },
+  },
+};
+
+const childVariant = {
+  hidden: { opacity: 0, y: -20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.3 } },
+};
 
 const SearchModal = ({ closeModal }: SearchModalProps) => {
   const [type, setType] = useState("movie");
@@ -52,7 +65,7 @@ const SearchModal = ({ closeModal }: SearchModalProps) => {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             type="text"
-            className="ml-5 w-full py-1 focus:ring-0 focus:outline-none"
+            className="ml-5 w-full py-1 text-[clamp(.8rem,3vw,1rem)] focus:ring-0 focus:outline-none"
             placeholder="Search..."
           />
           <div
@@ -79,57 +92,76 @@ const SearchModal = ({ closeModal }: SearchModalProps) => {
           </p>
         </div>
         {/* total result */}
-        <p className="text-logo-white/50 px-5 py-2 text-[clamp(.8rem,3vw,1rem)]">
-          Total Result: {data ? data.total_results : "0"}
-        </p>
+        {data && (
+          <motion.p
+            variants={childVariant}
+            initial="hidden"
+            animate="visible"
+            exit="hidden"
+            className="text-logo-white/50 px-5 py-2 text-[clamp(.8rem,3vw,1rem)]"
+          >
+            Total Result: {data.total_results}
+          </motion.p>
+        )}
         {/* Search results */}
         <div className="hide-scrollbar max-h-[50vh] w-full overflow-y-auto">
           {data && data.results && data.results.length > 0 ? (
-            <div className="flex w-full flex-col items-start space-y-2">
+            <motion.div
+              variants={parentVariant}
+              initial="hidden"
+              animate="visible"
+              className="flex w-full flex-col items-start space-y-2"
+            >
               {data.results.map((watch: any) => (
-                <Link
-                  to={formatWatchUrl(watch.id, watch.media_type || type)}
+                <motion.div
+                  variants={childVariant}
+                  className="w-full"
                   key={watch.id}
-                  className="hover:bg-logo-white/10 flex w-full cursor-pointer p-4 px-5 py-2 transition-colors duration-300 ease-in-out"
                 >
-                  <div className="flex-shrink-0">
-                    <img
-                      loading="lazy"
-                      className="aspect-[10/16] w-25 rounded-md object-cover md:w-30"
-                      src={formatImagePath(watch.poster_path, "w300")}
-                      alt={watch.original_title}
-                    />
-                  </div>
+                  <Link
+                    to={formatWatchUrl(watch.id, watch.media_type || type)}
+                    key={watch.id}
+                    className="hover:bg-logo-white/10 flex w-full cursor-pointer p-4 px-5 py-2 transition-colors duration-300 ease-in-out"
+                  >
+                    <div className="flex-shrink-0">
+                      <img
+                        loading="lazy"
+                        className="aspect-[10/16] w-25 rounded-md object-cover md:w-30"
+                        src={formatImagePath(watch.poster_path, "w300")}
+                        alt={watch.original_title}
+                      />
+                    </div>
 
-                  <div className="flex min-w-0 flex-col items-start justify-center pl-4">
-                    {/* title */}
-                    <p className="text-logo-white truncate font-[ClashDisplay] text-[clamp(1.125rem,3vw,1.5rem)]">
-                      {watch.title || watch.name}
-                    </p>
-                    <p className="text-logo-white/50 text-sm">
-                      {watch.release_date
-                        ? new Date(watch.release_date).getFullYear()
-                        : watch.first_air_date
-                          ? new Date(watch.first_air_date).getFullYear()
-                          : "Unknown Year"}
-                    </p>
-                    <p className="text-logo-white/50 text-sm">
-                      Language: {watch.original_language.toUpperCase()}
-                    </p>
-                    <p className="text-logo-white/50 text-sm">
-                      Released date:{" "}
-                      {
-                        (
-                          watch.release_date ||
-                          watch.first_air_date ||
-                          ""
-                        ).split("-")[0]
-                      }
-                    </p>
-                  </div>
-                </Link>
+                    <div className="flex min-w-0 flex-col items-start justify-center pl-4">
+                      {/* title */}
+                      <p className="text-logo-white truncate font-[ClashDisplay] text-[clamp(1.125rem,3vw,1.5rem)]">
+                        {watch.title || watch.name}
+                      </p>
+                      <p className="text-logo-white/50 text-sm">
+                        {watch.release_date
+                          ? new Date(watch.release_date).getFullYear()
+                          : watch.first_air_date
+                            ? new Date(watch.first_air_date).getFullYear()
+                            : "Unknown Year"}
+                      </p>
+                      <p className="text-logo-white/50 text-sm">
+                        Language: {watch.original_language.toUpperCase()}
+                      </p>
+                      <p className="text-logo-white/50 text-sm">
+                        Released date:{" "}
+                        {
+                          (
+                            watch.release_date ||
+                            watch.first_air_date ||
+                            ""
+                          ).split("-")[0]
+                        }
+                      </p>
+                    </div>
+                  </Link>
+                </motion.div>
               ))}
-            </div>
+            </motion.div>
           ) : (
             <div className="flex h-full w-full items-center justify-center p-4 px-5">
               <p className="text-logo-white">No results found</p>
