@@ -7,9 +7,9 @@ interface Watch {
 
 const Watch = ({ data, title_header }: Watch) => {
   return (
-    <div className="relative mb-20 overflow-hidden">
+    <div className="relative mb-10 overflow-hidden">
       {/* header */}
-      <h1 className="mb-5 w-full font-[ClashDisplay] text-[clamp(1.25rem,3vw,1.875rem)] font-medium text-white md:mb-8">
+      <h1 className="mb-5 w-full font-[ClashDisplay] text-[clamp(1.125rem,3vw,1.875rem)] font-medium text-white md:mb-8">
         {title_header}
       </h1>
 
