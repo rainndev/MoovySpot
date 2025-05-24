@@ -2,22 +2,13 @@ import { Link } from "react-router-dom";
 import { FaStar } from "react-icons/fa";
 import { useWatchTypeStore } from "@/store/WatchTypeStore";
 import { formatImagePath, formatWatchUrl } from "@/lib/utils";
+import type { Movie, TVShow } from "@/types/TMDBTypes";
 
-interface Movie {
-  id: number;
-  title?: string;
-  name?: string;
-  poster_path: string;
-  release_date: string;
-  first_air_date: string;
-  vote_average: number;
+interface WatchCardProps {
+  movie: TVShow & Movie;
 }
 
-interface WatchDataCardProps {
-  movie: Movie;
-}
-
-const WatchCard = ({ movie }: WatchDataCardProps) => {
+const WatchCard = ({ movie }: WatchCardProps) => {
   const type = useWatchTypeStore((state) => state.watchType);
 
   return (

@@ -6,6 +6,7 @@ import { IoIosClose } from "react-icons/io";
 import { formatImagePath, formatWatchUrl } from "@/lib/utils";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import type { Movie, TVShow } from "@/types/TMDBTypes";
 
 interface SearchModalProps {
   closeModal: (isOpen: boolean) => void;
@@ -112,7 +113,7 @@ const SearchModal = ({ closeModal }: SearchModalProps) => {
               animate="visible"
               className="flex w-full flex-col items-start space-y-2"
             >
-              {data.results.map((watch: any) => (
+              {data.results.map((watch: Movie & TVShow) => (
                 <motion.div
                   variants={childVariant}
                   className="w-full"
