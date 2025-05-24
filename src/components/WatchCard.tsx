@@ -20,18 +20,17 @@ const WatchCard = ({ movie }: WatchCardProps) => {
             onDragStart={(e) => e.preventDefault()}
             loading="lazy"
             src={formatImagePath(movie.poster_path, "w500")}
-            alt={type === "movie" ? movie.title : movie.name}
+            alt={movie.title || movie.name}
             className="scale-100 object-cover opacity-90 shadow-lg transition-all duration-300 ease-in-out hover:scale-105 hover:opacity-50 active:scale-105 active:opacity-50"
           />
         </div>
         <h2 className="mt-5 truncate text-[clamp(.8rem,3vw,1.1rem)] font-normal text-white">
-          {type === "movie" ? movie.title : movie.name}
+          {movie.title || movie.name}
         </h2>
         <div className="mt-1 mb-4 flex items-center justify-between text-[clamp(.65rem,3vw,.9rem)]">
           <p className="text-gray-400">
-            {type === "movie"
-              ? movie.release_date.split("-")[0]
-              : movie.first_air_date.split("-")[0]}
+            {movie.release_date.split("-")[0] ||
+              movie.first_air_date.split("-")[0]}
           </p>
           <div className="flex items-center text-yellow-400">
             <FaStar />
