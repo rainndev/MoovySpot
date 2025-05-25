@@ -127,6 +127,7 @@ const SearchModal = () => {
                     <Link
                       to={formatWatchUrl(watch.id, watch.media_type || type)}
                       key={watch.id}
+                      onClick={() => toggleModal()}
                       className="hover:bg-logo-white/10 flex w-full cursor-pointer p-4 px-5 py-2 transition-colors duration-300 ease-in-out"
                     >
                       <div className="flex-shrink-0">
