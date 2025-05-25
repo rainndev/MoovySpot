@@ -7,10 +7,10 @@ import type { WatchCategory } from "@/types/WatchTypes";
 import { useQueries } from "@tanstack/react-query";
 import { useQueryOptions } from "@/query-options/QueryOptions";
 import LoadingAnimation from "@/components/LoadingAnimation";
+import Disclaimer from "@/components/Disclaimer";
 
 const Homepage = () => {
   const type = useWatchTypeStore((state) => state.watchType);
-  const creatorName = import.meta.env.VITE_NAME_CREATOR;
 
   const watchData: Record<
     "movie" | "tv",
@@ -78,10 +78,7 @@ const Homepage = () => {
           />
         ))}
       </div>
-      <p className="text-logo-white/50 h-10 w-full text-center font-[SansationLight] text-[clamp(.5rem,3vw,.8rem)]">
-        &copy; {new Date().getFullYear()} MoovySpot and {creatorName}. All
-        rights reserved.
-      </p>
+      <Disclaimer />
     </div>
   );
 };
