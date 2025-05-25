@@ -13,10 +13,15 @@ interface WatchCardProps {
 const WatchCard = ({ movie }: WatchCardProps) => {
   const type = useWatchTypeStore((state) => state.watchType);
   const date = movie.release_date || movie.first_air_date;
+  const timeAdded = movie.timeAdded;
+  if (!movie.poster_path) return null;
+  if (!movie.title && !movie.name) return null;
 
   return (
     <Link to={formatWatchUrl(movie.id, type)} key={movie.id}>
-      <div className="group h-full w-[120px] flex-shrink-0 snap-start overflow-hidden md:w-[180px] xl:w-[230px]">
+      <div
+        className={`group h-full ${timeAdded ? "w-full" : "w-[120px] md:w-[180px] xl:w-[230px]"} flex-shrink-0 snap-start overflow-hidden`}
+      >
         <div className="border-logo-white/10 shadow-bg bg-logo-black/50 w-full overflow-hidden rounded-lg border transition-all duration-300 ease-in-out hover:shadow-xl">
           <img
             onContextMenu={(e) => e.preventDefault()}
@@ -34,10 +39,10 @@ const WatchCard = ({ movie }: WatchCardProps) => {
           <p className="text-gray-400">
             {date ? new Date(date).getFullYear() : "Unknown Year"}
           </p>
-          {movie.timeAdded ? (
+          {timeAdded ? (
             <div className="flex items-center gap-2 text-gray-400">
               <FaClockRotateLeft />
-              {getTimeAgo(movie.timeAdded)}
+              {getTimeAgo(timeAdded)}
             </div>
           ) : (
             <div className="flex items-center text-yellow-400">
