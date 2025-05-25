@@ -63,7 +63,7 @@ const SearchModal = () => {
         className="bg-opacity-50 bg-logo-black/10 text-logo-white fixed inset-0 z-50 flex items-center justify-center p-5 backdrop-blur-md"
       >
         {/* Search input container */}
-        <div className="bg-logo-black/85 text-md flex w-full max-w-5xl flex-col items-start rounded-xl pb-5 shadow-lg">
+        <div className="bg-logo-black/85 text-md border-logo-white/5 flex w-full max-w-5xl flex-col items-start rounded-xl border pb-5 shadow-lg">
           {/* Search icon and input field */}
           <div className="flex w-full items-center p-4 px-5">
             <IoSearch />
@@ -81,7 +81,7 @@ const SearchModal = () => {
               <IoIosClose />
             </div>
           </div>
-          <div className="bg bg-logo-white/20 h-[1px] w-full" />
+          <div className="bg bg-logo-white/5 h-[1px] w-full" />
           {/* Type */}
           <div className="flex w-full items-center space-x-2 p-5">
             <p
