@@ -14,8 +14,8 @@ const WatchCard = ({ movie }: WatchCardProps) => {
 
   return (
     <Link to={formatWatchUrl(movie.id, type)} key={movie.id}>
-      <div className="group h-full w-[140px] flex-shrink-0 snap-start overflow-hidden md:w-[180px] xl:w-[230px]">
-        <div className="border-logo-white/10 shadow-bg w-full overflow-hidden rounded-lg">
+      <div className="group h-full w-[120px] flex-shrink-0 snap-start overflow-hidden md:w-[180px] xl:w-[230px]">
+        <div className="border-logo-white/10 shadow-bg bg-logo-black/50 w-full overflow-hidden rounded-lg border transition-all duration-300 ease-in-out hover:shadow-xl">
           <img
             onContextMenu={(e) => e.preventDefault()}
             onDragStart={(e) => e.preventDefault()}

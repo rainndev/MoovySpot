@@ -7,7 +7,6 @@ import type { WatchCategory } from "@/types/WatchTypes";
 import { useQueries } from "@tanstack/react-query";
 import { useQueryOptions } from "@/query-options/QueryOptions";
 import LoadingAnimation from "@/components/LoadingAnimation";
-import RecentlyAddedMovie from "@/components/RecentlyAddedMovie";
 
 const Homepage = () => {
   const type = useWatchTypeStore((state) => state.watchType);
@@ -69,7 +68,7 @@ const Homepage = () => {
         <TypeNavigation />
 
         {/* recently added movies  */}
-        <RecentlyAddedMovie />
+        {/* <RecentlyAddedMovie /> */}
         {/* content */}
         {data.map((item, i) => (
           <Watch
