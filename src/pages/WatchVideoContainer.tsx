@@ -5,7 +5,8 @@ import { useQueries } from "@tanstack/react-query";
 import { useParams, useSearchParams } from "react-router-dom";
 import { CiCalendarDate } from "react-icons/ci";
 import { IoMdTime } from "react-icons/io";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useRecentlyViewStore } from "@/store/RecentlyViewStore";
 
 interface Genre {
   id: number;
@@ -19,6 +20,8 @@ const WatchVideoContainer = () => {
   const [server, setServer] = useState(
     `https://vidsrc.cc/v2/embed/${typeParam}/${id}`,
   );
+
+  const addRecentlyView = useRecentlyViewStore((state) => state.addWatch);
 
   // Error conditions shown *after* hooks
   if (!typeParam)
@@ -44,6 +47,12 @@ const WatchVideoContainer = () => {
   const queries = useQueries({
     queries: [useOptionsById(typeParam, +id), useOptionsImages(typeParam, +id)],
   });
+
+  // Add to recently viewed store
+  useEffect(() => {
+    const timeAdded = new Date();
+    queries[0].data && addRecentlyView({ ...queries[0].data, timeAdded });
+  }, [queries[0].data]);
 
   const [watchData, watchImage] = queries;
 

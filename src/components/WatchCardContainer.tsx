@@ -35,7 +35,7 @@ const WatchCardContainer = ({ data }: WatchListChildProps) => {
       {/* Scrollable Container */}
       <div
         ref={scrollRef}
-        className="hide-scrollbar flex snap-x snap-mandatory space-x-2 overflow-x-auto overflow-y-hidden px-20 active:cursor-grabbing md:space-x-4"
+        className="hide-scrollbar flex snap-x snap-mandatory space-x-2 overflow-x-auto overflow-y-hidden px-20 active:cursor-grabbing md:space-x-2"
       >
         {data.results.map((movie: MediaItem, i: number) => (
           <WatchCard key={i} movie={movie} />

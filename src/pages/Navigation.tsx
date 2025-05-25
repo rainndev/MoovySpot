@@ -7,7 +7,7 @@ const Navigation = () => {
   const toggleModal = useSearchModalStore((state) => state.toggleModal);
 
   return (
-    <div className="bg-logo-black/5 border-logo-white/20 fixed top-0 left-0 z-20 hidden w-full items-center justify-center border-b p-5 backdrop-blur-xs md:flex">
+    <div className="bg-logo-black/5 border-logo-white/20 sticky top-0 left-0 z-20 hidden w-full items-center justify-center border-b p-5 backdrop-blur-xs md:flex">
       <header className="flex w-full max-w-7xl items-center justify-between">
         {/* logo */}
         <div className="flex items-center font-bold">

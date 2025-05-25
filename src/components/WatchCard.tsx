@@ -1,11 +1,13 @@
 import { Link } from "react-router-dom";
 import { FaStar } from "react-icons/fa";
 import { useWatchTypeStore } from "@/store/WatchTypeStore";
+import { getTimeAgo } from "@/lib/utils";
 import { formatImagePath, formatWatchUrl } from "@/lib/utils";
-import type { Movie, TVShow } from "@/types/TMDBTypes";
+import { FaClockRotateLeft } from "react-icons/fa6";
+import type { MediaItem } from "@/types/TMDBTypes";
 
 interface WatchCardProps {
-  movie: TVShow & Movie;
+  movie: MediaItem;
 }
 
 const WatchCard = ({ movie }: WatchCardProps) => {
@@ -32,10 +34,17 @@ const WatchCard = ({ movie }: WatchCardProps) => {
           <p className="text-gray-400">
             {date ? new Date(date).getFullYear() : "Unknown Year"}
           </p>
-          <div className="flex items-center text-yellow-400">
-            <FaStar />
-            <p className="ml-2">{movie.vote_average.toFixed(1)}</p>
-          </div>
+          {movie.timeAdded ? (
+            <div className="flex items-center gap-2 text-gray-400">
+              <FaClockRotateLeft />
+              {getTimeAgo(movie.timeAdded)}
+            </div>
+          ) : (
+            <div className="flex items-center text-yellow-400">
+              <FaStar />
+              <p className="ml-2">{movie.vote_average.toFixed(1)}</p>
+            </div>
+          )}
         </div>
       </div>
     </Link>

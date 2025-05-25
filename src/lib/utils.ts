@@ -46,3 +46,28 @@ export const formatWatchUrl = (id: number, type: string) => {
 
   return `/watch/${id}?type=${formattedType}`;
 };
+
+//format date to time ago
+
+export const getTimeAgo = (dateString: Date): string => {
+  const now = new Date();
+  const date = new Date(dateString);
+  const seconds = Math.floor((now.getTime() - date.getTime()) / 1000);
+
+  const units: { label: string; seconds: number }[] = [
+    { label: "year", seconds: 31536000 },
+    { label: "month", seconds: 2592000 },
+    { label: "day", seconds: 86400 },
+    { label: "hour", seconds: 3600 },
+    { label: "min", seconds: 60 },
+  ];
+
+  for (const unit of units) {
+    const interval = Math.floor(seconds / unit.seconds);
+    if (interval >= 1) {
+      return `${interval} ${unit.label}${interval > 1 ? "s" : ""} ago`;
+    }
+  }
+
+  return "Just now";
+};

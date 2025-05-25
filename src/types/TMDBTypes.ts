@@ -29,7 +29,10 @@ export type TVShow = BaseMedia & {
   name: string;
 };
 
-export type MediaItem = Movie & TVShow;
+export type MediaItem = Movie &
+  TVShow & {
+    timeAdded: Date; // Optional field for recently viewed items
+  };
 
 export type MediaResponse = {
   page: number;
