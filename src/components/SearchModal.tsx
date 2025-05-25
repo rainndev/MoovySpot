@@ -7,10 +7,7 @@ import { formatImagePath, formatWatchUrl } from "@/lib/utils";
 import { Link } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import type { Movie, TVShow } from "@/types/TMDBTypes";
-
-interface SearchModalProps {
-  closeModal: (isOpen: boolean) => void;
-}
+import { useSearchModalStore } from "@/store/SearchModalStore";
 
 const parentVariant = {
   visible: {
@@ -24,7 +21,8 @@ const childVariant = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.3 } },
 };
 
-const SearchModal = ({ closeModal }: SearchModalProps) => {
+const SearchModal = () => {
+  const toggleModal = useSearchModalStore((state) => state.toggleModal);
   const [type, setType] = useState("movie");
   const [searchTerm, setSearchTerm] = useState("");
   const [debouncedTerm, setDebouncedTerm] = useState(searchTerm);
@@ -62,7 +60,7 @@ const SearchModal = ({ closeModal }: SearchModalProps) => {
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -20 }}
         transition={{ duration: 0.3 }}
-        className="bg-opacity-50 bg-logo-black/10 fixed inset-0 z-50 flex items-center justify-center p-5 backdrop-blur-md"
+        className="bg-opacity-50 bg-logo-black/10 text-logo-white fixed inset-0 z-50 flex items-center justify-center p-5 backdrop-blur-md"
       >
         {/* Search input container */}
         <div className="bg-logo-black/85 text-md flex w-full max-w-5xl flex-col items-start rounded-xl pb-5 shadow-lg">
@@ -77,7 +75,7 @@ const SearchModal = ({ closeModal }: SearchModalProps) => {
               placeholder="Search..."
             />
             <div
-              onClick={() => closeModal(false)}
+              onClick={() => toggleModal()}
               className="text-logo-white/50 hover:text-logo-white ml-2 cursor-pointer text-2xl transition-colors duration-300 ease-in-out"
             >
               <IoIosClose />

@@ -4,7 +4,6 @@ import { useOptionsById, useOptionsImages } from "@/query-options/QueryOptions";
 import { useQueries } from "@tanstack/react-query";
 import { useParams, useSearchParams } from "react-router-dom";
 import { CiCalendarDate } from "react-icons/ci";
-
 import { IoMdTime } from "react-icons/io";
 import { useState } from "react";
 
@@ -102,6 +101,8 @@ const WatchVideoContainer = () => {
     `https://player.videasy.net/${typeParam}/`,
     `https://vidsrc.cc/v2/embed/${typeParam}/`,
     `https://vidsrc.net/embed/${typeParam}/`,
+    `https://vidsrc.xyz/embed/${typeParam}/`,
+    `https://vidsrc.io/embed/${typeParam}/`,
   ];
 
   return (

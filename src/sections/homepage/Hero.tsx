@@ -1,5 +1,3 @@
-import HeroSearch from "@/components/HeroSearch";
-
 const Hero = () => {
   return (
     <div className="flex h-full max-w-7xl flex-col items-center justify-center p-5 md:p-30">
@@ -15,7 +13,6 @@ const Hero = () => {
         </p>
       </div>
       {/* Search input */}
-      <HeroSearch />
     </div>
   );
 };

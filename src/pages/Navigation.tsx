@@ -1,8 +1,11 @@
+import { useSearchModalStore } from "@/store/SearchModalStore";
 import { BiSearchAlt } from "react-icons/bi";
 import { RiMovie2AiFill } from "react-icons/ri";
 import { NavLink } from "react-router-dom";
 
 const Navigation = () => {
+  const toggleModal = useSearchModalStore((state) => state.toggleModal);
+
   return (
     <div className="bg-logo-black/5 border-logo-white/20 fixed top-0 left-0 z-20 hidden w-full items-center justify-center border-b p-5 backdrop-blur-xs md:flex">
       <header className="flex w-full max-w-7xl items-center justify-between">
@@ -31,7 +34,10 @@ const Navigation = () => {
           </ul>
         </div>
         {/* Search bar */}
-        <div className="flex items-center space-x-2">
+        <div
+          onClick={() => toggleModal()}
+          className="hover:bg-logo-white/10 flex cursor-pointer items-center space-x-2 rounded-full p-2 transition duration-300 ease-in-out"
+        >
           <div className="bg-logo-white/10 rounded-full p-2">
             <BiSearchAlt className="text-xl" />
           </div>

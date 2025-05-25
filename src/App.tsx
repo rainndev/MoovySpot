@@ -5,10 +5,14 @@ import WatchVideoContainer from "./pages/WatchVideoContainer";
 import BottomNav from "./components/BottomNav";
 import Watchlist from "./pages/Watchlist";
 import RecentWatch from "./pages/RecentWatch";
+import { useSearchModalStore } from "./store/SearchModalStore";
+import SearchModal from "./components/SearchModal";
 
 const App = () => {
+  const isSearchOpen = useSearchModalStore((state) => state.isOpen);
   return (
     <Router>
+      {isSearchOpen && <SearchModal />}
       <div className="hide-scrollbar h-dvh w-full">
         <div className="text-logo-white hide-scrollbar bg-logo-black flex w-full flex-col items-center justify-center">
           <Navigation />
