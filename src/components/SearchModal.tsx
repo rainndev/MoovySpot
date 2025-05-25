@@ -131,12 +131,18 @@ const SearchModal = () => {
                       className="hover:bg-logo-white/10 flex w-full cursor-pointer p-4 px-5 py-2 transition-colors duration-300 ease-in-out"
                     >
                       <div className="flex-shrink-0">
-                        <img
-                          loading="lazy"
-                          className="aspect-[10/16] w-25 rounded-md object-cover md:w-30"
-                          src={formatImagePath(watch.poster_path, "w300")}
-                          alt={watch.original_title}
-                        />
+                        {watch.poster_path ? (
+                          <img
+                            loading="lazy"
+                            className="aspect-[10/16] w-25 rounded-md object-cover md:w-30"
+                            src={formatImagePath(watch.poster_path, "w300")}
+                            alt={watch.original_title}
+                          />
+                        ) : (
+                          <div className="bg-logo-background text-logo-white/30 flex aspect-[10/16] w-25 animate-pulse items-center justify-center rounded-md text-[clamp(.6rem,3vw,.8rem)] md:w-30">
+                            No Image
+                          </div>
+                        )}
                       </div>
 
                       <div className="flex min-w-0 flex-col items-start justify-center pl-4">
