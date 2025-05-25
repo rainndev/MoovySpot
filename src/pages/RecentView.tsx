@@ -19,7 +19,7 @@ const RecentView = () => {
     return (
       <div className="flex min-h-screen w-full items-center justify-center">
         <h1 className="text-logo-white/50 font-[ClashDisplay] text-[clamp(1rem,3vw,1.125rem)]">
-          No recently view movie/shows.
+          No recently viewed movies/shows
         </h1>
       </div>
     );
@@ -34,7 +34,7 @@ const RecentView = () => {
       {/* header */}
       <div className="mt-5 mb-10 w-full">
         <h1 className="font-[ClashDisplay] text-[clamp(1.125rem,3vw,3rem)] font-medium">
-          Recently <span className="text-logo-blue">Watch</span>
+          Recently <span className="text-logo-blue">Viewed</span>
         </h1>
       </div>
       {/* <button onClick={() => clearRecentlyView()}>Clear</button> */}
