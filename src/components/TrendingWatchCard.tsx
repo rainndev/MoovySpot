@@ -1,7 +1,6 @@
 import { formatImagePath, formatWatchUrl } from "@/lib/utils";
 import { useWatchTypeStore } from "@/store/WatchTypeStore";
 import type { MediaItem } from "@/types/TMDBTypes";
-import React from "react";
 import { FaStar } from "react-icons/fa";
 import { Link } from "react-router-dom";
 

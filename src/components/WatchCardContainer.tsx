@@ -1,4 +1,3 @@
-import { useRef } from "react";
 import { GoChevronLeft } from "react-icons/go";
 import WatchCard from "@/components/WatchCard";
 import type { MediaItem, MediaResponse } from "@/types/TMDBTypes";
