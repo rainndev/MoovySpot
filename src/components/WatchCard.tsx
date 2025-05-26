@@ -23,7 +23,7 @@ const WatchCard = ({ movie }: WatchCardProps) => {
       <div
         className={`group h-full ${timeAdded ? "w-full" : "w-[120px] md:w-[180px] xl:w-[230px]"} flex-shrink-0 snap-start overflow-hidden`}
       >
-        <div className="border-logo-white/10 shadow-bg bg-logo-black/50 relative w-full overflow-hidden rounded-2xl border transition-all duration-300 ease-in-out hover:shadow-xl">
+        <div className="border-logo-white/10 shadow-bg bg-logo-black/50 relative w-full overflow-hidden rounded-lg border transition-all duration-300 ease-in-out hover:shadow-xl md:rounded-2xl">
           <div className="aspect-[3/4]">
             <img
               onContextMenu={(e) => e.preventDefault()}

@@ -30,7 +30,7 @@ const RecentView = () => {
     recentlyView.map((item) => getTimeAgo(item.timeAdded)),
   );
   return (
-    <div className="flex min-h-screen w-full max-w-7xl flex-col items-center p-3 pb-20 md:p-10">
+    <div className="flex h-dvh w-full max-w-7xl flex-col items-center p-3 pb-20 md:p-10">
       {/* header */}
       <div className="mt-5 mb-10 w-full">
         <h1 className="font-[ClashDisplay] text-[clamp(1.125rem,3vw,3rem)] font-medium">
