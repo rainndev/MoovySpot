@@ -3,33 +3,14 @@ import { ThreeDMarqueeBG } from "@/sections/homepage/ThreeDMarqueeBG";
 import Hero from "@/sections/homepage/Hero";
 import TypeNavigation from "@/sections/homepage/TypeNavigation";
 import { useWatchTypeStore } from "@/store/WatchTypeStore";
-import type { WatchCategory } from "@/types/WatchTypes";
 import { useQueries } from "@tanstack/react-query";
 import { useQueryOptions } from "@/query-options/QueryOptions";
 import LoadingAnimation from "@/components/LoadingAnimation";
 import Disclaimer from "@/components/Disclaimer";
+import { watchData } from "@/data/homepage-data";
 
 const Homepage = () => {
   const type = useWatchTypeStore((state) => state.watchType);
-
-  const watchData: Record<
-    "movie" | "tv",
-    { category: WatchCategory; title: string }[]
-  > = {
-    movie: [
-      { category: "trending_week", title: "Trending This Week" },
-      { category: "trending_day", title: "Trending Today" },
-      { category: "popular", title: "Popular Movies" },
-      { category: "upcoming", title: "Upcoming" },
-    ],
-
-    tv: [
-      { category: "trending_week", title: "Trending This Week" },
-      { category: "trending_day", title: "Trending Today" },
-      { category: "popular", title: "Popular TV Shows" },
-      { category: "on_the_air", title: "On The Air" },
-    ],
-  };
 
   const queriesOptions = watchData[type].map((data) => {
     return useQueryOptions(type, data.category);
@@ -39,14 +20,9 @@ const Homepage = () => {
     queries: queriesOptions,
   });
 
-  if (
-    data[0].isLoading ||
-    data[1].isLoading ||
-    data[2].isLoading ||
-    data[3].isLoading
-  )
-    return <LoadingAnimation />;
-  if (data[0].isError || data[1].isError || data[2].isError || data[3].isError)
+  //check if any query is loading or has an error
+  if (data.some((query) => query.isLoading)) return <LoadingAnimation />;
+  if (data.find((query) => query.isError))
     return <div className="h-full w-full">Error: {data[0].error?.message}</div>;
 
   return (
