@@ -41,7 +41,7 @@ const RecentView = () => {
 
       {/* content */}
       <div className="h-full">
-        <div className="grid grid-cols-2 gap-5 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
+        <div className="grid grid-cols-2 gap-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5">
           {sortedRecentlyView.map((movie, i: number) => (
             <WatchCard key={i} movie={movie} />
           ))}
