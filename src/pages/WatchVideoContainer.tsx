@@ -99,7 +99,7 @@ const WatchVideoContainer = () => {
 
   if (watchImage.data.logos.length > 0) {
     const englishLogo = watchImage.data.logos.find(
-      (logo: any) => logo.iso_639_1 === "en" && logo.width <= 500,
+      (logo: any) => logo.iso_639_1 === "en",
     );
 
     if (englishLogo) {
