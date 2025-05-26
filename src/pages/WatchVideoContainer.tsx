@@ -99,16 +99,14 @@ const WatchVideoContainer = () => {
   // Load logo if available
   let logoUrl = "";
 
-  if (watchImage.data?.logos?.length) {
-    const { file_path } = watchImage.data.logos.find(
+  if (watchImage.data.logos.length > 0) {
+    const englishLogo = watchImage.data.logos.find(
       (logo: any) =>
         (logo.iso_639_1 === "en" && logo.width <= 500) ||
-        logo.iso_639_1 === "en",
+        watchImage.data.logos[0],
     );
 
-    if (file_path) {
-      logoUrl = formatImagePath(file_path, "original");
-    }
+    logoUrl = formatImagePath(englishLogo.file_path, "original");
   }
 
   // Video server options
