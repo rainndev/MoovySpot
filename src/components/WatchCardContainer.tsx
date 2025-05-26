@@ -2,23 +2,14 @@ import { useRef } from "react";
 import { GoChevronLeft } from "react-icons/go";
 import WatchCard from "@/components/WatchCard";
 import type { MediaItem, MediaResponse } from "@/types/TMDBTypes";
+import { useHorizontalScroll } from "@/hooks/use-horizontal-scroll";
 
 interface WatchListChildProps {
   data: MediaResponse;
 }
 
 const WatchCardContainer = ({ data }: WatchListChildProps) => {
-  const scrollRef = useRef<HTMLDivElement | null>(null);
-
-  const scroll = (direction: "left" | "right") => {
-    if (scrollRef.current) {
-      const scrollAmount = scrollRef.current.offsetWidth;
-      scrollRef.current.scrollBy({
-        left: direction === "left" ? -scrollAmount : scrollAmount,
-        behavior: "smooth",
-      });
-    }
-  };
+  const { scrollRef, scroll } = useHorizontalScroll();
 
   if (!data || !data.results) return null;
 

@@ -23,7 +23,7 @@ export const formatRuntime = (minutes: number) => {
   }
 };
 
-type sizeType = "w300" | "w500" | "original";
+type sizeType = "w300" | "w500" | "w1280" | "w780" | "original";
 
 export const formatImagePath = (path: string, size: sizeType) => {
   if (!path) return "";
