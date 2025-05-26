@@ -80,6 +80,8 @@ const WatchVideoContainer = () => {
     number_of_seasons,
   } = watchData.data;
 
+  console.log("watchData", watchData.data);
+
   //date
   const fallBackDate = release_date || first_air_date;
 

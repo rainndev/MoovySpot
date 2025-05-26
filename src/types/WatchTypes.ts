@@ -3,7 +3,9 @@ export type MovieCategory =
   | "top_rated"
   | "upcoming"
   | "now_playing"
-  | "latest";
+  | "latest"
+  | "trending_week"
+  | "trending_day";
 
 export type TvCategory =
   | "popular"

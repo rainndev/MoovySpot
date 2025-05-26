@@ -11,8 +11,13 @@ const fetchData = async (
   page: number = 1,
 ) => {
   try {
+    const fetchUrl =
+      category === "trending_week" || category === "trending_day"
+        ? `${baseUrl}/trending/${type}/${category.split("_")[1]}`
+        : `${baseUrl}/${type}/${category}`;
+
     const response = await axios(
-      `${baseUrl}/${type}/${category}?api_key=${apiKey}&language=en-US&page=${page}`,
+      `${fetchUrl}?api_key=${apiKey}&language=en-US&page=${page}`,
     );
 
     return response.data;

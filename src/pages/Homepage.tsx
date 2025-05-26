@@ -17,17 +17,17 @@ const Homepage = () => {
     { category: WatchCategory; title: string }[]
   > = {
     movie: [
+      { category: "trending_week", title: "Trending This Week" },
+      { category: "trending_day", title: "Trending Today" },
       { category: "popular", title: "Popular Movies" },
-      { category: "top_rated", title: "Top Rated" },
-      { category: "now_playing", title: "Now Playing" },
       { category: "upcoming", title: "Upcoming" },
     ],
 
     tv: [
+      { category: "trending_week", title: "Trending This Week" },
+      { category: "trending_day", title: "Trending Today" },
       { category: "popular", title: "Popular TV Shows" },
-      { category: "top_rated", title: "Top Rated" },
       { category: "on_the_air", title: "On The Air" },
-      { category: "airing_today", title: "Airing Today" },
     ],
   };
 
