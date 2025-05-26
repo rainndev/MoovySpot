@@ -1,3 +1,4 @@
+import TrendingWatchContainer from "@/components/TrendingWatchContainer";
 import WatchCardContainer from "@/components/WatchCardContainer";
 
 interface Watch {
@@ -6,6 +7,8 @@ interface Watch {
 }
 
 const Watch = ({ data, title_header }: Watch) => {
+  const isTrending = title_header === "Trending This Week";
+  console.log("Is trending:", title_header, isTrending);
   return (
     <div className="relative mb-10 overflow-hidden">
       {/* header */}
@@ -14,7 +17,11 @@ const Watch = ({ data, title_header }: Watch) => {
       </h1>
 
       <div className="z-10 h-full w-full">
-        <WatchCardContainer data={data} />
+        {isTrending ? (
+          <TrendingWatchContainer data={data} />
+        ) : (
+          <WatchCardContainer data={data} />
+        )}
       </div>
     </div>
   );

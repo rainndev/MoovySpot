@@ -25,6 +25,8 @@ const Homepage = () => {
   if (data.find((query) => query.isError))
     return <div className="h-full w-full">Error: {data[0].error?.message}</div>;
 
+  console.log("data", data);
+
   return (
     <div className="h-dvh w-full">
       <div className="relative flex h-full w-full items-center justify-center overflow-hidden">
@@ -43,9 +45,8 @@ const Homepage = () => {
         {/* Type Navigation */}
         <TypeNavigation />
 
-        {/* recently added movies  */}
-        {/* <RecentlyAddedMovie /> */}
         {/* content */}
+
         {data.map((item, i) => (
           <Watch
             key={i}
@@ -53,8 +54,8 @@ const Homepage = () => {
             title_header={watchData[type][i].title}
           />
         ))}
+        <Disclaimer />
       </div>
-      <Disclaimer />
     </div>
   );
 };

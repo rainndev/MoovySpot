@@ -12,7 +12,7 @@ const Disclaimer = () => {
         hosted by third party services.
       </p>
       <br />
-      <p className="text-logo-white/50 h-10 w-full text-center font-[SansationLight] text-sm">
+      <p className="text-logo-white/50 h-10 w-full text-center font-[SansationLight] text-[clamp(.5rem,3vw,.8rem)]">
         Made with &#9829; by {creatorName}
       </p>
     </div>
