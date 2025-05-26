@@ -92,6 +92,7 @@ const WatchVideoContainer = () => {
 
   // title
   const title = watchData.data.title || watchData.data.name;
+
   // backdrop
   const backdropUrl = formatImagePath(backdrop_path, "original");
 
@@ -140,7 +141,7 @@ const WatchVideoContainer = () => {
             />
           ) : (
             <h1 className="text-logo-white mb-2 w-full text-start font-[ClashDisplay] text-[clamp(1.8rem,3vw,8rem)] font-medium">
-              title
+              {title}
             </h1>
           )}
 
