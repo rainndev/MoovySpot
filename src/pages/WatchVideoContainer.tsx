@@ -1,5 +1,5 @@
 import LoadingAnimation from "@/components/LoadingAnimation";
-import { formatRuntime } from "@/lib/utils";
+import { formatImagePath, formatRuntime } from "@/lib/utils";
 import { useOptionsById, useOptionsImages } from "@/query-options/QueryOptions";
 import { useQueries } from "@tanstack/react-query";
 import { useParams, useSearchParams } from "react-router-dom";
@@ -17,8 +17,9 @@ const WatchVideoContainer = () => {
   const { id } = useParams();
   const [searchParams] = useSearchParams();
   const typeParam = searchParams.get("type");
+
   const [server, setServer] = useState(
-    `https://vidsrc.cc/v2/embed/${typeParam}/${id}`,
+    `https://player.videasy.net/${typeParam}/${id}`,
   );
 
   const addRecentlyView = useRecentlyViewStore((state) => state.addWatch);
@@ -79,8 +80,6 @@ const WatchVideoContainer = () => {
     number_of_seasons,
   } = watchData.data;
 
-  console.log("watchData", watchData.data);
-
   //date
   const fallBackDate = release_date || first_air_date;
 
@@ -91,17 +90,20 @@ const WatchVideoContainer = () => {
   // title
   const title = watchData.data.title || watchData.data.name;
   // backdrop
-  const backdropUrl = `https://image.tmdb.org/t/p/original/${backdrop_path}`;
+  const backdropUrl = formatImagePath(backdrop_path, "original");
 
   // Load logo if available
   let logoUrl = "";
+
   if (watchImage.data?.logos?.length) {
-    const englishLogo = watchImage.data.logos.find(
-      (logo: any) => logo.iso_639_1 === "en",
+    const { file_path } = watchImage.data.logos.find(
+      (logo: any) =>
+        (logo.iso_639_1 === "en" && logo.width <= 500) ||
+        logo.iso_639_1 === "en",
     );
 
-    if (englishLogo?.file_path) {
-      logoUrl = `https://image.tmdb.org/t/p/original/${englishLogo.file_path}`;
+    if (file_path) {
+      logoUrl = formatImagePath(file_path, "original");
     }
   }
 
@@ -127,17 +129,17 @@ const WatchVideoContainer = () => {
       <div className="z-2 w-full">
         <div className="my-20 flex h-full w-full flex-col">
           {/* title */}
-          <h1 className="text-logo-white mb-2 w-full text-start font-[ClashDisplay] text-[clamp(1.8rem,3vw,8rem)] font-medium">
-            {logoUrl ? (
-              <img
-                src={logoUrl}
-                className="drop-shadow-logo-black/50 w-full max-w-2xl object-cover py-5 drop-shadow-2xl"
-                alt={title}
-              />
-            ) : (
+          {logoUrl ? (
+            <img
+              src={logoUrl}
+              className={`drop-shadow-logo-black/50 w-full max-w-[400px] object-cover py-5 drop-shadow-2xl`}
+              alt={title}
+            />
+          ) : (
+            <h1 className="text-logo-white mb-2 w-full text-start font-[ClashDisplay] text-[clamp(1.8rem,3vw,8rem)] font-medium">
               title
-            )}
-          </h1>
+            </h1>
+          )}
 
           {/* tagline */}
           <p className="text-logo-white/90 my-2 w-full text-start font-[SansationLight] text-[clamp(.7rem,3vw,.9rem)] italic">
