@@ -81,8 +81,6 @@ const WatchVideoContainer = () => {
     number_of_seasons,
   } = watchData.data;
 
-  console.log("watchData", watchData.data);
-
   //date
   const fallBackDate = release_date || first_air_date;
 
@@ -101,12 +99,14 @@ const WatchVideoContainer = () => {
 
   if (watchImage.data.logos.length > 0) {
     const englishLogo = watchImage.data.logos.find(
-      (logo: any) =>
-        (logo.iso_639_1 === "en" && logo.width <= 500) ||
-        watchImage.data.logos[0],
+      (logo: any) => logo.iso_639_1 === "en" && logo.width <= 500,
     );
 
-    logoUrl = formatImagePath(englishLogo.file_path, "original");
+    if (englishLogo) {
+      logoUrl = formatImagePath(englishLogo.file_path, "original");
+    } else {
+      logoUrl = formatImagePath(watchImage.data.logos[0].file_path, "original");
+    }
   }
 
   // Video server options
