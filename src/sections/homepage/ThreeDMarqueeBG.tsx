@@ -1,5 +1,6 @@
 "use client";
 import { ThreeDMarquee } from "@/components/ui/3d-marquee";
+import { formatImagePath } from "@/lib/utils";
 import { useQueryOptions } from "@/query-options/QueryOptions";
 import { useQueries } from "@tanstack/react-query";
 
@@ -30,8 +31,8 @@ export function ThreeDMarqueeBG() {
   const movieData = [...page1.data?.results, ...page2.data?.results];
 
   // get images from movieData
-  const images: string[] = movieData.map(
-    (movie: Movie) => `https://image.tmdb.org/t/p/w500${movie.poster_path}`,
+  const images: string[] = movieData.map((movie: Movie) =>
+    formatImagePath(movie.poster_path, "w300"),
   );
 
   return (
