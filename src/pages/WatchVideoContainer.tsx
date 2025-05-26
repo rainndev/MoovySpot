@@ -17,10 +17,11 @@ const WatchVideoContainer = () => {
   const { id } = useParams();
   const [searchParams] = useSearchParams();
   const typeParam = searchParams.get("type");
+  const [server, setServer] = useState("");
 
-  const [server, setServer] = useState(
-    `https://player.videasy.net/${typeParam}/${id}`,
-  );
+  useEffect(() => {
+    setServer(`https://player.videasy.net/${typeParam}/${id}`);
+  }, [typeParam, id]);
 
   const addRecentlyView = useRecentlyViewStore((state) => state.addWatch);
 
