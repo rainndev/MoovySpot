@@ -11,7 +11,7 @@ import { toast } from "sonner";
 import { useWatchListStore } from "@/store/WatchListStore";
 import { GoBookmark, GoBookmarkFill } from "react-icons/go";
 import { serverUrlOption } from "@/data/server-data";
-import { useWatchTypeStore } from "@/store/WatchTypeStore";
+import { useLocation } from "react-router-dom";
 
 interface Genre {
   id: number;
@@ -24,7 +24,9 @@ const WatchVideoContainer = () => {
   const addRecentlyView = useRecentlyViewStore((state) => state.addWatch);
   const addWatchList = useWatchListStore((state) => state.addWatchList);
   const removeWatchList = useWatchListStore((state) => state.removeWatchList);
-  const MEDIA_TYPE = useWatchTypeStore((state) => state.watchType);
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const MEDIA_TYPE = queryParams.get("type");
 
   const serverOptions = serverUrlOption.map(
     (option) => `${option}${MEDIA_TYPE}/${id}`,
@@ -56,7 +58,8 @@ const WatchVideoContainer = () => {
   // Add to recently viewed store
   useEffect(() => {
     const timeAdded = new Date();
-    watchData.data && addRecentlyView({ ...watchData.data, timeAdded });
+    watchData.data &&
+      addRecentlyView({ ...watchData.data, timeAdded, type: MEDIA_TYPE });
   }, [watchData.data]);
 
   if (watchData.isLoading || watchImage.isLoading) return <LoadingAnimation />;
@@ -104,6 +107,7 @@ const WatchVideoContainer = () => {
     }
   };
 
+  // Get image logo URL
   const logoUrl = getLogoUrl(watchImage.data, "en");
 
   return (

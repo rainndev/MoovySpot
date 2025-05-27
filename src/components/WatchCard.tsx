@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import { FaStar } from "react-icons/fa";
-import { useWatchTypeStore } from "@/store/WatchTypeStore";
 import { getTimeAgo, formatImagePath, formatWatchUrl } from "@/lib/watch-utils";
 import { CiClock2 } from "react-icons/ci";
 import type { MediaItem } from "@/types/TMDBTypes";
@@ -10,7 +9,7 @@ interface WatchCardProps {
 }
 
 const WatchCard = ({ movie }: WatchCardProps) => {
-  const type = useWatchTypeStore((state) => state.watchType);
+  const type = movie.type;
   const date = movie.release_date || movie.first_air_date;
   const timeAdded = movie.timeAdded;
 

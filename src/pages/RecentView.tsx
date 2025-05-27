@@ -1,14 +1,11 @@
 import WatchCard from "@/components/WatchCard";
-import { getTimeAgo } from "@/lib/watch-utils";
 import { useRecentlyViewStore } from "@/store/RecentlyViewStore";
 
 const RecentView = () => {
   const recentlyView = useRecentlyViewStore((state) => state.recentlyView);
-
-  // const clearRecentlyView = useRecentlyViewStore(
-  //   (state) => state.clearRecentlyView,
-  // );
-
+  const clearRecentlyView = useRecentlyViewStore(
+    (state) => state.clearRecentlyView,
+  );
   const sortedRecentlyView = recentlyView.sort(
     (a, b) => new Date(b.timeAdded).getTime() - new Date(a.timeAdded).getTime(),
   );
@@ -25,10 +22,7 @@ const RecentView = () => {
     );
   }
   console.log("recentlyWatched", recentlyView);
-  console.log(
-    "time added",
-    recentlyView.map((item) => getTimeAgo(item.timeAdded)),
-  );
+
   return (
     <div className="flex h-dvh w-full max-w-7xl flex-col items-center p-3 pb-20 md:p-10">
       {/* header */}
@@ -37,7 +31,7 @@ const RecentView = () => {
           Recently <span className="text-logo-blue">Viewed</span>
         </h1>
       </div>
-      {/* <button onClick={() => clearRecentlyView()}>Clear</button> */}
+      <button onClick={() => clearRecentlyView()}>Clear</button>
 
       {/* content */}
       <div className="h-full">

@@ -11,6 +11,7 @@ export type BaseMedia = {
   poster_path: string;
   vote_average: number;
   vote_count: number;
+  type: MediaType;
 };
 
 export type Movie = BaseMedia & {
