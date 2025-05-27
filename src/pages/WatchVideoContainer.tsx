@@ -93,7 +93,8 @@ const WatchVideoContainer = () => {
   const handleAddToWatchlist = () => {
     if (!isBookmarked) {
       const timeAdded = new Date();
-      watchData.data && addWatchList({ ...watchData.data, timeAdded });
+      watchData.data &&
+        addWatchList({ ...watchData.data, timeAdded, type: MEDIA_TYPE });
       toast(`Added to Watchlist`, {
         description: `${WATCH_TITLE} is now in your watchlist.`,
         position: "top-right",
