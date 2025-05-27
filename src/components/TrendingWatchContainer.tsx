@@ -10,8 +10,6 @@ interface TrendingWatchContainerProps {
 const TrendingWatchContainer = ({ data }: TrendingWatchContainerProps) => {
   const { scrollRef, scroll } = useHorizontalScroll();
 
-  console.log("TrendingWatchContainer data:", data.results);
-
   return (
     <div className="relative">
       <div

@@ -1,15 +1,15 @@
 import { Link } from "react-router-dom";
 import { FaStar } from "react-icons/fa";
-import { formatImagePath, formatWatchUrl } from "@/lib/watch-utils";
+import { getTimeAgo, formatImagePath, formatWatchUrl } from "@/lib/watch-utils";
+import { CiClock2 } from "react-icons/ci";
 import type { MediaItem } from "@/types/TMDBTypes";
-import { useWatchTypeStore } from "@/store/WatchTypeStore";
 
 interface WatchCardProps {
   movie: MediaItem;
 }
 
-const WatchCard = ({ movie }: WatchCardProps) => {
-  const watchType = useWatchTypeStore((state) => state.watchType);
+const RecentViewCard = ({ movie }: WatchCardProps) => {
+  const type = movie.type;
   const date = movie.release_date || movie.first_air_date;
   const timeAdded = movie.timeAdded;
 
@@ -17,7 +17,7 @@ const WatchCard = ({ movie }: WatchCardProps) => {
   if (!movie.title && !movie.name) return null;
 
   return (
-    <Link to={formatWatchUrl(movie.id, watchType)}>
+    <Link to={formatWatchUrl(movie.id, type)}>
       <div
         className={`group h-full ${timeAdded ? "w-full" : "w-[120px] md:w-[180px] xl:w-[230px]"} flex-shrink-0 snap-start overflow-hidden`}
       >
@@ -44,9 +44,9 @@ const WatchCard = ({ movie }: WatchCardProps) => {
             {date ? new Date(date).getFullYear() : "Unknown Year"}
           </p>
 
-          <div className="flex items-center text-amber-300">
-            <FaStar />
-            <p className="ml-2">{movie.vote_average.toFixed(1)}</p>
+          <div className="text-logo-white/50 flex items-center gap-1">
+            <CiClock2 />
+            {getTimeAgo(timeAdded)}
           </div>
         </div>
       </div>
@@ -54,4 +54,4 @@ const WatchCard = ({ movie }: WatchCardProps) => {
   );
 };
 
-export default WatchCard;
+export default RecentViewCard;
