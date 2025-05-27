@@ -29,9 +29,9 @@ const TrendingWatchCard = ({ itemData }: TrendingWatchContainerProps) => {
   const BG_IMAGE_URL = formatImagePath(itemData.backdrop_path, "w1280");
   const TITLE = itemData.title || itemData.name || "Untitled";
   const RATING = itemData.vote_average.toFixed(1);
-  const YEAR = itemData.release_date
-    ? new Date(itemData.release_date).getFullYear()
-    : "Unknown Year";
+  const YEAR =
+    new Date(itemData.release_date || itemData.first_air_date).getFullYear() ||
+    "Unknown Year";
   const GENRE_IDS = itemData.genre_ids || [];
 
   const { data: GenreList } = useGenreOptions(watchType);
@@ -39,8 +39,6 @@ const TrendingWatchCard = ({ itemData }: TrendingWatchContainerProps) => {
   const genres = GenreList?.filter((genre: GenreItem) =>
     GENRE_IDS.includes(genre.id),
   );
-
-  console.log("Filtered Genres:", genres);
 
   return (
     <div className="relative aspect-[3/2] h-100 w-full snap-start rounded-lg">
