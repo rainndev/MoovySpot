@@ -64,7 +64,7 @@ const VideoMetadata = ({ data }: VideoMetadataProps) => {
 
         <div onClick={() => handleAddToWatchlist()} className="ml-2 text-2xl">
           {isBookmarked ? (
-            <GoBookmarkFill className="text-logo-blue" />
+            <GoBookmarkFill className="text-logo-blue drop-shadow-logo-blue drop-shadow-2xl" />
           ) : (
             <GoBookmark className="text-logo-white/90 hover:text-logo-blue transition-colors duration-300" />
           )}
