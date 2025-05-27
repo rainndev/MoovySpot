@@ -18,16 +18,12 @@ export const useWatchData = (MEDIA_TYPE: string, id: number) => {
   const isLoading = watchData.isLoading || watchImage.isLoading;
   const isError = watchData.isError || watchImage.isError;
   const error = watchData.error || watchImage.error;
-
   const data = watchData.data;
-
   const releaseDate = data?.release_date || data?.first_air_date;
   const watchTagline = data?.tagline || "No tagline available";
   const watchDate = releaseDate
     ? new Date(releaseDate).getFullYear()
     : "Unknown Year";
-
-  //genres, overview, runtime, number_of_episodes, number_of_seasons
 
   const watchGenres = data?.genres || [];
   const watchOverview = data?.overview || "No overview available";
