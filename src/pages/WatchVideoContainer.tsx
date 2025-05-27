@@ -23,7 +23,9 @@ const WatchVideoContainer = () => {
   const [server, setServer] = useState("");
   const addRecentlyView = useRecentlyViewStore((state) => state.addWatch);
   const addWatchList = useWatchListStore((state) => state.addWatchList);
+  const removeWatchList = useWatchListStore((state) => state.removeWatchList);
   const MEDIA_TYPE = useWatchTypeStore((state) => state.watchType);
+
   const serverOptions = serverUrlOption.map(
     (option) => `${option}${MEDIA_TYPE}/${id}`,
   );
@@ -40,6 +42,7 @@ const WatchVideoContainer = () => {
       </div>
     );
 
+  const isBookmarked = useWatchListStore((state) => state.isExistWatch(+id));
   // Fetch movie/show data
   const queries = useQueries({
     queries: [
@@ -83,14 +86,22 @@ const WatchVideoContainer = () => {
   const WATCH_TITLE = watchData.data.title || watchData.data.name || "Untitled";
   const BACKDROP_URL = formatImagePath(backdrop_path, "original");
 
-  // Handle adding to watchlist
+  // Handle adding/removing from watchlist
   const handleAddToWatchlist = () => {
-    const timeAdded = new Date();
-    watchData.data && addWatchList({ ...watchData.data, timeAdded });
-    toast(`Added to Watchlist`, {
-      description: `${WATCH_TITLE} is now in your watchlist.`,
-      position: "top-right",
-    });
+    if (!isBookmarked) {
+      const timeAdded = new Date();
+      watchData.data && addWatchList({ ...watchData.data, timeAdded });
+      toast(`Added to Watchlist`, {
+        description: `${WATCH_TITLE} is now in your watchlist.`,
+        position: "top-right",
+      });
+    } else {
+      removeWatchList(+id);
+      toast(`Removed from Watchlist`, {
+        description: `${WATCH_TITLE} has been removed from your watchlist.`,
+        position: "top-right",
+      });
+    }
   };
 
   const logoUrl = getLogoUrl(watchImage.data, "en");
@@ -140,8 +151,15 @@ const WatchVideoContainer = () => {
               </span>
             ))}
 
-            <div className="ml-2 text-2xl">
-              <GoBookmark onClick={() => handleAddToWatchlist()} />
+            <div
+              onClick={() => handleAddToWatchlist()}
+              className="ml-2 text-2xl"
+            >
+              {isBookmarked ? (
+                <GoBookmarkFill className="text-logo-blue" />
+              ) : (
+                <GoBookmark className="text-logo-white/90 hover:text-logo-blue transition-colors duration-300" />
+              )}
             </div>
           </div>
 

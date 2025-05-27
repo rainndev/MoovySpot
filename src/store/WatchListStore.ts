@@ -5,12 +5,17 @@ import { persist } from "zustand/middleware";
 interface WatchListStore {
   watchList: MediaItem[];
   addWatchList: (item: MediaItem) => void;
+  removeWatchList: (id: number) => void;
+  clearWatchList: () => void;
+  isExistWatch: (id: number) => boolean;
 }
 
 export const useWatchListStore = create<WatchListStore>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       watchList: [] as MediaItem[],
+
+      isExistWatch: (id) => get().watchList.some((item) => item.id === id),
 
       addWatchList: (item: MediaItem) =>
         set((state) => ({
