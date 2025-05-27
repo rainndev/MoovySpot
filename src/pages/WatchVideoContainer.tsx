@@ -146,13 +146,14 @@ const WatchVideoContainer = () => {
                 <span>{formatRuntime(watchRuntime)}</span>
               </p>
             ) : (
-              <div className="flex flex-wrap items-center space-x-2">
-                <p className="inline-flex items-center gap-1">
-                  Episodes: <span className="ml-2">{watchEpisodes}</span>
+              <div className="flex flex-wrap items-center justify-center space-x-2">
+                <p className="text-logo-blue inline-flex items-center gap-1">
+                  Seasons:
+                  <span className="text-logo-white px-1">{watchSeasons}</span>
                 </p>
-
-                <p className="inline-flex items-center gap-1">
-                  Seasons: <span className="ml-2">{watchSeasons}</span>
+                <p className="text-logo-blue ml-2 inline-flex items-center gap-1">
+                  Episodes:
+                  <span className="text-logo-white px-1">{watchEpisodes}</span>
                 </p>
               </div>
             )}

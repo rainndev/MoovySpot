@@ -31,10 +31,13 @@ export const useWatchData = (MEDIA_TYPE: string, id: number) => {
 
   const watchGenres = data?.genres || [];
   const watchOverview = data?.overview || "No overview available";
-  const watchRuntime = data?.runtime || data?.episode_run_time;
+  const watchRuntime = data?.runtime;
   const watchEpisodes = data?.number_of_episodes;
   const watchSeasons = data?.number_of_seasons;
   const watchLogoUrl = watchImage.data ? getLogoUrl(watchImage.data, "en") : "";
+
+  console.log("watchData", data);
+  console.log("Episode", watchRuntime);
 
   const watchBackdropUrl = data?.backdrop_path
     ? formatImagePath(data.backdrop_path, "original")
