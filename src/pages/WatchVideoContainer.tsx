@@ -1,17 +1,14 @@
 import LoadingAnimation from "@/components/LoadingAnimation";
-import { formatImagePath, formatRuntime, getLogoUrl } from "@/lib/watch-utils";
-import { useOptionsById, useOptionsImages } from "@/query-options/QueryOptions";
-import { useQueries } from "@tanstack/react-query";
+import { formatRuntime } from "@/lib/watch-utils";
 import { useParams } from "react-router-dom";
 import { CiCalendarDate } from "react-icons/ci";
 import { IoMdTime } from "react-icons/io";
 import { useEffect, useState } from "react";
 import { useRecentlyViewStore } from "@/store/RecentlyViewStore";
-import { toast } from "sonner";
-import { useWatchListStore } from "@/store/WatchListStore";
 import { GoBookmark, GoBookmarkFill } from "react-icons/go";
 import { serverUrlOption } from "@/data/server-data";
 import { useLocation } from "react-router-dom";
+import { useWatchData } from "@/hooks/use-watch-data";
 
 interface Genre {
   id: number;
@@ -22,8 +19,6 @@ const WatchVideoContainer = () => {
   const { id } = useParams();
   const [server, setServer] = useState("");
   const addRecentlyView = useRecentlyViewStore((state) => state.addWatch);
-  const addWatchList = useWatchListStore((state) => state.addWatchList);
-  const removeWatchList = useWatchListStore((state) => state.removeWatchList);
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const MEDIA_TYPE = queryParams.get("type");
@@ -35,7 +30,7 @@ const WatchVideoContainer = () => {
   useEffect(() => {
     setServer(`${serverOptions[0]}`);
   }, [MEDIA_TYPE, id]);
-
+  console.log("server url--------", server);
   // Error conditions shown *after* hooks
   if (!MEDIA_TYPE || !id || isNaN(+id))
     return (
@@ -44,17 +39,26 @@ const WatchVideoContainer = () => {
       </div>
     );
 
-  const isBookmarked = useWatchListStore((state) => state.isExistWatch(+id));
-  // Fetch movie/show data
-  const queries = useQueries({
-    queries: [
-      useOptionsById(MEDIA_TYPE, +id),
-      useOptionsImages(MEDIA_TYPE, +id),
-    ],
-  });
+  const {
+    isBookmarked,
+    watchData,
+    watchTitle,
+    watchDate,
+    watchTagline,
+    watchGenres,
+    watchOverview,
+    watchEpisodes,
+    watchRuntime,
+    watchSeasons,
+    watchLogoUrl,
+    watchBackdropUrl,
+    isLoading,
+    isError,
+    error,
+    handleAddToWatchlist,
+  } = useWatchData(MEDIA_TYPE, +id);
 
-  const [watchData, watchImage] = queries;
-
+  console.log("watchData", watchData.data);
   // Add to recently viewed store
   useEffect(() => {
     const timeAdded = new Date();
@@ -62,59 +66,19 @@ const WatchVideoContainer = () => {
       addRecentlyView({ ...watchData.data, timeAdded, type: MEDIA_TYPE });
   }, [watchData.data]);
 
-  if (watchData.isLoading || watchImage.isLoading) return <LoadingAnimation />;
+  if (isLoading) return <LoadingAnimation />;
 
-  if (watchData.isError)
+  if (isError)
     return (
       <div className="flex min-h-screen w-full items-center justify-center">
-        Error: {watchData.error.message}
+        Error: {error?.message}
       </div>
     );
-
-  // Destructure movie/show data
-  const {
-    genres,
-    overview,
-    runtime,
-    tagline,
-    backdrop_path,
-    release_date,
-    first_air_date,
-    number_of_episodes,
-    number_of_seasons,
-  } = watchData.data;
-
-  const WATCH_DATE =
-    new Date(release_date || first_air_date).getFullYear() || "Unknown Year";
-  const WATCH_TITLE = watchData.data.title || watchData.data.name || "Untitled";
-  const BACKDROP_URL = formatImagePath(backdrop_path, "original");
-
-  // Handle adding/removing from watchlist
-  const handleAddToWatchlist = () => {
-    if (!isBookmarked) {
-      const timeAdded = new Date();
-      watchData.data &&
-        addWatchList({ ...watchData.data, timeAdded, type: MEDIA_TYPE });
-      toast(`Added to Watchlist`, {
-        description: `${WATCH_TITLE} is now in your watchlist.`,
-        position: "top-right",
-      });
-    } else {
-      removeWatchList(+id);
-      toast(`Removed from Watchlist`, {
-        description: `${WATCH_TITLE} has been removed from your watchlist.`,
-        position: "top-right",
-      });
-    }
-  };
-
-  // Get image logo URL
-  const logoUrl = getLogoUrl(watchImage.data, "en");
 
   return (
     <section className="hide-scrollbar flex h-full w-full max-w-7xl items-center justify-center p-5">
       <img
-        src={BACKDROP_URL}
+        src={watchBackdropUrl}
         className="absolute inset-0 h-full w-full object-cover opacity-30 blur-xs"
         alt=""
       />
@@ -127,27 +91,27 @@ const WatchVideoContainer = () => {
           {/* title */}
 
           <div>
-            {logoUrl ? (
+            {watchLogoUrl ? (
               <img
-                src={logoUrl}
+                src={watchLogoUrl}
                 className={`drop-shadow-logo-black/50 w-full max-w-[400px] object-cover py-5 drop-shadow-2xl`}
-                alt={WATCH_TITLE}
+                alt={watchTitle}
               />
             ) : (
               <h1 className="text-logo-white mb-2 w-full text-start font-[ClashDisplay] text-[clamp(1.8rem,3vw,8rem)] font-medium">
-                {WATCH_TITLE}
+                {watchTitle}
               </h1>
             )}
           </div>
 
           {/* tagline */}
           <p className="text-logo-white/90 my-2 w-full text-start font-[SansationLight] text-[clamp(.7rem,3vw,.9rem)] italic">
-            {tagline && `"${tagline}"`}
+            {watchTagline}
           </p>
 
           {/* genres */}
           <div className="mb-2 flex w-full flex-wrap items-center justify-start gap-2 text-[clamp(.8rem,3vw,1rem)]">
-            {genres.map((genre: Genre, i: number) => (
+            {watchGenres.map((genre: Genre, i: number) => (
               <span
                 className="bg-logo-blue/15 border-logo-white/10 inline-block rounded-sm border px-2 py-1"
                 key={i}
@@ -172,23 +136,23 @@ const WatchVideoContainer = () => {
           <div className="my-2 flex space-x-3 border-y border-y-white/30 p-2 text-[clamp(.8rem,3vw,1rem)]">
             <p className="flex items-center gap-2">
               <CiCalendarDate />
-              <span>{WATCH_DATE}</span>
+              <span>{watchDate}</span>
             </p>
             <div className="bg-logo-white/30 w-[1px]" />
 
-            {runtime ? (
+            {watchRuntime ? (
               <p className="flex items-center gap-2">
                 <IoMdTime />
-                <span>{formatRuntime(runtime)}</span>
+                <span>{formatRuntime(watchRuntime)}</span>
               </p>
             ) : (
               <div className="flex flex-wrap items-center space-x-2">
                 <p className="inline-flex items-center gap-1">
-                  Episodes: <span className="ml-2">{number_of_episodes}</span>
+                  Episodes: <span className="ml-2">{watchEpisodes}</span>
                 </p>
 
                 <p className="inline-flex items-center gap-1">
-                  Seasons: <span className="ml-2">{number_of_seasons}</span>
+                  Seasons: <span className="ml-2">{watchSeasons}</span>
                 </p>
               </div>
             )}
@@ -196,7 +160,7 @@ const WatchVideoContainer = () => {
 
           {/* overview */}
           <p className="text-logo-white/90 mb-5 w-full text-start font-[SansationLight] text-[clamp(.9rem,3vw,1rem)]">
-            {overview}
+            {watchOverview || "No overview available."}
           </p>
 
           {/* video */}
@@ -214,7 +178,7 @@ const WatchVideoContainer = () => {
             {serverOptions.map((option, i) => (
               <p
                 key={i}
-                onClick={() => setServer(`${option}${id}`)}
+                onClick={() => setServer(`${option}`)}
                 className="bg-logo-white/10 hover:bg-logo-blue/20 active:bg-logo-blue/20 inline-block cursor-pointer rounded-sm px-5 py-2 text-[clamp(.8rem,3vw,1rem)]"
               >
                 Server {i + 1}

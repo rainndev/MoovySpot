@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import { FaStar } from "react-icons/fa";
 import { getTimeAgo, formatImagePath, formatWatchUrl } from "@/lib/watch-utils";
 import { CiClock2 } from "react-icons/ci";
 import type { MediaItem } from "@/types/TMDBTypes";
