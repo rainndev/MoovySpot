@@ -12,7 +12,7 @@ const Watch = ({ data, title_header }: Watch) => {
   return (
     <div className="relative mb-10 overflow-hidden">
       {/* header */}
-      <h1 className="mb-5 w-full font-[ClashDisplay] text-[clamp(1.125rem,3vw,1.875rem)] font-medium text-white md:mb-8">
+      <h1 className="mb-5 w-full font-[ClashDisplay] text-[clamp(1.125rem,3vw,1.3rem)] font-medium text-white">
         {title_header}
       </h1>
 
