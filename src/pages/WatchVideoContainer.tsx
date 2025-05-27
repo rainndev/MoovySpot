@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { useRecentlyViewStore } from "@/store/RecentlyViewStore";
 import { toast } from "sonner";
 import { useWatchListStore } from "@/store/WatchListStore";
+import { GoBookmark, GoBookmarkFill } from "react-icons/go";
 import { serverUrlOption } from "@/data/server-data";
 import { useWatchTypeStore } from "@/store/WatchTypeStore";
 
@@ -107,27 +108,21 @@ const WatchVideoContainer = () => {
 
       <div className="z-2 w-full">
         <div className="my-20 flex h-full w-full flex-col">
-          {/* add to watchlist */}
-          <div>
-            <button
-              onClick={() => handleAddToWatchlist()}
-              className="text-logo-white/90 hover:text-logo-white/100 active:text-logo-white/100 bg-logo-white/10 hover:bg-logo-white/5 w-fit cursor-pointer rounded-sm px-8 py-2 text-[clamp(.8rem,3vw,1rem)] transition-colors duration-200 ease-in-out"
-            >
-              Add to Watchlist
-            </button>
-          </div>
           {/* title */}
-          {logoUrl ? (
-            <img
-              src={logoUrl}
-              className={`drop-shadow-logo-black/50 w-full max-w-[400px] object-cover py-5 drop-shadow-2xl`}
-              alt={WATCH_TITLE}
-            />
-          ) : (
-            <h1 className="text-logo-white mb-2 w-full text-start font-[ClashDisplay] text-[clamp(1.8rem,3vw,8rem)] font-medium">
-              {WATCH_TITLE}
-            </h1>
-          )}
+
+          <div>
+            {logoUrl ? (
+              <img
+                src={logoUrl}
+                className={`drop-shadow-logo-black/50 w-full max-w-[400px] object-cover py-5 drop-shadow-2xl`}
+                alt={WATCH_TITLE}
+              />
+            ) : (
+              <h1 className="text-logo-white mb-2 w-full text-start font-[ClashDisplay] text-[clamp(1.8rem,3vw,8rem)] font-medium">
+                {WATCH_TITLE}
+              </h1>
+            )}
+          </div>
 
           {/* tagline */}
           <p className="text-logo-white/90 my-2 w-full text-start font-[SansationLight] text-[clamp(.7rem,3vw,.9rem)] italic">
@@ -144,6 +139,10 @@ const WatchVideoContainer = () => {
                 {genre.name}
               </span>
             ))}
+
+            <div className="ml-2 text-2xl">
+              <GoBookmark onClick={() => handleAddToWatchlist()} />
+            </div>
           </div>
 
           {/* year and runtime */}
