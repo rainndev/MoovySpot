@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { FaStar } from "react-icons/fa";
+// import { FaStar } from "react-icons/fa";
 import { formatImagePath, formatWatchUrl } from "@/lib/watch-utils";
 import type { MediaItem } from "@/types/TMDBTypes";
 import { useWatchTypeStore } from "@/store/WatchTypeStore";
@@ -10,7 +10,7 @@ interface WatchCardProps {
 
 const WatchCard = ({ movie }: WatchCardProps) => {
   const watchType = useWatchTypeStore((state) => state.watchType);
-  const date = movie.release_date || movie.first_air_date;
+  // const date = movie.release_date || movie.first_air_date;
   const timeAdded = movie.timeAdded;
 
   if (!movie.poster_path) return null;
@@ -19,7 +19,7 @@ const WatchCard = ({ movie }: WatchCardProps) => {
   return (
     <Link to={formatWatchUrl(movie.id, watchType)}>
       <div
-        className={`group h-full ${timeAdded ? "w-full" : "w-[120px] md:w-[180px] xl:w-[230px]"} flex-shrink-0 snap-start overflow-hidden`}
+        className={`group h-full ${timeAdded ? "w-full" : "w-[150px] md:w-[180px] xl:w-[230px]"} flex-shrink-0 snap-start overflow-hidden`}
       >
         <div className="border-logo-white/10 shadow-bg bg-logo-black/50 relative w-full overflow-hidden rounded-lg border transition-all duration-300 ease-in-out hover:shadow-xl md:rounded-2xl">
           <div className="aspect-[3/4]">
