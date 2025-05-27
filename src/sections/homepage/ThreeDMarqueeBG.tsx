@@ -1,6 +1,6 @@
 "use client";
 import { ThreeDMarquee } from "@/components/ui/3d-marquee";
-import { formatImagePath } from "@/lib/utils";
+import { formatImagePath } from "@/lib/watch-utils";
 import { useQueryOptions } from "@/query-options/QueryOptions";
 import { useQueries } from "@tanstack/react-query";
 

@@ -1,12 +1,16 @@
 import LoadingAnimation from "@/components/LoadingAnimation";
-import { formatImagePath, formatRuntime } from "@/lib/utils";
+import { formatImagePath, formatRuntime, getLogoUrl } from "@/lib/watch-utils";
 import { useOptionsById, useOptionsImages } from "@/query-options/QueryOptions";
 import { useQueries } from "@tanstack/react-query";
-import { useParams, useSearchParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { CiCalendarDate } from "react-icons/ci";
 import { IoMdTime } from "react-icons/io";
 import { useEffect, useState } from "react";
 import { useRecentlyViewStore } from "@/store/RecentlyViewStore";
+import { toast } from "sonner";
+import { useWatchListStore } from "@/store/WatchListStore";
+import { serverUrlOption } from "@/data/server-data";
+import { useWatchTypeStore } from "@/store/WatchTypeStore";
 
 interface Genre {
   id: number;
@@ -15,48 +19,41 @@ interface Genre {
 
 const WatchVideoContainer = () => {
   const { id } = useParams();
-  const [searchParams] = useSearchParams();
-  const typeParam = searchParams.get("type");
   const [server, setServer] = useState("");
+  const addRecentlyView = useRecentlyViewStore((state) => state.addWatch);
+  const addWatchList = useWatchListStore((state) => state.addWatchList);
+  const MEDIA_TYPE = useWatchTypeStore((state) => state.watchType);
+  const serverOptions = serverUrlOption.map(
+    (option) => `${option}${MEDIA_TYPE}/${id}`,
+  );
 
   useEffect(() => {
-    setServer(`https://player.videasy.net/${typeParam}/${id}`);
-  }, [typeParam, id]);
-
-  const addRecentlyView = useRecentlyViewStore((state) => state.addWatch);
+    setServer(`${serverOptions[0]}${MEDIA_TYPE}/${id}`);
+  }, [MEDIA_TYPE, id]);
 
   // Error conditions shown *after* hooks
-  if (!typeParam)
+  if (!MEDIA_TYPE || !id || isNaN(+id))
     return (
       <div className="flex min-h-screen w-full items-center justify-center">
-        Error: No type provided
-      </div>
-    );
-  if (!id)
-    return (
-      <div className="flex min-h-screen w-full items-center justify-center">
-        Error: No ID provided
-      </div>
-    );
-  if (isNaN(+id))
-    return (
-      <div className="min-h-screenw-full flex items-center justify-center">
-        Error: Invalid ID
+        Invalid media type or ID. Please check the URL.
       </div>
     );
 
   // Fetch movie/show data
   const queries = useQueries({
-    queries: [useOptionsById(typeParam, +id), useOptionsImages(typeParam, +id)],
+    queries: [
+      useOptionsById(MEDIA_TYPE, +id),
+      useOptionsImages(MEDIA_TYPE, +id),
+    ],
   });
+
+  const [watchData, watchImage] = queries;
 
   // Add to recently viewed store
   useEffect(() => {
     const timeAdded = new Date();
-    queries[0].data && addRecentlyView({ ...queries[0].data, timeAdded });
-  }, [queries[0].data]);
-
-  const [watchData, watchImage] = queries;
+    watchData.data && addRecentlyView({ ...watchData.data, timeAdded });
+  }, [watchData.data]);
 
   if (watchData.isLoading || watchImage.isLoading) return <LoadingAnimation />;
 
@@ -66,7 +63,6 @@ const WatchVideoContainer = () => {
         Error: {watchData.error.message}
       </div>
     );
-  if (!watchData.data || !watchImage.data) return null;
 
   // Destructure movie/show data
   const {
@@ -81,65 +77,55 @@ const WatchVideoContainer = () => {
     number_of_seasons,
   } = watchData.data;
 
-  //date
-  const fallBackDate = release_date || first_air_date;
+  const WATCH_DATE =
+    new Date(release_date || first_air_date).getFullYear() || "Unknown Year";
+  const WATCH_TITLE = watchData.data.title || watchData.data.name || "Untitled";
+  const BACKDROP_URL = formatImagePath(backdrop_path, "original");
 
-  const date = fallBackDate
-    ? new Date(fallBackDate).getFullYear()
-    : "Unknown Year";
+  // Handle adding to watchlist
+  const handleAddToWatchlist = () => {
+    const timeAdded = new Date();
+    watchData.data && addWatchList({ ...watchData.data, timeAdded });
+    toast(`Added to Watchlist`, {
+      description: `${WATCH_TITLE} is now in your watchlist.`,
+      position: "top-right",
+    });
+  };
 
-  // title
-  const title = watchData.data.title || watchData.data.name;
-
-  // backdrop
-  const backdropUrl = formatImagePath(backdrop_path, "original");
-
-  // Load logo if available
-  let logoUrl = "";
-
-  if (watchImage.data.logos.length > 0) {
-    const englishLogo = watchImage.data.logos.find(
-      (logo: any) => logo.iso_639_1 === "en",
-    );
-
-    if (englishLogo) {
-      logoUrl = formatImagePath(englishLogo.file_path, "original");
-    } else {
-      logoUrl = formatImagePath(watchImage.data.logos[0].file_path, "original");
-    }
-  }
-
-  // Video server options
-  const serverOptions = [
-    `https://player.videasy.net/${typeParam}/`,
-    `https://vidsrc.cc/v2/embed/${typeParam}/`,
-    `https://vidsrc.net/embed/${typeParam}/`,
-    `https://vidsrc.xyz/embed/${typeParam}/`,
-    `https://vidsrc.io/embed/${typeParam}/`,
-  ];
+  const logoUrl = getLogoUrl(watchImage.data, "en");
 
   return (
     <section className="hide-scrollbar flex h-full w-full max-w-7xl items-center justify-center p-5">
       <img
-        src={backdropUrl}
+        src={BACKDROP_URL}
         className="absolute inset-0 h-full w-full object-cover opacity-30 blur-xs"
         alt=""
       />
+
       <div className="bg-logo-blue absolute inset-0 h-full w-full bg-[radial-gradient(rgba(80,79,79,0.5)_1px,#1E1E1E_1px)] bg-[size:10px_10px] opacity-15" />
       <div className="bg-logo-black absolute inset-0 h-full [mask-image:radial-gradient(ellipse_at_center,transparent_20%,#14c4b4)]" />
 
       <div className="z-2 w-full">
         <div className="my-20 flex h-full w-full flex-col">
+          {/* add to watchlist */}
+          <div>
+            <button
+              onClick={() => handleAddToWatchlist()}
+              className="text-logo-white/90 hover:text-logo-white/100 active:text-logo-white/100 bg-logo-white/10 hover:bg-logo-white/5 w-fit cursor-pointer rounded-sm px-8 py-2 text-[clamp(.8rem,3vw,1rem)] transition-colors duration-200 ease-in-out"
+            >
+              Add to Watchlist
+            </button>
+          </div>
           {/* title */}
           {logoUrl ? (
             <img
               src={logoUrl}
               className={`drop-shadow-logo-black/50 w-full max-w-[400px] object-cover py-5 drop-shadow-2xl`}
-              alt={title}
+              alt={WATCH_TITLE}
             />
           ) : (
             <h1 className="text-logo-white mb-2 w-full text-start font-[ClashDisplay] text-[clamp(1.8rem,3vw,8rem)] font-medium">
-              {title}
+              {WATCH_TITLE}
             </h1>
           )}
 
@@ -164,7 +150,7 @@ const WatchVideoContainer = () => {
           <div className="my-2 flex space-x-3 border-y border-y-white/30 p-2 text-[clamp(.8rem,3vw,1rem)]">
             <p className="flex items-center gap-2">
               <CiCalendarDate />
-              <span>{date}</span>
+              <span>{WATCH_DATE}</span>
             </p>
             <div className="bg-logo-white/30 w-[1px]" />
 

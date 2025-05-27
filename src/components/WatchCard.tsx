@@ -1,8 +1,7 @@
 import { Link } from "react-router-dom";
 import { FaStar } from "react-icons/fa";
 import { useWatchTypeStore } from "@/store/WatchTypeStore";
-import { getTimeAgo } from "@/lib/utils";
-import { formatImagePath, formatWatchUrl } from "@/lib/utils";
+import { getTimeAgo, formatImagePath, formatWatchUrl } from "@/lib/watch-utils";
 import { CiClock2 } from "react-icons/ci";
 import type { MediaItem } from "@/types/TMDBTypes";
 

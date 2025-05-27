@@ -1,4 +1,4 @@
-import { formatImagePath, formatWatchUrl } from "@/lib/utils";
+import { formatImagePath, formatWatchUrl } from "@/lib/watch-utils";
 import { useGenreOptions } from "@/query-options/QueryGenreOptions";
 import { useWatchTypeStore } from "@/store/WatchTypeStore";
 import type { MediaItem } from "@/types/TMDBTypes";

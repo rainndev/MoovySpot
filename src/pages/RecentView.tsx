@@ -1,5 +1,5 @@
 import WatchCard from "@/components/WatchCard";
-import { getTimeAgo } from "@/lib/utils";
+import { getTimeAgo } from "@/lib/watch-utils";
 import { useRecentlyViewStore } from "@/store/RecentlyViewStore";
 
 const RecentView = () => {

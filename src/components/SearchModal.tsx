@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { IoSearch } from "react-icons/io5";
 import { IoIosClose } from "react-icons/io";
-import { formatImagePath, formatWatchUrl } from "@/lib/utils";
+import { formatImagePath, formatWatchUrl } from "@/lib/watch-utils";
 import { Link } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import type { Movie, TVShow } from "@/types/TMDBTypes";
