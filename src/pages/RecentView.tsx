@@ -3,9 +3,9 @@ import { useRecentlyViewStore } from "@/store/RecentlyViewStore";
 
 const RecentView = () => {
   const recentlyView = useRecentlyViewStore((state) => state.recentlyView);
-  const clearRecentlyView = useRecentlyViewStore(
-    (state) => state.clearRecentlyView,
-  );
+  // const clearRecentlyView = useRecentlyViewStore(
+  //   (state) => state.clearRecentlyView,
+  // );
   const sortedRecentlyView = recentlyView.sort(
     (a, b) => new Date(b.timeAdded).getTime() - new Date(a.timeAdded).getTime(),
   );
@@ -31,7 +31,6 @@ const RecentView = () => {
           Recently <span className="text-logo-blue">Viewed</span>
         </h1>
       </div>
-      <button onClick={() => clearRecentlyView()}>Clear</button>
 
       {/* content */}
       <div className="h-full">

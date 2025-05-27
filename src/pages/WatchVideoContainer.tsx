@@ -33,7 +33,7 @@ const WatchVideoContainer = () => {
   );
 
   useEffect(() => {
-    setServer(`${serverOptions[0]}${MEDIA_TYPE}/${id}`);
+    setServer(`${serverOptions[0]}`);
   }, [MEDIA_TYPE, id]);
 
   // Error conditions shown *after* hooks
