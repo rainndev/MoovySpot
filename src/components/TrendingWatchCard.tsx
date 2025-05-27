@@ -2,7 +2,6 @@ import { formatImagePath, formatWatchUrl } from "@/lib/utils";
 import { useGenreOptions } from "@/query-options/QueryGenreOptions";
 import { useWatchTypeStore } from "@/store/WatchTypeStore";
 import type { MediaItem } from "@/types/TMDBTypes";
-import { useQuery } from "@tanstack/react-query";
 import { FaStar } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
