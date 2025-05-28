@@ -28,7 +28,7 @@ const Watchlist = () => {
   console.log("recentlyWatched", watchList);
 
   return (
-    <div className="flex h-dvh w-full max-w-7xl flex-col items-center p-3 pb-20 md:p-10">
+    <div className="flex h-dvh w-full flex-col items-center p-3 pb-20 md:p-10 md:pl-25">
       {/* header */}
 
       <div className="mt-5 mb-10 w-full">
@@ -43,7 +43,7 @@ const Watchlist = () => {
 
       {/* content */}
       <div className="h-full">
-        <div className="grid grid-cols-2 gap-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5">
+        <div className="grid grid-cols-2 gap-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-6">
           {sortedWatchList.map((movie, i: number) => (
             <RecentViewCard key={i} movie={movie} />
           ))}

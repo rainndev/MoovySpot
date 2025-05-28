@@ -103,7 +103,7 @@ const WatchVideoContainer = () => {
   }
 
   return (
-    <section className="hide-scrollbar flex h-full w-full max-w-7xl items-center justify-center p-5">
+    <section className="hide-scrollbar flex h-full w-full max-w-7xl items-center justify-center p-5 md:pl-25">
       <img
         src={watchBackdropUrl}
         className="absolute inset-0 h-full w-full object-cover opacity-30 blur-xs"
