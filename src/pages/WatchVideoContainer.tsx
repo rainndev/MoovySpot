@@ -17,7 +17,9 @@ const WatchVideoContainer = () => {
   const numericId = Number(id);
 
   const serverOptions = useMemo(() => {
-    return serverUrlOption.map((option) => `${option}${MEDIA_TYPE}/${id}`);
+    return serverUrlOption.map(
+      (option) => `${option.baseUrl}${MEDIA_TYPE}/${id}${option.extraParams}`,
+    );
   }, [MEDIA_TYPE, id]);
 
   const [server, setServer] = useState("");

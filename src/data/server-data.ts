@@ -1,8 +1,10 @@
 // Video server options
-export const serverUrlOption = [
-  `https://player.videasy.net/`,
-  `https://vidsrc.cc/v2/embed/`,
-  `https://vidsrc.net/embed/`,
-  `https://vidsrc.xyz/embed/`,
-  `https://vidsrc.io/embed/`,
-];
+
+interface ServerOption {
+  baseUrl: string;
+  extraParams: string;
+}
+
+const SERVER_URL = import.meta.env.VITE_SERVER_URL;
+
+export const serverUrlOption: ServerOption[] = JSON.parse(SERVER_URL);
