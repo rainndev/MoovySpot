@@ -15,7 +15,7 @@ const RecentView = () => {
   if (isRecentlyViewEmpty) {
     return (
       <div className="flex min-h-screen w-full items-center justify-center">
-        <h1 className="text-logo-white/50 font-[ClashDisplay] text-[clamp(1rem,3vw,1.125rem)]">
+        <h1 className="text-logo-white/50 px-5 text-center font-[ClashDisplay] text-[clamp(1rem,3vw,1.125rem)]">
           No recently viewed movies/shows
         </h1>
       </div>
