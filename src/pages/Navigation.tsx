@@ -5,6 +5,7 @@ import { LuListVideo } from "react-icons/lu";
 import { MdHistory } from "react-icons/md";
 import { RiMovie2AiFill } from "react-icons/ri";
 import { NavLink } from "react-router-dom";
+import { motion } from "framer-motion";
 
 const Navigation = () => {
   const toggleModal = useSearchModalStore((state) => state.toggleModal);
@@ -12,7 +13,7 @@ const Navigation = () => {
 
   return (
     <div className="bg-logo-black/50 border-logo-white/20 fixed top-0 bottom-0 left-0 z-20 hidden h-full items-center justify-center border-b p-5 backdrop-blur-xs md:flex">
-      <header className="flex w-full max-w-7xl flex-col items-center justify-between space-y-10">
+      <header className="flex w-full max-w-7xl flex-col items-center justify-between space-y-20">
         {/* logo */}
         <div className="flex items-center font-bold">
           <span className="text-logo-blue text-2xl">
@@ -21,24 +22,39 @@ const Navigation = () => {
         </div>
         {/* nav links */}
         <div>
-          <ul className="text-logo-white flex flex-col justify-between space-y-10 text-2xl">
+          <motion.ul className="text-logo-white flex flex-col justify-between space-y-8 text-2xl">
             <NavLink to="/">
-              <li className="hover:text-logo-blue cursor-pointer">
+              <motion.li
+                initial={{ opacity: 0.9, y: 0 }}
+                whileHover={{ scale: 1.1, opacity: 1 }}
+                whileTap={{ scale: 0.9, rotate: 10 }}
+                className="hover:text-logo-blue cursor-pointer"
+              >
                 <GoHomeFill />
-              </li>
+              </motion.li>
             </NavLink>
             <NavLink to="/watchlist">
-              <li className="hover:text-logo-blue cursor-pointer">
+              <motion.li
+                initial={{ opacity: 0.9, y: 0 }}
+                whileHover={{ scale: 1.1, opacity: 1 }}
+                whileTap={{ scale: 0.9, rotate: 10 }}
+                className="hover:text-logo-blue cursor-pointer"
+              >
                 <LuListVideo />
-              </li>
+              </motion.li>
             </NavLink>
 
             <NavLink to="/recent">
-              <li className="hover:text-logo-blue cursor-pointer">
+              <motion.li
+                initial={{ opacity: 0.9, y: 0 }}
+                whileHover={{ scale: 1.1, opacity: 1 }}
+                whileTap={{ scale: 0.9, rotate: 10 }}
+                className="hover:text-logo-blue cursor-pointer"
+              >
                 <MdHistory />
-              </li>
+              </motion.li>
             </NavLink>
-          </ul>
+          </motion.ul>
         </div>
         {/* Search bar */}
         <div
