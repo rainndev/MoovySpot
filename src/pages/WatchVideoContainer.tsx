@@ -27,7 +27,7 @@ const WatchVideoContainer = () => {
   console.log("server---------------------", server);
 
   useEffect(() => {
-    if (serverOptions.length) setServer(serverOptions[1]);
+    if (serverOptions.length) setServer(serverOptions[0]);
   }, [serverOptions]);
 
   if (!MEDIA_TYPE || !id || isNaN(numericId)) {
