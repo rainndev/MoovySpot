@@ -45,7 +45,7 @@ const TrendingWatchCard = ({ itemData }: TrendingWatchContainerProps) => {
       <Link to={formatWatchUrl(itemData.id, watchType)}>
         <img
           src={BG_IMAGE_URL}
-          className="absolute inset-0 h-full w-full rounded-lg object-cover"
+          className="absolute inset-0 h-full w-full shrink-0 rounded-lg object-cover"
         />
         <div className="from-logo-black/50 absolute top-0 right-0 left-0 h-12 w-full rounded-t-lg bg-gradient-to-b to-transparent" />
 
