@@ -41,7 +41,7 @@ const Homepage = () => {
         </div>
       </div>
 
-      <div className="bg-logo-black relative flex min-h-full w-full flex-col justify-center p-3 md:p-10">
+      <div className="bg-logo-black relative flex min-h-full w-full flex-col justify-center p-3 md:p-10 md:pl-20">
         {/* Type Navigation */}
         <TypeNavigation />
 

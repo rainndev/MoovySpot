@@ -36,7 +36,7 @@ const Watchlist = () => {
           Watch<span className="text-logo-blue">list</span>
         </h1>
 
-        <p className="font-[SansationLight] text-[clamp(.8rem,3vw,.9rem)]">
+        <p className="font-[SansationLight] text-[clamp(.8rem,3vw,1rem)]">
           {watchListLength}
         </p>
       </div>
