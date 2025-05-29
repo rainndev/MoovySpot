@@ -52,7 +52,7 @@ const VideoMetadata = ({ data }: VideoMetadataProps) => {
       </p>
 
       {/* genres */}
-      <div className="text-logo-white/90 mb-2 flex w-full flex-wrap items-center justify-start gap-2 font-[SansationLight] text-[clamp(.8rem,1.5vw,1rem)]">
+      <div className="text-logo-white/90 mb-2 flex w-full flex-wrap items-center justify-start gap-2 font-[SansationLight] text-[clamp(.8rem,1.5vw,.9rem)]">
         {limitGenres.map((genre: Genre, i: number) => (
           <span
             className="border-logo-white/10 inline-block rounded-sm border px-3 py-1"
@@ -64,7 +64,7 @@ const VideoMetadata = ({ data }: VideoMetadataProps) => {
       </div>
 
       {/* year and runtime */}
-      <div className="text-logo-white/90 my-2 flex w-fit space-x-3 rounded-sm border border-white/10 px-3 py-1 font-[SansationLight] text-[clamp(.8rem,1.5vw,1rem)]">
+      <div className="text-logo-white/90 my-2 flex w-fit space-x-3 rounded-sm border border-white/10 px-3 py-1 font-[SansationLight] text-[clamp(.8rem,1.5vw,.9rem)]">
         <p className="flex items-center gap-2">
           <CiCalendarDate className="text-logo-blue" />
           <span>{watchDate}</span>

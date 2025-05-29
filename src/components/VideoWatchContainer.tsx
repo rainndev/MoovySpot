@@ -16,6 +16,7 @@ const VideoWatchContainer = () => {
   const queryParams = new URLSearchParams(location.search);
   const MEDIA_TYPE = queryParams.get("type");
   const [server, setServer] = useState("");
+  const isMovie = MEDIA_TYPE === "movie";
 
   const serverOptions = useMemo(() => {
     return serverUrlOption.map(
@@ -39,7 +40,6 @@ const VideoWatchContainer = () => {
           src={server}
         />
       </div>
-
       <div className="z-2 my-3 flex w-full flex-col gap-2 px-2 md:flex-row">
         <Select value={server} onValueChange={(value) => setServer(value)}>
           <SelectTrigger className="w-full md:w-[180px]">
@@ -55,6 +55,8 @@ const VideoWatchContainer = () => {
           </SelectContent>
         </Select>
       </div>
+      {/* Episode/Seasons */}
+      <div></div>
     </div>
   );
 };
