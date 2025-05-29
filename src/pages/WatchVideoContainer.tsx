@@ -1,9 +1,8 @@
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { useParams, useLocation } from "react-router-dom";
 import LoadingAnimation from "@/components/LoadingAnimation";
 import VideoMetadata from "@/components/VideoMetadata";
 import { useRecentlyViewStore } from "@/store/RecentlyViewStore";
-import { serverUrlOption } from "@/data/server-data";
 import { useWatchData } from "@/hooks/use-watch-data";
 import { GoBookmark, GoBookmarkFill } from "react-icons/go";
 
@@ -16,20 +15,6 @@ const WatchVideoContainer = () => {
   const MEDIA_TYPE = queryParams.get("type");
 
   const numericId = Number(id);
-
-  const serverOptions = useMemo(() => {
-    return serverUrlOption.map(
-      (option) => `${option.baseUrl}${MEDIA_TYPE}/${id}${option.extraParams}`,
-    );
-  }, [MEDIA_TYPE, id]);
-
-  const [server, setServer] = useState("");
-
-  console.log("server---------------------", server);
-
-  useEffect(() => {
-    if (serverOptions.length) setServer(serverOptions[0]);
-  }, [serverOptions]);
 
   if (!MEDIA_TYPE || !id || isNaN(numericId)) {
     return (
@@ -144,26 +129,6 @@ const WatchVideoContainer = () => {
               </div>
             </div>
             <VideoMetadata data={metaData} />
-            {/* <div className="border-logo-white/5 shadow-5xl bg-logo-black/50 aspect-video w-full overflow-hidden rounded-2xl border-3 backdrop-blur-sm">
-              <iframe
-                className="h-full w-full"
-                allowFullScreen
-                frameBorder="0"
-                src={server}
-              />
-            </div> */}
-
-            {/* <div className="z-2 my-3 w-full space-y-2 space-x-2">
-              {serverOptions.map((option, i) => (
-                <p
-                  key={i}
-                  onClick={() => setServer(option)}
-                  className="bg-logo-white/10 hover:bg-logo-blue/20 active:bg-logo-blue/20 inline-block cursor-pointer rounded-sm px-5 py-2 text-[clamp(.8rem,3vw,1rem)]"
-                >
-                  Server {i + 1}
-                </p>
-              ))}
-            </div> */}
           </div>
         </div>
       </div>
