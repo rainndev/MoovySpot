@@ -62,7 +62,7 @@ const Navigation = () => {
           className="hover:bg-logo-white/10 flex cursor-pointer items-center rounded-full transition duration-300 ease-in-out"
         >
           <div
-            className={`${isSearchOpen && "text-logo-blue bg-logo-blue/10"} hover:text-logo-blue bg-logo-white/10 cursor-pointer rounded-full p-2`}
+            className={`${isSearchOpen && "text-logo-blue bg-logo-blue/10"} hover:text-logo-blue text-logo-white bg-logo-blue/5 cursor-pointer rounded-full p-2`}
           >
             <BiSearchAlt className="text-lg" />
           </div>

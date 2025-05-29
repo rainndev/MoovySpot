@@ -62,16 +62,16 @@ const VideoMetadata = ({ data }: VideoMetadataProps) => {
       </div>
 
       {/* year and runtime */}
-      <div className="text-logo-white/90 my-2 flex space-x-3 border-y border-y-white/10 p-2 font-[SansationLight] text-[clamp(.8rem,3vw,1rem)]">
+      <div className="text-logo-white/90 my-2 flex w-fit space-x-3 rounded-sm border border-white/10 px-3 py-1 font-[SansationLight] text-[clamp(.8rem,3vw,1rem)]">
         <p className="flex items-center gap-2">
-          <CiCalendarDate />
+          <CiCalendarDate className="text-logo-blue" />
           <span>{watchDate}</span>
         </p>
         <div className="bg-logo-white/10 w-[1px]" />
 
         {watchRuntime ? (
           <p className="flex items-center gap-2">
-            <IoMdTime />
+            <IoMdTime className="text-logo-blue" />
             <span>{formatRuntime(watchRuntime)}</span>
           </p>
         ) : (
