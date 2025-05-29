@@ -13,7 +13,7 @@ const App = () => {
   return (
     <Router>
       {isSearchOpen && <SearchModal />}
-      <div className="hide-scrollbar bg-logo-black text-logo-white h-dvh w-full">
+      <div className="hide-scrollbar bg-logo-black text-logo-white h-dvh">
         <Navigation />
         <BottomNav />
         <Routes>

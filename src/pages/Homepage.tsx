@@ -25,11 +25,9 @@ const Homepage = () => {
   if (data.find((query) => query.isError))
     return <div className="h-full w-full">Error: {data[0].error?.message}</div>;
 
-  console.log("data", data);
-
   return (
-    <div className="h-dvh w-full">
-      <div className="relative flex h-full w-full items-center justify-center overflow-hidden">
+    <div className="h-dvh">
+      <div className="relative flex h-full w-full items-center justify-center">
         <ThreeDMarqueeBG />
 
         {/* Background */}
@@ -46,7 +44,6 @@ const Homepage = () => {
         <TypeNavigation />
 
         {/* content */}
-
         {data.map((item, i) => (
           <Watch
             key={i}

@@ -36,7 +36,7 @@ export function ThreeDMarqueeBG() {
   );
 
   return (
-    <div className="h-full">
+    <div className="h-full w-full overflow-hidden">
       <ThreeDMarquee images={images} />
     </div>
   );
