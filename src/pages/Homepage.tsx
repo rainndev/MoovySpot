@@ -33,7 +33,7 @@ const Homepage = () => {
         <ThreeDMarqueeBG />
 
         {/* Background */}
-        <div className="from-logo-black to-logo-black/10 absolute inset-0 z-0 bg-gradient-to-t" />
+        <div className="from-logo-black to-logo-black/10 pointer-events-none absolute inset-0 bg-gradient-to-t" />
 
         {/* Hero */}
         <div className="absolute flex w-full items-center justify-center">

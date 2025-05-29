@@ -5,6 +5,7 @@ import VideoMetadata from "@/components/VideoMetadata";
 import { useRecentlyViewStore } from "@/store/RecentlyViewStore";
 import { serverUrlOption } from "@/data/server-data";
 import { useWatchData } from "@/hooks/use-watch-data";
+import WatchCredits from "@/components/WatchCredits";
 
 const WatchVideoContainer = () => {
   const { id } = useParams();
@@ -54,6 +55,7 @@ const WatchVideoContainer = () => {
     isLoading,
     isError,
     error,
+    watchCreditsData,
     handleAddToWatchlist,
   } = useWatchData(MEDIA_TYPE, numericId);
 
@@ -96,6 +98,8 @@ const WatchVideoContainer = () => {
     }
   }, [watchData?.data]);
 
+  console.log("watch credits ---------------------------", watchCreditsData);
+
   if (isLoading) return <LoadingAnimation />;
 
   if (isError) {
@@ -119,7 +123,7 @@ const WatchVideoContainer = () => {
       <div className="z-2 w-full">
         <div className="my-20 flex h-full w-full flex-col">
           <VideoMetadata data={metaData} />
-
+          <WatchCredits data={watchCreditsData} />
           <div className="border-logo-white/5 shadow-5xl bg-logo-black/50 aspect-video w-full overflow-hidden rounded-2xl border-3 backdrop-blur-sm">
             <iframe
               className="h-full w-full"

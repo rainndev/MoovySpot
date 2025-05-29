@@ -8,7 +8,7 @@ interface Watch {
 
 const Watch = ({ data, title_header }: Watch) => {
   const isTrending = title_header === "Trending This Week";
-  console.log("Watch data", data);
+
   return (
     <div className="relative mb-10 overflow-hidden">
       {/* header */}

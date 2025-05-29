@@ -1,4 +1,5 @@
 import { formatImagePath, getLogoUrl } from "@/lib/watch-utils";
+import { useCreditsOptions } from "@/query-options/QueryCreditsOptions";
 import { useOptionsById, useOptionsImages } from "@/query-options/QueryOptions";
 import { useWatchListStore } from "@/store/WatchListStore";
 import { useQueries } from "@tanstack/react-query";
@@ -10,11 +11,16 @@ export const useWatchData = (MEDIA_TYPE: string, id: number) => {
   const removeWatchList = useWatchListStore((state) => state.removeWatchList);
 
   const queries = useQueries({
-    queries: [useOptionsById(MEDIA_TYPE, id), useOptionsImages(MEDIA_TYPE, id)],
+    queries: [
+      useOptionsById(MEDIA_TYPE, id),
+      useOptionsImages(MEDIA_TYPE, id),
+      useCreditsOptions(MEDIA_TYPE, id),
+    ],
   });
 
-  const [watchData, watchImage] = queries;
+  const [watchData, watchImage, watchCredits] = queries;
 
+  const watchCreditsData = watchCredits.data;
   const isLoading = watchData.isLoading || watchImage.isLoading;
   const isError = watchData.isError || watchImage.isError;
   const error = watchData.error || watchImage.error;
@@ -31,9 +37,6 @@ export const useWatchData = (MEDIA_TYPE: string, id: number) => {
   const watchEpisodes = data?.number_of_episodes;
   const watchSeasons = data?.number_of_seasons;
   const watchLogoUrl = watchImage.data ? getLogoUrl(watchImage.data, "en") : "";
-
-  console.log("watchData", data);
-  console.log("Episode", watchRuntime);
 
   const watchBackdropUrl = data?.backdrop_path
     ? formatImagePath(data.backdrop_path, "original")
@@ -78,5 +81,6 @@ export const useWatchData = (MEDIA_TYPE: string, id: number) => {
     releaseDate,
     watchTagline,
     handleAddToWatchlist,
+    watchCreditsData,
   };
 };
