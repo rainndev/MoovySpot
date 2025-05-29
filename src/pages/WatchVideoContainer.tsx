@@ -115,6 +115,7 @@ const WatchVideoContainer = () => {
 
         <div className="w-full pb-20">
           <div className="flex h-full w-full flex-col">
+            {/* banner poster */}
             <div
               className="relative aspect-video h-50 sm:h-80 md:h-100 lg:h-150"
               style={{

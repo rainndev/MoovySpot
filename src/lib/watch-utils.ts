@@ -10,7 +10,7 @@ export const formatRuntime = (minutes: number) => {
   const minuteLabel = remainingMinutes === 1 ? "min" : "mins";
 
   if (hours > 0 && remainingMinutes > 0) {
-    return `${hours} ${hourLabel} and ${remainingMinutes} ${minuteLabel}`;
+    return `${hours} ${hourLabel} ${remainingMinutes} ${minuteLabel}`;
   } else if (hours > 0) {
     return `${hours} ${hourLabel}`;
   } else {
