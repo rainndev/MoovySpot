@@ -25,7 +25,7 @@ const VideoMetadata = ({ data }: VideoMetadataProps) => {
   } = data;
 
   return (
-    <div className="z-2 p-5">
+    <div className="z-2 -translate-y-20 p-5 md:-translate-y-50">
       {/* title */}
 
       <div>
@@ -43,7 +43,7 @@ const VideoMetadata = ({ data }: VideoMetadataProps) => {
       </div>
 
       {/* tagline */}
-      <p className="text-logo-white/90 my-2 w-full text-start font-[SansationLight] text-[clamp(.7rem,3vw,1.125rem)] italic">
+      <p className="text-logo-white/90 my-2 w-full text-start font-[SansationLight] text-[clamp(.7rem,3vw,1rem)] italic">
         {watchTagline}
       </p>
 

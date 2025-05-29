@@ -108,6 +108,8 @@ const WatchVideoContainer = () => {
     );
   }
 
+  console.log("yotube trailer", watchData.data);
+
   return (
     <section className="hide-scrollbar flex h-full w-full justify-center md:pl-25">
       <div className="z-5 w-full">
