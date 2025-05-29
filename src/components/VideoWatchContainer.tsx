@@ -42,7 +42,7 @@ const VideoWatchContainer = () => {
 
       <div className="z-2 my-3 flex w-full flex-col gap-2 px-2 md:flex-row">
         <Select value={server} onValueChange={(value) => setServer(value)}>
-          <SelectTrigger className="w-[180px]">
+          <SelectTrigger className="w-full md:w-[180px]">
             <FaServer className="text-logo-blue shadow-logo-blue/50 shadow-2xl" />
             <SelectValue placeholder="Select Server" />
           </SelectTrigger>
