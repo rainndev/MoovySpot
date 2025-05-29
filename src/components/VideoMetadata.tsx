@@ -1,7 +1,5 @@
 import { formatRuntime } from "@/lib/watch-utils";
-
 import { CiCalendarDate } from "react-icons/ci";
-import { GoBookmark, GoBookmarkFill } from "react-icons/go";
 import { IoMdTime } from "react-icons/io";
 
 interface Genre {
@@ -23,20 +21,18 @@ const VideoMetadata = ({ data }: VideoMetadataProps) => {
     watchTagline,
     watchEpisodes,
     watchSeasons,
-    handleAddToWatchlist,
     watchDate,
-    isBookmarked,
   } = data;
 
   return (
-    <div className="z-2">
+    <div className="z-2 p-5">
       {/* title */}
 
       <div>
         {watchLogoUrl ? (
           <img
             src={watchLogoUrl}
-            className={`drop-shadow-logo-black/50 w-full max-w-[400px] object-cover py-5 drop-shadow-2xl`}
+            className={`drop-shadow-logo-black/50 w-full max-w-[500px] object-cover py-5 drop-shadow-2xl`}
             alt={watchTitle}
           />
         ) : (
@@ -47,7 +43,7 @@ const VideoMetadata = ({ data }: VideoMetadataProps) => {
       </div>
 
       {/* tagline */}
-      <p className="text-logo-white/90 my-2 w-full text-start font-[SansationLight] text-[clamp(.7rem,3vw,.9rem)] italic">
+      <p className="text-logo-white/90 my-2 w-full text-start font-[SansationLight] text-[clamp(.7rem,3vw,1.125rem)] italic">
         {watchTagline}
       </p>
 
@@ -55,20 +51,12 @@ const VideoMetadata = ({ data }: VideoMetadataProps) => {
       <div className="mb-2 flex w-full flex-wrap items-center justify-start gap-2 text-[clamp(.8rem,3vw,1rem)]">
         {watchGenres.map((genre: Genre, i: number) => (
           <span
-            className="bg-logo-blue/15 border-logo-white/10 inline-block rounded-sm border px-2 py-1"
+            className="bg-logo-blue/10 border-logo-blue/10 inline-block rounded-sm border px-3 py-1"
             key={i}
           >
             {genre.name}
           </span>
         ))}
-
-        <div onClick={() => handleAddToWatchlist()} className="ml-2 text-2xl">
-          {isBookmarked ? (
-            <GoBookmarkFill className="text-logo-blue drop-shadow-logo-blue drop-shadow-2xl" />
-          ) : (
-            <GoBookmark className="text-logo-white/90 hover:text-logo-blue transition-colors duration-300" />
-          )}
-        </div>
       </div>
 
       {/* year and runtime */}
@@ -99,7 +87,7 @@ const VideoMetadata = ({ data }: VideoMetadataProps) => {
       </div>
 
       {/* overview */}
-      <p className="text-logo-white/90 mb-5 w-full text-start font-[SansationLight] text-[clamp(.9rem,3vw,1rem)]">
+      <p className="text-logo-white/90 mb-5 w-full text-start font-[SansationLight] text-[clamp(.9rem,3vw,1.2rem)]">
         {watchOverview || "No overview available."}
       </p>
     </div>
