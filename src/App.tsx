@@ -13,17 +13,15 @@ const App = () => {
   return (
     <Router>
       {isSearchOpen && <SearchModal />}
-      <div className="hide-scrollbar h-dvh w-full">
-        <div className="text-logo-white hide-scrollbar bg-logo-black flex w-full flex-col items-center justify-center">
-          <Navigation />
-          <BottomNav />
-          <Routes>
-            <Route path="/" element={<Homepage />} />
-            <Route path="/watchlist" element={<Watchlist />} />
-            <Route path="/recent" element={<RecentView />} />
-            <Route path="/watch/:id" element={<WatchVideoContainer />} />
-          </Routes>
-        </div>
+      <div className="hide-scrollbar bg-logo-black text-logo-white h-dvh w-full">
+        <Navigation />
+        <BottomNav />
+        <Routes>
+          <Route path="/" element={<Homepage />} />
+          <Route path="/watchlist" element={<Watchlist />} />
+          <Route path="/recent" element={<RecentView />} />
+          <Route path="/watch/:id" element={<WatchVideoContainer />} />
+        </Routes>
       </div>
     </Router>
   );

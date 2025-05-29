@@ -5,7 +5,6 @@ import VideoMetadata from "@/components/VideoMetadata";
 import { useRecentlyViewStore } from "@/store/RecentlyViewStore";
 import { serverUrlOption } from "@/data/server-data";
 import { useWatchData } from "@/hooks/use-watch-data";
-import WatchCredits from "@/components/WatchCredits";
 
 const WatchVideoContainer = () => {
   const { id } = useParams();
@@ -55,7 +54,7 @@ const WatchVideoContainer = () => {
     isLoading,
     isError,
     error,
-    watchCreditsData,
+
     handleAddToWatchlist,
   } = useWatchData(MEDIA_TYPE, numericId);
 
@@ -98,8 +97,6 @@ const WatchVideoContainer = () => {
     }
   }, [watchData?.data]);
 
-  console.log("watch credits ---------------------------", watchCreditsData);
-
   if (isLoading) return <LoadingAnimation />;
 
   if (isError) {
@@ -111,38 +108,40 @@ const WatchVideoContainer = () => {
   }
 
   return (
-    <section className="hide-scrollbar flex h-full w-full max-w-7xl items-center justify-center p-5 md:pl-25">
-      <img
-        src={watchBackdropUrl}
-        className="absolute inset-0 h-full w-full object-cover opacity-30 blur-xs"
-        alt=""
-      />
-      <div className="bg-logo-blue absolute inset-0 h-full w-full bg-[radial-gradient(rgba(80,79,79,0.5)_1px,#1E1E1E_1px)] bg-[size:10px_10px] opacity-15" />
-      <div className="bg-logo-black absolute inset-0 h-full [mask-image:radial-gradient(ellipse_at_center,transparent_20%,#14c4b4)]" />
+    <section className="hide-scrollbar flex h-full w-full justify-center p-5 md:pl-25">
+      <div className="z-5 max-w-7xl">
+        <img
+          src={watchBackdropUrl}
+          className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-30 blur-xs"
+          alt=""
+        />
+        <div className="bg-logo-blue pointer-events-none absolute inset-0 h-full w-full bg-[radial-gradient(rgba(80,79,79,0.5)_1px,#1E1E1E_1px)] bg-[size:10px_10px] opacity-15" />
+        <div className="bg-logo-black pointer-events-none absolute inset-0 h-full [mask-image:radial-gradient(ellipse_at_center,transparent_20%,#14c4b4)]" />
 
-      <div className="z-2 w-full">
-        <div className="my-20 flex h-full w-full flex-col">
-          <VideoMetadata data={metaData} />
-          <WatchCredits data={watchCreditsData} />
-          <div className="border-logo-white/5 shadow-5xl bg-logo-black/50 aspect-video w-full overflow-hidden rounded-2xl border-3 backdrop-blur-sm">
-            <iframe
-              className="h-full w-full"
-              allowFullScreen
-              frameBorder="0"
-              src={server}
-            />
-          </div>
+        <div className="w-full pb-20">
+          <div className="flex h-full w-full flex-col">
+            <VideoMetadata data={metaData} />
 
-          <div className="z-2 my-3 w-full space-y-2 space-x-2">
-            {serverOptions.map((option, i) => (
-              <p
-                key={i}
-                onClick={() => setServer(option)}
-                className="bg-logo-white/10 hover:bg-logo-blue/20 active:bg-logo-blue/20 inline-block cursor-pointer rounded-sm px-5 py-2 text-[clamp(.8rem,3vw,1rem)]"
-              >
-                Server {i + 1}
-              </p>
-            ))}
+            <div className="border-logo-white/5 shadow-5xl bg-logo-black/50 aspect-video w-full overflow-hidden rounded-2xl border-3 backdrop-blur-sm">
+              <iframe
+                className="h-full w-full"
+                allowFullScreen
+                frameBorder="0"
+                src={server}
+              />
+            </div>
+
+            <div className="z-2 my-3 w-full space-y-2 space-x-2">
+              {serverOptions.map((option, i) => (
+                <p
+                  key={i}
+                  onClick={() => setServer(option)}
+                  className="bg-logo-white/10 hover:bg-logo-blue/20 active:bg-logo-blue/20 inline-block cursor-pointer rounded-sm px-5 py-2 text-[clamp(.8rem,3vw,1rem)]"
+                >
+                  Server {i + 1}
+                </p>
+              ))}
+            </div>
           </div>
         </div>
       </div>

@@ -29,7 +29,7 @@ const VideoMetadata = ({ data }: VideoMetadataProps) => {
   } = data;
 
   return (
-    <>
+    <div className="z-2">
       {/* title */}
 
       <div>
@@ -102,7 +102,7 @@ const VideoMetadata = ({ data }: VideoMetadataProps) => {
       <p className="text-logo-white/90 mb-5 w-full text-start font-[SansationLight] text-[clamp(.9rem,3vw,1rem)]">
         {watchOverview || "No overview available."}
       </p>
-    </>
+    </div>
   );
 };
 
