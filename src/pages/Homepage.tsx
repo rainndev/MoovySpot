@@ -27,7 +27,7 @@ const Homepage = () => {
 
   return (
     <div className="h-dvh">
-      <div className="relative flex h-full w-full items-center justify-center">
+      <div className="relative flex h-dvh w-full items-center justify-center">
         <ThreeDMarqueeBG />
 
         {/* Background */}
