@@ -7,6 +7,7 @@ import Watchlist from "./pages/Watchlist";
 import RecentView from "./pages/RecentView";
 import { useSearchModalStore } from "./store/SearchModalStore";
 import SearchModal from "./components/SearchModal";
+import VideoWatchContainer from "./components/VideoWatchContainer";
 
 const App = () => {
   const isSearchOpen = useSearchModalStore((state) => state.isOpen);
@@ -21,6 +22,7 @@ const App = () => {
           <Route path="/watchlist" element={<Watchlist />} />
           <Route path="/recent" element={<RecentView />} />
           <Route path="/watch/:id" element={<WatchVideoContainer />} />
+          <Route path="/play/:id" element={<VideoWatchContainer />} />
         </Routes>
       </div>
     </Router>
