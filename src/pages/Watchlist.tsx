@@ -28,7 +28,7 @@ const Watchlist = () => {
   console.log("recentlyWatched", watchList);
 
   return (
-    <div className="flex h-dvh w-full flex-col items-center p-3 pb-20 md:p-10 md:pl-25">
+    <div className="flex h-dvh w-full flex-col items-center p-3 md:p-10 md:pl-25">
       {/* header */}
 
       <div className="mt-5 mb-10 w-full">
@@ -48,6 +48,7 @@ const Watchlist = () => {
             <RecentViewCard key={i} movie={movie} />
           ))}
         </div>
+        <div className="h-20" />
       </div>
     </div>
   );
