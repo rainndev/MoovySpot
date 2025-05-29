@@ -49,6 +49,7 @@ export const ThreeDMarquee = ({
                       }}
                       key={imageIndex + image}
                       src={image}
+                      loading="lazy"
                       alt={`Image ${imageIndex + 1}`}
                       className="aspect-[970/700] rounded-lg object-cover opacity-20 ring ring-gray-950/5 grayscale-50 hover:shadow-2xl"
                       width={970}

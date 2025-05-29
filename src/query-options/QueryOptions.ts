@@ -35,6 +35,8 @@ export const useQueryOptions = (
 ) => ({
   queryKey: [`${category}-${type}-${page}`],
   queryFn: () => fetchData(type, category, page),
+  staleTime: 1000 * 60 * 60 * 24,
+  refetchOnWindowFocus: false,
 });
 
 //for watch movie query
@@ -55,6 +57,8 @@ const watchById = async (type: string = "movie", id: number) => {
 export const useOptionsById = (type: string, id: number) => ({
   queryKey: [`movie-${id}`],
   queryFn: () => watchById(type, id),
+  staleTime: 1000 * 60 * 60 * 24,
+  refetchOnWindowFocus: false,
 });
 
 //for watch query images
@@ -65,6 +69,8 @@ export const useOptionsImages = (type: string, id: number) => ({
     axios(`${baseUrl}/${type}/${id}/images?api_key=${apiKey}`).then(
       (res) => res.data,
     ),
+  staleTime: 1000 * 60 * 60 * 24,
+  refetchOnWindowFocus: false,
 });
 
 //for search query
@@ -78,4 +84,5 @@ export const useSearchOptions = (
     axios(
       `${baseUrl}/search/${type}?api_key=${apiKey}&language=en-US&query=${query}&page=${page}&include_adult=false`,
     ).then((res) => res.data),
+  keepPreviousData: true,
 });
