@@ -1,7 +1,7 @@
-import { formatRuntime } from "@/lib/watch-utils";
+import { formatRuntime, formatWatchUrl } from "@/lib/watch-utils";
 import { CiCalendarDate } from "react-icons/ci";
 import { IoMdTime } from "react-icons/io";
-
+import { Link } from "react-router-dom";
 interface Genre {
   id: number;
   name: string;
@@ -22,6 +22,8 @@ const VideoMetadata = ({ data }: VideoMetadataProps) => {
     watchEpisodes,
     watchSeasons,
     watchDate,
+    numericId,
+    MEDIA_TYPE,
   } = data;
 
   const limitGenres = watchGenres.slice(0, 3);
@@ -96,9 +98,11 @@ const VideoMetadata = ({ data }: VideoMetadataProps) => {
       {/* watch button */}
 
       <div className="flex space-x-2">
-        <button className="bg-logo-blue drop-shadow-logo-blue/5 text-logo-black hover:bg-logo-blue/60 active:bg-logo-blue/60 cursor-pointer rounded-full px-10 py-2 font-[ClashDisplay] text-[clamp(.7rem,3vw,1rem)] font-medium drop-shadow-2xl transition-all duration-300 ease-in-out">
-          Watch Now
-        </button>
+        <Link to={formatWatchUrl(numericId, MEDIA_TYPE, "play")}>
+          <button className="bg-logo-blue drop-shadow-logo-blue/5 text-logo-black hover:bg-logo-blue/60 active:bg-logo-blue/60 cursor-pointer rounded-full px-10 py-2 font-[ClashDisplay] text-[clamp(.7rem,3vw,1rem)] font-medium drop-shadow-2xl transition-all duration-300 ease-in-out">
+            Watch Now
+          </button>
+        </Link>
         <button className="border-logo-white/20 text-logo-white hover:bg-logo-white/10 active:bg-logo-white/10 cursor-pointer rounded-full border px-7 py-2 font-[ClashDisplay] text-[clamp(.7rem,3vw,1rem)] font-medium transition-all duration-300 ease-in-out">
           Trailer
         </button>

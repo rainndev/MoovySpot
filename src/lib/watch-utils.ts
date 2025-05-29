@@ -33,13 +33,17 @@ export const formatImagePath = (path: string, size: sizeType) => {
 
 //format watch url
 
-export const formatWatchUrl = (id: number, type: string) => {
+export const formatWatchUrl = (
+  id: number,
+  type: string,
+  slug: string = "watch",
+) => {
   if (!id || !type) return "";
 
   // Ensure the type is lowercase
   const formattedType = type.toLowerCase();
 
-  return `/watch/${id}?type=${formattedType}`;
+  return `/${slug}/${id}?type=${formattedType}`;
 };
 
 //format date to time ago
