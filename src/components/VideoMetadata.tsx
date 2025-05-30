@@ -165,6 +165,11 @@ const VideoMetadata = ({ data }: VideoMetadataProps) => {
 
           {/* render episode */}
           {isLoading && <LoadingAnimation />}
+          {isError && (
+            <div className="text-logo-white/90 h-full w-full">
+              Error: {error?.message}
+            </div>
+          )}
           <div className="mt-5 grid grid-cols-2 gap-1 sm:grid-cols-3 md:gap-2 lg:grid-cols-4 xl:grid-cols-5">
             {seasonData?.episodes.map((episode: Episode) => (
               <div
