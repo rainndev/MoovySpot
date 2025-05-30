@@ -190,7 +190,7 @@ const VideoMetadata = ({ data }: VideoMetadataProps) => {
                   </div>
                 )}
 
-                <div className="from-logo-black absolute inset-0 bg-gradient-to-t to-transparent" />
+                <div className="from-logo-black pointer-events-none absolute inset-0 bg-gradient-to-t to-transparent" />
                 <p className="text-logo-white/90 absolute right-0 bottom-0 left-0 flex flex-col items-start justify-between truncate from-25% p-1.5 md:p-2">
                   <span className="bg-logo-white/10 flex items-center gap-1 rounded-xs px-1 text-[clamp(.7rem,1vw,.9rem)] md:rounded-sm">
                     <MdOutlinePersonalVideo className="text-logo-blue" />
