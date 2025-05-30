@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { FaServer } from "react-icons/fa6";
 import { serverUrlOption } from "@/data/server-data";
 import {
@@ -12,16 +12,28 @@ import {
 
 const VideoWatchContainer = () => {
   const { id } = useParams();
-  const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
-  const MEDIA_TYPE = queryParams.get("type");
+  const [searchParams] = useSearchParams();
+
+  const MEDIA_TYPE = searchParams.get("type");
+  const EPISODE = searchParams.get("episode");
+  const SEASON = searchParams.get("season");
   const [server, setServer] = useState("");
   const isMovie = MEDIA_TYPE === "movie";
 
+  //http://localhost:5173/play/100088?type=tv&season=2&episode=3
+  //"https://vidsrc.cc/v2/embed/tv/##id##/##season##/##episode##
+
   const serverOptions = useMemo(() => {
-    return serverUrlOption.map(
-      (option) => `${option.baseUrl}${MEDIA_TYPE}/${id}${option.extraParams}`,
-    );
+    return serverUrlOption.map((option) => {
+      if (isMovie) {
+        return option.movieLink.replace("##id##", String(id));
+      }
+
+      return option.tvLink
+        .replace("##id##", String(id))
+        .replace("##season##", String(SEASON))
+        .replace("##episode##", String(EPISODE));
+    });
   }, [MEDIA_TYPE, id]);
 
   useEffect(() => {
