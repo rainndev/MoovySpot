@@ -55,7 +55,7 @@ const watchById = async (type: string = "movie", id: number) => {
 
 //for watch movie query
 export const useOptionsById = (type: string, id: number) => ({
-  queryKey: [`movie-${id}`],
+  queryKey: [`${type}-${id}`],
   queryFn: () => watchById(type, id),
   staleTime: 1000 * 60 * 60 * 24,
   refetchOnWindowFocus: false,

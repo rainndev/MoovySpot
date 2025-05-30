@@ -10,10 +10,8 @@ const WatchVideoContainer = () => {
   const { id } = useParams();
   const location = useLocation();
   const addRecentlyView = useRecentlyViewStore((state) => state.addWatch);
-
   const queryParams = new URLSearchParams(location.search);
   const MEDIA_TYPE = queryParams.get("type");
-
   const numericId = Number(id);
 
   if (!MEDIA_TYPE || !id || isNaN(numericId)) {
@@ -38,6 +36,7 @@ const WatchVideoContainer = () => {
     watchLogoUrl,
     watchBackdropUrl,
     isLoading,
+    watchSeasonsData,
     isError,
     error,
 
@@ -54,6 +53,7 @@ const WatchVideoContainer = () => {
       watchEpisodes,
       watchTitle,
       MEDIA_TYPE,
+      watchSeasonsData,
       numericId,
       watchSeasons,
       handleAddToWatchlist,
@@ -69,6 +69,7 @@ const WatchVideoContainer = () => {
       watchEpisodes,
       watchTitle,
       numericId,
+      watchSeasonsData,
       MEDIA_TYPE,
       watchSeasons,
       handleAddToWatchlist,
@@ -101,9 +102,8 @@ const WatchVideoContainer = () => {
     <section className="hide-scrollbar flex h-full w-full justify-center md:pl-25">
       <div className="z-5 w-full">
         <div className="bg-logo-black pointer-events-none absolute inset-0 h-full [mask-image:radial-gradient(ellipse_at_center,transparent_20%,#14c4b4)]" />
-
         <div className="w-full pb-20">
-          <div className="flex h-full w-full flex-col">
+          <div className="flex w-full flex-col">
             {/* banner poster */}
             <div
               className="relative aspect-video h-50 sm:h-80 md:h-100 lg:h-150"

@@ -1,7 +1,25 @@
-import { formatRuntime, formatWatchUrl } from "@/lib/watch-utils";
+import {
+  formatImagePath,
+  formatRuntime,
+  formatWatchUrl,
+} from "@/lib/watch-utils";
 import { CiCalendarDate } from "react-icons/ci";
 import { IoMdTime } from "react-icons/io";
 import { Link } from "react-router-dom";
+import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { useSeasonOptions } from "@/query-options/QuerySeasonOptions";
+import type { SeasonInfo, Episode } from "@/types/TvSeriesTypes";
+import { MdOutlinePersonalVideo } from "react-icons/md";
+
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import LoadingAnimation from "./LoadingAnimation";
 interface Genre {
   id: number;
   name: string;
@@ -21,12 +39,28 @@ const VideoMetadata = ({ data }: VideoMetadataProps) => {
     watchTagline,
     watchEpisodes,
     watchSeasons,
+    watchSeasonsData,
     watchDate,
     numericId,
     MEDIA_TYPE,
   } = data;
 
   const limitGenres = watchGenres.slice(0, 3);
+  const [season, setSeason] = useState(
+    String(watchSeasonsData[0]?.season_number),
+  );
+  const isMovie = MEDIA_TYPE === "movie";
+
+  const {
+    data: seasonData,
+    isLoading,
+    error,
+    isError,
+  } = useQuery({
+    ...useSeasonOptions(+season, numericId),
+    enabled: !isMovie,
+  });
+  console.log(seasonData?.episodes);
 
   return (
     <div className="z-2 -translate-y-20 p-5 md:-translate-y-50">
@@ -107,6 +141,65 @@ const VideoMetadata = ({ data }: VideoMetadataProps) => {
           Trailer
         </button>
       </div>
+
+      {/* for tv series */}
+      {!isMovie && (
+        <div className="mt-5">
+          {/* select seasons */}
+          <Select value={season} onValueChange={(value) => setSeason(value)}>
+            <SelectTrigger className="w-fit text-[clamp(.7rem,3vw,.9rem)]">
+              <SelectValue placeholder={watchSeasonsData[0].name} />
+            </SelectTrigger>
+            <SelectContent>
+              {watchSeasonsData.map((seasonData: SeasonInfo, index: number) => (
+                <SelectItem
+                  className="text-[clamp(.7rem,3vw,.9rem)]"
+                  key={index}
+                  value={String(seasonData.season_number)}
+                >
+                  {seasonData.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+
+          {/* render episode */}
+          {isLoading && <LoadingAnimation />}
+          <div className="mt-5 grid grid-cols-2 gap-1 sm:grid-cols-3 md:gap-2 lg:grid-cols-4 xl:grid-cols-5">
+            {seasonData?.episodes.map((episode: Episode) => (
+              <div
+                className="bg-logo-white/5 border-logo-white/2 relative flex w-full cursor-pointer flex-col overflow-hidden rounded-sm border md:rounded-lg"
+                key={String(episode.id)}
+              >
+                {episode.still_path ? (
+                  <img
+                    src={formatImagePath(episode.still_path, "w300")}
+                    onContextMenu={(e) => e.preventDefault()}
+                    onDragStart={(e) => e.preventDefault()}
+                    className="aspect-video object-cover opacity-80 transition-all duration-300 ease-in-out hover:scale-105 hover:opacity-100 active:scale-105 active:opacity-100"
+                    alt={String(episode.id)}
+                  />
+                ) : (
+                  <div className="bg-logo-white/10 text-logo-white/50 flex aspect-video w-full items-center justify-center text-[clamp(.7rem,1vw,.9rem)]">
+                    No image
+                  </div>
+                )}
+
+                <div className="from-logo-black absolute inset-0 bg-gradient-to-t to-transparent" />
+                <p className="text-logo-white/90 absolute right-0 bottom-0 left-0 flex flex-col items-start justify-between truncate from-25% p-1.5 md:p-2">
+                  <span className="bg-logo-white/10 flex items-center gap-1 rounded-xs px-1 text-[clamp(.7rem,1vw,.9rem)] md:rounded-sm">
+                    <MdOutlinePersonalVideo className="text-logo-blue" />
+                    {episode.episode_number}
+                  </span>
+                  <span className="text-logo-white/70 truncate text-[clamp(.5rem,1vw,.9rem)]">
+                    {episode.name}
+                  </span>
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 };

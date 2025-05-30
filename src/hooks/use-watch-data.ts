@@ -1,5 +1,6 @@
 import { formatImagePath, getLogoUrl } from "@/lib/watch-utils";
 import { useOptionsById, useOptionsImages } from "@/query-options/QueryOptions";
+import { useSeasonOptions } from "@/query-options/QuerySeasonOptions";
 import { useWatchListStore } from "@/store/WatchListStore";
 import { useQueries } from "@tanstack/react-query";
 import { toast } from "sonner";
@@ -10,7 +11,11 @@ export const useWatchData = (MEDIA_TYPE: string, id: number) => {
   const removeWatchList = useWatchListStore((state) => state.removeWatchList);
 
   const queries = useQueries({
-    queries: [useOptionsById(MEDIA_TYPE, id), useOptionsImages(MEDIA_TYPE, id)],
+    queries: [
+      useOptionsById(MEDIA_TYPE, id),
+      useOptionsImages(MEDIA_TYPE, id),
+      useSeasonOptions(1, +id),
+    ],
   });
 
   const [watchData, watchImage] = queries;
@@ -30,6 +35,7 @@ export const useWatchData = (MEDIA_TYPE: string, id: number) => {
   const watchRuntime = data?.runtime;
   const watchEpisodes = data?.number_of_episodes;
   const watchSeasons = data?.number_of_seasons;
+  const watchSeasonsData = watchData.data?.seasons || [];
   const watchLogoUrl = watchImage.data ? getLogoUrl(watchImage.data, "en") : "";
 
   const watchBackdropUrl = data?.backdrop_path
@@ -70,6 +76,7 @@ export const useWatchData = (MEDIA_TYPE: string, id: number) => {
     watchRuntime,
     watchEpisodes,
     watchLogoUrl,
+    watchSeasonsData,
     watchSeasons,
     watchDate,
     releaseDate,
