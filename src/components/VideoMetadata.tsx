@@ -166,9 +166,15 @@ const VideoMetadata = ({ data }: VideoMetadataProps) => {
               Error: {error?.message}
             </div>
           )}
+
           <div className="mt-5 grid grid-cols-2 gap-1 sm:grid-cols-3 md:gap-2 lg:grid-cols-4 xl:grid-cols-5">
             {seasonData?.episodes.map((episode: Episode) => (
-              <EpisodeCard episode={episode} />
+              <Link
+                to={`/play/${numericId}?type=tv&season=${season}&episode=${episode.episode_number}`}
+                key={episode.id}
+              >
+                <EpisodeCard episode={episode} />
+              </Link>
             ))}
           </div>
         </div>
