@@ -1,4 +1,4 @@
-import HomePage from "@/pages/Homepage";
+import HomePage from "@/pages/HomePage";
 import Navigation from "@/components/Navigation";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import VideoDetailsPage from "@/pages/VideoDetailsPage";

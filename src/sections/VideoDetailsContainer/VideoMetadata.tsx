@@ -127,7 +127,13 @@ const VideoMetadata = ({ data }: VideoMetadataProps) => {
       {/* watch button */}
 
       <div className="flex space-x-2">
-        <Link to={formatWatchUrl(numericId, MEDIA_TYPE, "play")}>
+        <Link
+          to={
+            isMovie
+              ? formatWatchUrl(numericId, MEDIA_TYPE, "play")
+              : `/play/${numericId}?type=tv&season=${watchSeasonsData[0].season_number}&episode=${seasonData?.episodes[0]?.episode_number}`
+          }
+        >
           <button className="bg-logo-blue drop-shadow-logo-blue/5 text-logo-black hover:bg-logo-blue/60 active:bg-logo-blue/60 cursor-pointer rounded-full px-10 py-2 font-[ClashDisplay] text-[clamp(.7rem,3vw,1rem)] font-medium drop-shadow-2xl transition-all duration-300 ease-in-out">
             Watch Now
           </button>
