@@ -56,7 +56,6 @@ const VideoMetadata = ({ data }: VideoMetadataProps) => {
     ...useSeasonOptions(+season, numericId),
     enabled: !isMovie,
   });
-  console.log(seasonData?.episodes);
 
   return (
     <div className="z-2 -translate-y-20 p-5 md:-translate-y-50">
@@ -168,14 +167,15 @@ const VideoMetadata = ({ data }: VideoMetadataProps) => {
           )}
 
           <div className="mt-5 grid grid-cols-2 gap-1 sm:grid-cols-3 md:gap-2 lg:grid-cols-4 xl:grid-cols-5">
-            {seasonData?.episodes.map((episode: Episode) => (
-              <Link
-                to={`/play/${numericId}?type=tv&season=${season}&episode=${episode.episode_number}`}
-                key={episode.id}
-              >
-                <EpisodeCard episode={episode} />
-              </Link>
-            ))}
+            {seasonData &&
+              seasonData.episodes.map((episode: Episode) => (
+                <Link
+                  to={`/play/${numericId}?type=tv&season=${season}&episode=${episode.episode_number}`}
+                  key={episode.id}
+                >
+                  <EpisodeCard episode={episode} />
+                </Link>
+              ))}
           </div>
         </div>
       )}
