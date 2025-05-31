@@ -1,8 +1,9 @@
 import { GoHomeFill } from "react-icons/go";
 import { LuListVideo } from "react-icons/lu";
 import { NavLink } from "react-router-dom";
-import { MdHistory } from "react-icons/md";
 import { useSearchModalStore } from "@/store/SearchModalStore";
+import { BiSolidCategoryAlt } from "react-icons/bi";
+import { BiHistory } from "react-icons/bi";
 import { IoSearch } from "react-icons/io5";
 
 const BottomNav = () => {
@@ -23,9 +24,15 @@ const BottomNav = () => {
           </li>
         </NavLink>
 
+        <NavLink to="/category">
+          <li>
+            <BiSolidCategoryAlt />
+          </li>
+        </NavLink>
+
         <NavLink to="/recent">
           <li>
-            <MdHistory />
+            <BiHistory />
           </li>
         </NavLink>
 

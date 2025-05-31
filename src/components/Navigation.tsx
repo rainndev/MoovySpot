@@ -2,10 +2,11 @@ import { useSearchModalStore } from "@/store/SearchModalStore";
 import { BiSearchAlt } from "react-icons/bi";
 import { GoHomeFill } from "react-icons/go";
 import { LuListVideo } from "react-icons/lu";
-import { MdHistory } from "react-icons/md";
 import { RiMovie2AiFill } from "react-icons/ri";
 import { NavLink } from "react-router-dom";
 import { motion } from "framer-motion";
+import { BiSolidCategoryAlt } from "react-icons/bi";
+import { BiHistory } from "react-icons/bi";
 
 const Navigation = () => {
   const toggleModal = useSearchModalStore((state) => state.toggleModal);
@@ -44,6 +45,17 @@ const Navigation = () => {
               </motion.li>
             </NavLink>
 
+            <NavLink to="/category">
+              <motion.li
+                initial={{ opacity: 0.9, y: 0 }}
+                whileHover={{ scale: 1.1, opacity: 1 }}
+                whileTap={{ scale: 0.9, rotate: 10 }}
+                className="hover:text-logo-blue cursor-pointer"
+              >
+                <BiSolidCategoryAlt />
+              </motion.li>
+            </NavLink>
+
             <NavLink to="/recent">
               <motion.li
                 initial={{ opacity: 0.9, y: 0 }}
@@ -51,7 +63,7 @@ const Navigation = () => {
                 whileTap={{ scale: 0.9, rotate: 10 }}
                 className="hover:text-logo-blue cursor-pointer"
               >
-                <MdHistory />
+                <BiHistory />
               </motion.li>
             </NavLink>
           </motion.ul>
