@@ -36,9 +36,11 @@ const TrendingWatchCard = ({ itemData }: TrendingWatchContainerProps) => {
 
   const { data: GenreList } = useGenreOptions(watchType);
 
-  const genres = GenreList?.filter((genre: GenreItem) =>
-    GENRE_IDS.includes(genre.id),
-  );
+  const genres =
+    GenreList?.filter((genre: GenreItem) => GENRE_IDS.includes(genre.id)).slice(
+      0,
+      3,
+    ) || [];
 
   return (
     <div className="relative aspect-[3/2] h-100 w-full snap-start rounded-lg">
