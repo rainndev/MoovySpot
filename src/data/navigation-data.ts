@@ -3,7 +3,13 @@ import { LuListVideo } from "react-icons/lu";
 import { BiSolidCategoryAlt } from "react-icons/bi";
 import { BiHistory } from "react-icons/bi";
 
-export const navigationOptions = [
+interface NavigationOption {
+  name: string;
+  slug: string;
+  icon: React.ElementType;
+}
+
+export const navigationOptions: NavigationOption[] = [
   {
     name: "Home",
     slug: "/",
