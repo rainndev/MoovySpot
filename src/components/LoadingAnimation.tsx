@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 
 const LoadingAnimation = () => {
   return (
-    <div className="flex h-dvh w-full items-center justify-center space-x-2">
+    <div className="flex h-dvh w-full items-center justify-center gap-2">
       {Array.from({ length: 3 }, (_, index) => (
         <motion.span
           initial={{ opacity: 0, y: -20 }}
@@ -16,7 +16,7 @@ const LoadingAnimation = () => {
             ease: "easeInOut",
           }}
           key={index}
-          className="bg-logo-blue h-3 w-3 rounded-md"
+          className="bg-logo-blue h-2 w-2 rounded-md md:h-3 md:w-3"
         />
       ))}
     </div>

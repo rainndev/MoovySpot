@@ -5,13 +5,6 @@ import { useInView } from "react-intersection-observer";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import type { MediaItem, MediaType } from "@/types/TMDBTypes";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import LoadingAnimation from "@/components/LoadingAnimation";
 
 interface GenreItem {
@@ -98,7 +91,7 @@ const CategoryPage = () => {
               onClick={() => {
                 setSelectedGenre(genre.id);
               }}
-              className={`${genre.id === selectedGenre ? "bg-logo-blue text-logo-black shadow-logo-blue shadow-2xl" : "bg-logo-white/10"} hover:bg-logo-white/20 cursor-pointer snap-start rounded-full px-4 py-2 text-[clamp(.6rem,3vw,.8rem)] font-normal text-nowrap transition-colors duration-300 ease-in-out`}
+              className={`${genre.id === selectedGenre ? "bg-logo-blue text-logo-black shadow-logo-blue shadow-2xl" : "bg-logo-white/10"} hover:bg-logo-white/20 cursor-pointer snap-start rounded-full px-5 py-2 text-center text-[clamp(.6rem,3vw,.8rem)] font-normal text-nowrap transition-colors duration-300 ease-in-out`}
             >
               {genre.name}
             </li>
