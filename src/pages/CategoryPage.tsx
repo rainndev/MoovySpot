@@ -114,9 +114,8 @@ const CategoryPage = () => {
           </React.Fragment>
         ))}
 
-        <div className="h-[10] w-full" ref={loadMoreRef}></div>
+        <div className="h-20 w-full" ref={loadMoreRef}></div>
       </div>
-      <div className="h-20" />
     </div>
   );
 };
