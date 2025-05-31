@@ -1,10 +1,8 @@
-import { GoHomeFill } from "react-icons/go";
-import { LuListVideo } from "react-icons/lu";
 import { NavLink } from "react-router-dom";
 import { useSearchModalStore } from "@/store/SearchModalStore";
-import { BiSolidCategoryAlt } from "react-icons/bi";
-import { BiHistory } from "react-icons/bi";
 import { IoSearch } from "react-icons/io5";
+import { navigationOptions } from "@/data/navigation-data";
+import React from "react";
 
 const BottomNav = () => {
   const isSearchOpen = useSearchModalStore((state) => state.isOpen);
@@ -12,29 +10,11 @@ const BottomNav = () => {
   return (
     <div className="bg-logo-black/5 border-logo-blue/20 fixed bottom-0 left-0 z-20 w-full rounded-tl-3xl rounded-tr-3xl border-t backdrop-blur-lg md:hidden">
       <ul className="text-logo-white flex w-full justify-between px-8 py-5 text-xl">
-        <NavLink to="/">
-          <li>
-            <GoHomeFill />
-          </li>
-        </NavLink>
-
-        <NavLink to="/watchlist">
-          <li>
-            <LuListVideo />
-          </li>
-        </NavLink>
-
-        <NavLink to="/category">
-          <li>
-            <BiSolidCategoryAlt />
-          </li>
-        </NavLink>
-
-        <NavLink to="/recent">
-          <li>
-            <BiHistory />
-          </li>
-        </NavLink>
+        {navigationOptions.map(({ slug, icon }) => (
+          <NavLink to={slug} key={slug}>
+            <li>{React.createElement(icon)}</li>
+          </NavLink>
+        ))}
 
         <li
           onClick={() => {

@@ -1,12 +1,10 @@
 import { useSearchModalStore } from "@/store/SearchModalStore";
 import { BiSearchAlt } from "react-icons/bi";
-import { GoHomeFill } from "react-icons/go";
-import { LuListVideo } from "react-icons/lu";
 import { RiMovie2AiFill } from "react-icons/ri";
 import { NavLink } from "react-router-dom";
 import { motion } from "framer-motion";
-import { BiSolidCategoryAlt } from "react-icons/bi";
-import { BiHistory } from "react-icons/bi";
+import { navigationOptions } from "@/data/navigation-data";
+import React from "react";
 
 const Navigation = () => {
   const toggleModal = useSearchModalStore((state) => state.toggleModal);
@@ -24,48 +22,18 @@ const Navigation = () => {
         {/* nav links */}
         <div>
           <motion.ul className="text-logo-white flex flex-col justify-between space-y-8 text-2xl">
-            <NavLink to="/">
-              <motion.li
-                initial={{ opacity: 0.9, y: 0 }}
-                whileHover={{ scale: 1.1, opacity: 1 }}
-                whileTap={{ scale: 0.9, rotate: 10 }}
-                className="hover:text-logo-blue cursor-pointer"
-              >
-                <GoHomeFill />
-              </motion.li>
-            </NavLink>
-            <NavLink to="/watchlist">
-              <motion.li
-                initial={{ opacity: 0.9, y: 0 }}
-                whileHover={{ scale: 1.1, opacity: 1 }}
-                whileTap={{ scale: 0.9, rotate: 10 }}
-                className="hover:text-logo-blue cursor-pointer"
-              >
-                <LuListVideo />
-              </motion.li>
-            </NavLink>
-
-            <NavLink to="/category">
-              <motion.li
-                initial={{ opacity: 0.9, y: 0 }}
-                whileHover={{ scale: 1.1, opacity: 1 }}
-                whileTap={{ scale: 0.9, rotate: 10 }}
-                className="hover:text-logo-blue cursor-pointer"
-              >
-                <BiSolidCategoryAlt />
-              </motion.li>
-            </NavLink>
-
-            <NavLink to="/recent">
-              <motion.li
-                initial={{ opacity: 0.9, y: 0 }}
-                whileHover={{ scale: 1.1, opacity: 1 }}
-                whileTap={{ scale: 0.9, rotate: 10 }}
-                className="hover:text-logo-blue cursor-pointer"
-              >
-                <BiHistory />
-              </motion.li>
-            </NavLink>
+            {navigationOptions.map(({ slug, icon }) => (
+              <NavLink to={slug} key={slug}>
+                <motion.li
+                  initial={{ opacity: 0.9, y: 0 }}
+                  whileHover={{ scale: 1.1, opacity: 1 }}
+                  whileTap={{ scale: 0.9, rotate: 10 }}
+                  className="hover:text-logo-blue cursor-pointer"
+                >
+                  {React.createElement(icon)}
+                </motion.li>
+              </NavLink>
+            ))}
           </motion.ul>
         </div>
         {/* Search bar */}
