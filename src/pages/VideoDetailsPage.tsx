@@ -1,12 +1,12 @@
 import { useEffect, useMemo } from "react";
 import { useParams, useLocation } from "react-router-dom";
 import LoadingAnimation from "@/components/LoadingAnimation";
-import VideoMetadata from "@/components/VideoMetadata";
+import VideoMetadata from "@/sections/VideoDetailsContainer/VideoMetadata";
 import { useRecentlyViewStore } from "@/store/RecentlyViewStore";
 import { useWatchData } from "@/hooks/use-watch-data";
 import { GoBookmark, GoBookmarkFill } from "react-icons/go";
 
-const WatchVideoContainer = () => {
+const VideoDetailsPage = () => {
   const { id } = useParams();
   const location = useLocation();
   const addRecentlyView = useRecentlyViewStore((state) => state.addWatch);
@@ -136,4 +136,4 @@ const WatchVideoContainer = () => {
   );
 };
 
-export default WatchVideoContainer;
+export default VideoDetailsPage;

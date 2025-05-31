@@ -11,7 +11,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-const VideoWatchContainer = () => {
+const PlayVideoPage = () => {
   const { id } = useParams();
   const [searchParams] = useSearchParams();
 
@@ -74,4 +74,4 @@ const VideoWatchContainer = () => {
   );
 };
 
-export default VideoWatchContainer;
+export default PlayVideoPage;

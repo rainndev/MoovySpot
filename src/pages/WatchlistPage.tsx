@@ -1,7 +1,7 @@
-import RecentViewCard from "@/components/RecentViewCard";
+import DetailsCardWithTime from "@/components/DetailsCardWithTime";
 import { useWatchListStore } from "@/store/WatchListStore";
 
-const Watchlist = () => {
+const WatchlistPage = () => {
   const watchList = useWatchListStore((state) => state.watchList);
   // const clearRecentlyView = useRecentlyViewStore(
   //   (state) => state.clearRecentlyView,
@@ -45,7 +45,7 @@ const Watchlist = () => {
       <div className="h-full">
         <div className="grid grid-cols-2 gap-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-6">
           {sortedWatchList.map((movie, i: number) => (
-            <RecentViewCard key={i} movie={movie} />
+            <DetailsCardWithTime key={i} movie={movie} />
           ))}
         </div>
         <div className="h-20" />
@@ -54,4 +54,4 @@ const Watchlist = () => {
   );
 };
 
-export default Watchlist;
+export default WatchlistPage;

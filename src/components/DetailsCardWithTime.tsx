@@ -7,7 +7,7 @@ interface WatchCardProps {
   movie: MediaItem;
 }
 
-const RecentViewCard = ({ movie }: WatchCardProps) => {
+const DetailsCardWithTime = ({ movie }: WatchCardProps) => {
   const type = movie.type;
   const date = movie.release_date || movie.first_air_date;
   const timeAdded = movie.timeAdded;
@@ -55,4 +55,4 @@ const RecentViewCard = ({ movie }: WatchCardProps) => {
   );
 };
 
-export default RecentViewCard;
+export default DetailsCardWithTime;

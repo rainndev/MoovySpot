@@ -14,8 +14,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import LoadingAnimation from "./LoadingAnimation";
-import EpisodeCard from "./EpisodeCard";
+import LoadingAnimation from "../../components/LoadingAnimation";
+import EpisodeCard from "../../components/EpisodeCard";
 interface Genre {
   id: number;
   name: string;

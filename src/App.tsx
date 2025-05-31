@@ -1,13 +1,13 @@
-import Homepage from "./pages/Homepage";
-import Navigation from "./pages/Navigation";
+import HomePage from "@/pages/Homepage";
+import Navigation from "@/components/Navigation";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import WatchVideoContainer from "./pages/WatchVideoContainer";
-import BottomNav from "./components/BottomNav";
-import Watchlist from "./pages/Watchlist";
-import RecentView from "./pages/RecentView";
-import { useSearchModalStore } from "./store/SearchModalStore";
-import SearchModal from "./components/SearchModal";
-import VideoWatchContainer from "./components/VideoWatchContainer";
+import VideoDetailsPage from "@/pages/VideoDetailsPage";
+import BottomNav from "@/components/BottomNav";
+import WatchlistPage from "@/pages/WatchlistPage";
+import RecentViewPage from "@/pages/RecentViewPage";
+import { useSearchModalStore } from "@/store/SearchModalStore";
+import SearchModal from "@/components/SearchModal";
+import PlayVideoPage from "@/pages/PlayVideoPage";
 
 const App = () => {
   const isSearchOpen = useSearchModalStore((state) => state.isOpen);
@@ -18,11 +18,11 @@ const App = () => {
         <Navigation />
         <BottomNav />
         <Routes>
-          <Route path="/" element={<Homepage />} />
-          <Route path="/watchlist" element={<Watchlist />} />
-          <Route path="/recent" element={<RecentView />} />
-          <Route path="/watch/:id" element={<WatchVideoContainer />} />
-          <Route path="/play/:id" element={<VideoWatchContainer />} />
+          <Route path="/" element={<HomePage />} />
+          <Route path="/watchlist" element={<WatchlistPage />} />
+          <Route path="/recent" element={<RecentViewPage />} />
+          <Route path="/details/:id" element={<VideoDetailsPage />} />
+          <Route path="/play/:id" element={<PlayVideoPage />} />
         </Routes>
       </div>
     </Router>

@@ -36,7 +36,7 @@ export const formatImagePath = (path: string, size: sizeType) => {
 export const formatWatchUrl = (
   id: number,
   type: string,
-  slug: string = "watch",
+  slug: string = "details",
 ) => {
   if (!id || !type) return "";
 

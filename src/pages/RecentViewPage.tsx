@@ -1,7 +1,7 @@
-import RecentViewCard from "@/components/RecentViewCard";
+import DetailsCardWithTime from "@/components/DetailsCardWithTime";
 import { useRecentlyViewStore } from "@/store/RecentlyViewStore";
 
-const RecentView = () => {
+const RecentViewPage = () => {
   const recentlyView = useRecentlyViewStore((state) => state.recentlyView);
   // const clearRecentlyView = useRecentlyViewStore(
   //   (state) => state.clearRecentlyView,
@@ -36,7 +36,7 @@ const RecentView = () => {
       <div className="h-full">
         <div className="grid grid-cols-2 gap-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-6">
           {sortedRecentlyView.map((movie, i: number) => (
-            <RecentViewCard key={i} movie={movie} />
+            <DetailsCardWithTime key={i} movie={movie} />
           ))}
         </div>
 
@@ -46,4 +46,4 @@ const RecentView = () => {
   );
 };
 
-export default RecentView;
+export default RecentViewPage;

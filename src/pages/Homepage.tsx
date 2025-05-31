@@ -6,10 +6,10 @@ import { useWatchTypeStore } from "@/store/WatchTypeStore";
 import { useQueries } from "@tanstack/react-query";
 import { useQueryOptions } from "@/query-options/QueryOptions";
 import LoadingAnimation from "@/components/LoadingAnimation";
-import Disclaimer from "@/components/Disclaimer";
+import Disclaimer from "@/sections/homepage/Disclaimer";
 import { watchData } from "@/data/homepage-data";
 
-const Homepage = () => {
+const HomePage = () => {
   const type = useWatchTypeStore((state) => state.watchType);
 
   const queriesOptions = watchData[type].map((data) => {
@@ -57,4 +57,4 @@ const Homepage = () => {
   );
 };
 
-export default Homepage;
+export default HomePage;
