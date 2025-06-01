@@ -30,7 +30,9 @@ const fetchMovies = async (
 const CategoryPage = () => {
   const [selectedGenre, setSelectedGenre] = useState<number>();
   const [selectedType, setSelectedType] = useState<MediaType>("movie");
-  const { ref: loadMoreRef, inView } = useInView();
+  const { ref: loadMoreRef, inView } = useInView({
+    threshold: 1,
+  });
 
   const { data: GenreList } = useGenreOptions(selectedType);
   const { data, fetchNextPage, isLoading, hasNextPage, isFetchingNextPage } =
@@ -50,6 +52,7 @@ const CategoryPage = () => {
   useEffect(() => {
     if (inView && hasNextPage && !isFetchingNextPage) {
       fetchNextPage();
+      console.log("Fetching next page...");
     }
   }, [inView, hasNextPage, isFetchingNextPage]);
 
@@ -111,6 +114,7 @@ const CategoryPage = () => {
       {/* loading state */}
       {isLoading && <LoadingAnimation />}
       {/* movies list */}
+
       <div className="mt-5 grid w-full grid-cols-2 gap-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-6">
         {data?.pages.map((page, i) => (
           <React.Fragment key={i}>
