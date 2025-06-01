@@ -25,14 +25,13 @@ const WatchlistPage = () => {
       </div>
     );
   }
-  console.log("recentlyWatched", watchList);
 
   return (
     <div className="flex h-dvh w-full flex-col items-center p-3 md:p-10 md:pl-25">
       {/* header */}
 
       <div className="mt-5 mb-10 w-full">
-        <h1 className="font-[ClashDisplay] text-[clamp(1.125rem,3vw,2rem)] font-medium">
+        <h1 className="font-[ClashDisplay] text-[clamp(1.3rem,3vw,2rem)] font-medium">
           Watch<span className="text-logo-blue">list</span>
         </h1>
 

@@ -27,7 +27,7 @@ const RecentViewPage = () => {
     <div className="flex h-dvh w-full flex-col items-center p-3 pb-20 md:p-10 md:pl-25">
       {/* header */}
       <div className="mt-5 mb-10 w-full">
-        <h1 className="font-[ClashDisplay] text-[clamp(1.125rem,3vw,2rem)] font-medium">
+        <h1 className="font-[ClashDisplay] text-[clamp(1.3rem,3vw,2rem)] font-medium">
           Recently <span className="text-logo-blue">Viewed</span>
         </h1>
       </div>

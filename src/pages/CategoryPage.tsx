@@ -61,7 +61,7 @@ const CategoryPage = () => {
     <div className="flex h-dvh w-full flex-col items-center p-3 pb-20 md:p-10 md:pl-25">
       {/* header */}
       <div className="flex w-full flex-col items-center">
-        <h1 className="mt-5 mb-2 w-full text-start font-[ClashDisplay] text-[clamp(1.125rem,3vw,2rem)] font-medium">
+        <h1 className="mt-5 mb-2 w-full text-start font-[ClashDisplay] text-[clamp(1.3rem,3vw,2rem)] font-medium">
           Category{" "}
           <span className="text-logo-blue">
             {selectedType === "movie" ? "Movie" : "TV "}
@@ -91,7 +91,7 @@ const CategoryPage = () => {
 
           <li
             key={"seperator"}
-            className="bg-logo-blue mx-5 my-[2px] rounded-xl px-[1px]"
+            className="bg-logo-blue mx-3 my-[2px] rounded-xl px-[1px] md:mx-4"
           ></li>
 
           {GenreList?.map((genre: GenreItem) => (
