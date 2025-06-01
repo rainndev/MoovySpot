@@ -53,6 +53,10 @@ const CategoryPage = () => {
     }
   }, [inView, hasNextPage, isFetchingNextPage]);
 
+  useEffect(() => {
+    setSelectedGenre(undefined);
+  }, [selectedType]);
+
   return (
     <div className="flex h-dvh w-full flex-col items-center p-3 pb-20 md:p-10 md:pl-25">
       {/* header */}
@@ -71,7 +75,7 @@ const CategoryPage = () => {
             onClick={() => {
               setSelectedType("movie");
             }}
-            className={`${selectedType === "movie" ? "bg-logo-blue text-logo-black" : "bg-logo-white/10"} hover:bg-logo-white/20 cursor-pointer snap-start rounded-full px-4 py-2 text-[clamp(.6rem,3vw,.8rem)] font-normal text-nowrap transition-colors duration-300 ease-in-out`}
+            className={`${selectedType === "movie" ? "bg-logo-blue text-logo-black drpop-shadow-logo-blue font-semibold drop-shadow-2xl" : "bg-logo-white/10 font-normal"} hover:bg-logo-white/20 cursor-pointer snap-start rounded-full px-4 py-2 text-[clamp(.6rem,3vw,.8rem)] font-normal text-nowrap transition-colors duration-300 ease-in-out`}
           >
             Movie
           </li>
@@ -80,10 +84,15 @@ const CategoryPage = () => {
             onClick={() => {
               setSelectedType("tv");
             }}
-            className={`${selectedType === "tv" ? "bg-logo-blue text-logo-black" : "bg-logo-white/10"} hover:bg-logo-white/20 cursor-pointer snap-start rounded-full px-4 py-2 text-[clamp(.6rem,3vw,.8rem)] font-normal text-nowrap transition-colors duration-300 ease-in-out`}
+            className={`${selectedType === "tv" ? "bg-logo-blue text-logo-black drpop-shadow-logo-blue font-semibold drop-shadow-2xl" : "bg-logo-white/10 font-normal"} hover:bg-logo-white/20 cursor-pointer snap-start rounded-full px-4 py-2 text-[clamp(.6rem,3vw,.8rem)] font-normal text-nowrap transition-colors duration-300 ease-in-out`}
           >
             TV Show
           </li>
+
+          <li
+            key={"seperator"}
+            className="bg-logo-blue mx-5 my-[2px] rounded-xl px-[1px]"
+          ></li>
 
           {GenreList?.map((genre: GenreItem) => (
             <li
@@ -91,7 +100,7 @@ const CategoryPage = () => {
               onClick={() => {
                 setSelectedGenre(genre.id);
               }}
-              className={`${genre.id === selectedGenre ? "bg-logo-blue text-logo-black shadow-logo-blue shadow-2xl" : "bg-logo-white/10"} hover:bg-logo-white/20 cursor-pointer snap-start rounded-full px-5 py-2 text-center text-[clamp(.6rem,3vw,.8rem)] font-normal text-nowrap transition-colors duration-300 ease-in-out`}
+              className={`${genre.id === selectedGenre ? "bg-logo-blue text-logo-black drpop-shadow-logo-blue font-semibold drop-shadow-2xl" : "bg-logo-white/10 font-normal"} hover:bg-logo-blue hover:text-logo-black cursor-pointer snap-start rounded-full px-5 py-2 text-center text-[clamp(.6rem,3vw,.8rem)] text-nowrap transition-colors duration-300 ease-in-out`}
             >
               {genre.name}
             </li>

@@ -42,8 +42,8 @@ const WatchlistPage = () => {
       </div>
 
       {/* content */}
-      <div className="h-full">
-        <div className="grid grid-cols-2 gap-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-6">
+      <div className="h-full w-full">
+        <div className="grid w-full grid-cols-2 gap-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-6">
           {sortedWatchList.map((movie, i: number) => (
             <DetailsCardWithTime key={i} movie={movie} />
           ))}

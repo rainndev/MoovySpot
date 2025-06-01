@@ -21,7 +21,7 @@ const DetailsCardWithTime = ({ movie }: WatchCardProps) => {
         className={`group h-full ${timeAdded ? "w-full" : "w-[120px] md:w-[180px] xl:w-[230px]"} flex-shrink-0 snap-start overflow-hidden`}
       >
         <div className="bg-logo-black/50 relative w-full overflow-hidden rounded-lg transition-all duration-300 ease-in-out hover:shadow-xl md:rounded-2xl">
-          <div className="aspect-[3/4]">
+          <div className="w-full">
             <img
               onContextMenu={(e) => e.preventDefault()}
               onDragStart={(e) => e.preventDefault()}
@@ -29,7 +29,7 @@ const DetailsCardWithTime = ({ movie }: WatchCardProps) => {
               src={formatImagePath(movie.poster_path, "w300")}
               alt={movie.title || movie.name}
               draggable="false"
-              className={`aspect-[3/4] scale-100 object-cover opacity-90 shadow-lg transition-all duration-300 ease-in-out hover:scale-105 hover:opacity-50 active:scale-105 active:opacity-50`}
+              className="aspect-[3/4] h-full w-full scale-100 object-cover opacity-90 shadow-lg transition-all duration-300 ease-in-out hover:scale-105 hover:opacity-50 active:scale-105 active:opacity-50"
             />
           </div>
 
