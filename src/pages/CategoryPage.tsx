@@ -65,7 +65,7 @@ const CategoryPage = () => {
         </h1>
 
         {/* option category */}
-        <ul className="text-logo-white hide-scrollbar mb-5 flex w-full snap-x snap-proximity gap-1 overflow-x-scroll md:gap-2">
+        <ul className="text-logo-white hide-scrollbar mb-5 flex w-full snap-x snap-proximity gap-1 overflow-x-scroll md:gap-2 lg:flex-wrap">
           <li
             key={"movie"}
             onClick={() => {
@@ -102,7 +102,7 @@ const CategoryPage = () => {
       {/* loading state */}
       {isLoading && <LoadingAnimation />}
       {/* movies list */}
-      <div className="mt-5 grid grid-cols-2 gap-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-6">
+      <div className="mt-5 grid w-full grid-cols-2 gap-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-6">
         {data?.pages.map((page, i) => (
           <React.Fragment key={i}>
             {page.results.map((data: MediaItem) => (
