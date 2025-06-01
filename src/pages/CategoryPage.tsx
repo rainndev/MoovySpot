@@ -30,9 +30,7 @@ const fetchMovies = async (
 const CategoryPage = () => {
   const [selectedGenre, setSelectedGenre] = useState<number>();
   const [selectedType, setSelectedType] = useState<MediaType>("movie");
-  const { ref: loadMoreRef, inView } = useInView({
-    threshold: 1,
-  });
+  const { ref: loadMoreRef, inView } = useInView();
 
   const { data: GenreList } = useGenreOptions(selectedType);
   const { data, fetchNextPage, isLoading, hasNextPage, isFetchingNextPage } =
@@ -107,7 +105,7 @@ const CategoryPage = () => {
             >
               {genre.name}
             </li>
-          )) || "No categories available"}
+          )) || []}
         </ul>
       </div>
 
