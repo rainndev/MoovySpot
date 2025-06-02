@@ -126,7 +126,7 @@ const VideoDetailsPage = () => {
                 )}
 
                 {/* Gradient Overlays */}
-                <div className="from-logo-black absolute inset-0 hidden bg-gradient-to-r from-1% to-transparent md:block" />
+                <div className="from-logo-black absolute inset-0 hidden bg-gradient-to-r to-transparent to-40% md:block" />
                 <div className="from-logo-black absolute inset-0 bg-gradient-to-t from-30% to-transparent" />
 
                 {/* Bookmark Icon */}
