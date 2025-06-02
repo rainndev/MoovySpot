@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useSeasonOptions } from "@/query-options/QuerySeasonOptions";
+import { MdOutlineVideocam, MdOutlineVideocamOff } from "react-icons/md";
 import type { SeasonInfo, Episode } from "@/types/TvSeriesTypes";
 
 import {
@@ -37,6 +38,8 @@ const VideoMetadata = ({ data }: VideoMetadataProps) => {
     watchSeasons,
     watchSeasonsData,
     watchDate,
+    showTrailer,
+    setShowTrailer,
     numericId,
     MEDIA_TYPE,
   } = data;
@@ -58,7 +61,7 @@ const VideoMetadata = ({ data }: VideoMetadataProps) => {
   });
 
   return (
-    <div className="z-2 -translate-y-20 p-5 md:-translate-y-50">
+    <div className="z-2 -translate-y-20 p-5 md:-translate-y-50 lg:-translate-y-100">
       {/* title */}
 
       <div>
@@ -138,8 +141,18 @@ const VideoMetadata = ({ data }: VideoMetadataProps) => {
             Watch Now
           </button>
         </Link>
-        <button className="border-logo-white/20 text-logo-white hover:bg-logo-white/10 active:bg-logo-white/10 cursor-pointer rounded-full border px-7 py-2 font-[ClashDisplay] text-[clamp(.7rem,3vw,1rem)] font-medium transition-all duration-300 ease-in-out">
-          Trailer
+        <button
+          onClick={() => setShowTrailer(!showTrailer)}
+          className={`border-logo-white/20 hover:bg-logo-white/10 active:bg-logo-white/10 flex cursor-pointer items-center gap-2 rounded-full border px-7 py-2 font-[ClashDisplay] text-[clamp(.7rem,3vw,1rem)] font-medium transition-all duration-300 ease-in-out ${showTrailer ? "bg-logo-white/10" : ""}`}
+        >
+          <span>
+            {showTrailer ? (
+              <MdOutlineVideocam className="text-logo-blue drop-shadow-logo-blue drop-shadow-2xl" />
+            ) : (
+              <MdOutlineVideocamOff />
+            )}
+          </span>
+          <span>Trailer</span>
         </button>
       </div>
 

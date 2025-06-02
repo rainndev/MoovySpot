@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useParams, useLocation } from "react-router-dom";
 import LoadingAnimation from "@/components/LoadingAnimation";
 import VideoMetadata from "@/sections/VideoDetailsContainer/VideoMetadata";
@@ -10,6 +10,7 @@ const VideoDetailsPage = () => {
   const { id } = useParams();
   const location = useLocation();
   const addRecentlyView = useRecentlyViewStore((state) => state.addWatch);
+  const [showTrailer, setShowTrailer] = useState(false);
   const queryParams = new URLSearchParams(location.search);
   const MEDIA_TYPE = queryParams.get("type");
   const numericId = Number(id);
@@ -53,6 +54,8 @@ const VideoDetailsPage = () => {
       watchTagline,
       watchLogoUrl,
       watchEpisodes,
+      showTrailer,
+      setShowTrailer,
       watchTitle,
       MEDIA_TYPE,
       watchSeasonsData,
@@ -70,6 +73,8 @@ const VideoDetailsPage = () => {
       watchLogoUrl,
       watchEpisodes,
       watchTitle,
+      showTrailer,
+      setShowTrailer,
       numericId,
       watchSeasonsData,
       MEDIA_TYPE,
@@ -109,7 +114,7 @@ const VideoDetailsPage = () => {
             {/* banner poster */}
             <div className="overflow-hidden">
               <div className="relative flex aspect-video h-full w-full items-center justify-center overflow-hidden">
-                {trailerUrl ? (
+                {showTrailer ? (
                   <iframe
                     src={trailerUrl}
                     title="Trailer"
@@ -128,6 +133,9 @@ const VideoDetailsPage = () => {
                 {/* Gradient Overlays */}
                 <div className="from-logo-black absolute inset-0 hidden bg-gradient-to-r to-transparent to-40% md:block" />
                 <div className="from-logo-black absolute inset-0 bg-gradient-to-t from-30% to-transparent" />
+                {showTrailer && (
+                  <div className="from-logo-black absolute inset-0 hidden bg-gradient-to-b from-10% to-transparent to-30% md:block" />
+                )}
 
                 {/* Bookmark Icon */}
                 <div
