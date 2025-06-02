@@ -90,11 +90,6 @@ const CategoryPage = () => {
             TV Show
           </li>
 
-          <li
-            key={"seperator"}
-            className="bg-logo-blue mx-3 my-[2px] rounded-xl px-[1px] md:mx-4"
-          ></li>
-
           {GenreList?.map((genre: GenreItem) => (
             <li
               key={genre.id}
