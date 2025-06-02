@@ -1,6 +1,6 @@
-import { formatImagePath, getLogoUrl } from "@/lib/watch-utils";
+import { formatImagePath, formatVideoUrl, getLogoUrl } from "@/lib/watch-utils";
 import { useOptionsById, useOptionsImages } from "@/query-options/QueryOptions";
-import { useSeasonOptions } from "@/query-options/QuerySeasonOptions";
+import { useVideoOptions } from "@/query-options/QueryVideoOptions";
 import { useWatchListStore } from "@/store/WatchListStore";
 import { useQueries } from "@tanstack/react-query";
 import { toast } from "sonner";
@@ -14,12 +14,14 @@ export const useWatchData = (MEDIA_TYPE: string, id: number) => {
     queries: [
       useOptionsById(MEDIA_TYPE, id),
       useOptionsImages(MEDIA_TYPE, id),
-      useSeasonOptions(1, +id),
+      useVideoOptions(MEDIA_TYPE, id),
     ],
   });
 
-  const [watchData, watchImage] = queries;
+  const [watchData, watchImage, videoDetails] = queries;
 
+  const trailerUrl =
+    videoDetails.data && formatVideoUrl(videoDetails.data[0]?.key);
   const isLoading = watchData.isLoading || watchImage.isLoading;
   const isError = watchData.isError || watchImage.isError;
   const error = watchData.error || watchImage.error;
@@ -67,6 +69,7 @@ export const useWatchData = (MEDIA_TYPE: string, id: number) => {
     isBookmarked,
     isLoading,
     isError,
+    trailerUrl,
     error,
     watchTitle,
     watchData,

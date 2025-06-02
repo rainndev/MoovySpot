@@ -27,6 +27,7 @@ const VideoDetailsPage = () => {
     watchData,
     watchTitle,
     watchDate,
+    trailerUrl,
     watchTagline,
     watchGenres,
     watchOverview,
@@ -43,6 +44,7 @@ const VideoDetailsPage = () => {
     handleAddToWatchlist,
   } = useWatchData(MEDIA_TYPE, numericId);
 
+  console.log("trailer url", trailerUrl);
   const metaData = useMemo(
     () => ({
       watchGenres,
@@ -105,29 +107,42 @@ const VideoDetailsPage = () => {
         <div className="w-full pb-20">
           <div className="flex w-full flex-col">
             {/* banner poster */}
-            <div
-              className="relative aspect-video h-50 sm:h-80 md:h-100 lg:h-150"
-              style={{
-                backgroundImage: `
-                linear-gradient(to right, var(--color-logo-black) 1%, rgba(0, 0, 0, 0) 80%),
-                linear-gradient(to top, var(--color-logo-black) 1%, rgba(0, 0, 0, 0) 100%),
-                url('${watchBackdropUrl}')`,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-                backgroundRepeat: "no-repeat",
-              }}
-            >
-              <div
-                onClick={() => handleAddToWatchlist()}
-                className="absolute top-5 right-5 ml-2 text-2xl md:top-10 md:right-10 md:text-3xl"
-              >
-                {isBookmarked ? (
-                  <GoBookmarkFill className="text-logo-blue drop-shadow-logo-blue drop-shadow-2xl" />
+            <div className="overflow-hidden">
+              <div className="relative flex aspect-video h-full w-full items-center justify-center overflow-hidden">
+                {trailerUrl ? (
+                  <iframe
+                    src={trailerUrl}
+                    title="Trailer"
+                    className="fade-in pointer-events-none absolute inset-0 h-[120%] w-full -translate-y-15 opacity-100 transition-opacity duration-300 md:h-full"
+                    allow="autoplay; encrypted-media"
+                    allowFullScreen
+                  ></iframe>
                 ) : (
-                  <GoBookmark className="text-logo-white/90 hover:text-logo-blue transition-colors duration-300" />
+                  <img
+                    src={watchBackdropUrl}
+                    alt="Backdrop"
+                    className="absolute inset-0 h-full w-full object-cover object-center"
+                  />
                 )}
+
+                {/* Gradient Overlays */}
+                <div className="from-logo-black absolute inset-0 hidden bg-gradient-to-r from-1% to-transparent md:block" />
+                <div className="from-logo-black absolute inset-0 bg-gradient-to-t from-30% to-transparent" />
+
+                {/* Bookmark Icon */}
+                <div
+                  onClick={() => handleAddToWatchlist()}
+                  className="absolute top-5 right-5 ml-2 text-2xl md:top-10 md:right-10 md:text-3xl"
+                >
+                  {isBookmarked ? (
+                    <GoBookmarkFill className="text-logo-blue drop-shadow-logo-blue drop-shadow-2xl" />
+                  ) : (
+                    <GoBookmark className="text-logo-white/90 hover:text-logo-blue transition-colors duration-300" />
+                  )}
+                </div>
               </div>
             </div>
+
             <VideoMetadata data={metaData} />
           </div>
         </div>

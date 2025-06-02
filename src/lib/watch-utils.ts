@@ -85,3 +85,7 @@ export const getLogoUrl = (watchImage: WatchImageTypes, lang: string) => {
     }
   }
 };
+
+export const formatVideoUrl = (id: string) => {
+  return `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&loop=1&playlist=${id}&controls=0&showinfo=0&&modestbranding=1&&rel=0`;
+};
