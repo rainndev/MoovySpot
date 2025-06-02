@@ -5,6 +5,7 @@ import VideoMetadata from "@/sections/VideoDetailsContainer/VideoMetadata";
 import { useRecentlyViewStore } from "@/store/RecentlyViewStore";
 import { useWatchData } from "@/hooks/use-watch-data";
 import { GoBookmark, GoBookmarkFill } from "react-icons/go";
+import { motion } from "framer-motion";
 
 const VideoDetailsPage = () => {
   const { id } = useParams();
@@ -123,10 +124,14 @@ const VideoDetailsPage = () => {
                     allowFullScreen
                   ></iframe>
                 ) : (
-                  <img
+                  <motion.img
+                    initial={{ opacity: 0, scale: 1.05 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.5 }}
                     src={watchBackdropUrl}
                     alt="Backdrop"
-                    className="absolute inset-0 h-full w-full object-cover object-center"
+                    className="absolute inset-0 h-full w-full object-cover object-center transition-opacity duration-300"
                   />
                 )}
 
