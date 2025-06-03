@@ -68,6 +68,8 @@ const VideoMetadata = ({ data }: VideoMetadataProps) => {
         {watchLogoUrl ? (
           <img
             src={watchLogoUrl}
+            onContextMenu={(e) => e.preventDefault()}
+            onDragStart={(e) => e.preventDefault()}
             className={`drop-shadow-logo-black/50 w-full max-w-[500px] object-cover py-5 drop-shadow-2xl`}
             alt={watchTitle}
           />
@@ -134,13 +136,13 @@ const VideoMetadata = ({ data }: VideoMetadataProps) => {
           to={
             isMovie
               ? formatWatchUrl(numericId, MEDIA_TYPE, "play")
-              : `/play/${numericId}?type=tv&season=${watchSeasonsData[0].season_number}&episode=${seasonData?.episodes[0]?.episode_number}`
+              : `/play/${numericId}?type=tv&season=${watchSeasonsData[0].season_number}&episode=1`
           }
         >
           <button className="bg-logo-blue drop-shadow-logo-blue/5 text-logo-black hover:bg-logo-blue/60 active:bg-logo-blue/60 flex cursor-pointer items-center rounded-full px-10 py-2 font-[ClashDisplay] text-[clamp(.7rem,3vw,1rem)] font-medium text-nowrap drop-shadow-2xl transition-all duration-300 ease-in-out">
             {isMovie
               ? "Watch Now"
-              : `Watch (S${watchSeasonsData[0].season_number} - EP${seasonData?.episodes[0]?.episode_number})`}
+              : `Watch (S${watchSeasonsData[0].season_number} - EP1)`}
           </button>
         </Link>
         <button
