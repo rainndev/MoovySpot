@@ -32,6 +32,7 @@ const VideoMetadata = ({ data }: VideoMetadataProps) => {
     watchOverview,
     watchLogoUrl,
     watchTitle,
+    isTrailerPlayble,
     watchRuntime,
     watchTagline,
     watchEpisodes,
@@ -140,23 +141,28 @@ const VideoMetadata = ({ data }: VideoMetadataProps) => {
           }
         >
           <button className="bg-logo-blue drop-shadow-logo-blue/5 text-logo-black hover:bg-logo-blue/60 active:bg-logo-blue/60 flex cursor-pointer items-center rounded-full px-10 py-2 font-[ClashDisplay] text-[clamp(.7rem,3vw,1rem)] font-medium text-nowrap drop-shadow-2xl transition-all duration-300 ease-in-out">
-            {isMovie
-              ? "Watch Now"
-              : `Watch (S${watchSeasonsData[0].season_number} - EP1)`}
+            <p>
+              {isMovie
+                ? "Watch Now"
+                : `Watch (S${watchSeasonsData[0].season_number} - EP1)`}
+            </p>
           </button>
         </Link>
         <button
+          disabled={!isTrailerPlayble}
           onClick={() => setShowTrailer(!showTrailer)}
-          className={`border-logo-white/20 hover:bg-logo-white/10 active:bg-logo-white/10 flex cursor-pointer items-center gap-2 rounded-full border px-7 py-2 font-[ClashDisplay] text-[clamp(.7rem,3vw,1rem)] font-medium transition-all duration-300 ease-in-out ${showTrailer ? "bg-logo-white/10" : ""}`}
+          className={`hover:bg-logo-white/10 active:bg-logo-white/10 flex cursor-pointer items-center gap-2 rounded-full border px-7 py-2 font-[ClashDisplay] text-[clamp(.7rem,3vw,1rem)] font-medium transition-all duration-300 ease-in-out ${showTrailer ? "bg-logo-white/10" : ""} ${!isTrailerPlayble ? "border-logo-white/10 text-logo-white/10" : "border-logo-white/20"}`}
         >
           <span>
             {showTrailer ? (
-              <MdOutlineVideocam className="text-logo-blue drop-shadow-logo-blue drop-shadow-2xl" />
+              <MdOutlineVideocam
+                className={`${!isTrailerPlayble ? "text-logo-white/10" : "text-logo-blue drop-shadow-logo-blue"} drop-shadow-2xl`}
+              />
             ) : (
               <MdOutlineVideocamOff />
             )}
           </span>
-          <span>Trailer</span>
+          <span>{isTrailerPlayble ? "Trailer" : "N/A"}</span>
         </button>
       </div>
 

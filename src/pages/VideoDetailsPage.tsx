@@ -6,6 +6,8 @@ import { useRecentlyViewStore } from "@/store/RecentlyViewStore";
 import { useWatchData } from "@/hooks/use-watch-data";
 import { GoBookmark, GoBookmarkFill } from "react-icons/go";
 import { motion } from "framer-motion";
+import TrailerVideo from "@/components/TrailerVideo";
+import ReactPlayer from "react-player";
 
 const VideoDetailsPage = () => {
   const { id } = useParams();
@@ -46,7 +48,8 @@ const VideoDetailsPage = () => {
     handleAddToWatchlist,
   } = useWatchData(MEDIA_TYPE, numericId);
 
-  console.log("trailer url", trailerUrl);
+  const isTrailerPlayble = ReactPlayer.canPlay(trailerUrl);
+
   const metaData = useMemo(
     () => ({
       watchGenres,
@@ -59,6 +62,7 @@ const VideoDetailsPage = () => {
       setShowTrailer,
       watchTitle,
       MEDIA_TYPE,
+      isTrailerPlayble,
       watchSeasonsData,
       numericId,
       watchSeasons,
@@ -79,6 +83,7 @@ const VideoDetailsPage = () => {
       numericId,
       watchSeasonsData,
       MEDIA_TYPE,
+      isTrailerPlayble,
       watchSeasons,
       handleAddToWatchlist,
       watchDate,
@@ -113,16 +118,14 @@ const VideoDetailsPage = () => {
         <div className="w-full pb-20">
           <div className="flex w-full flex-col">
             {/* banner poster */}
+
             <div className="overflow-hidden">
               <div className="relative flex aspect-video h-full w-full items-center justify-center overflow-hidden">
                 {showTrailer ? (
-                  <iframe
-                    src={trailerUrl}
-                    title="Trailer"
-                    className="fade-in pointer-events-none absolute inset-0 h-[120%] w-full -translate-y-15 opacity-100 transition-opacity duration-300 md:h-full"
-                    allow="autoplay; encrypted-media"
-                    allowFullScreen
-                  ></iframe>
+                  <TrailerVideo
+                    trailerUrl={trailerUrl}
+                    setShowTrailer={setShowTrailer}
+                  />
                 ) : (
                   <motion.img
                     initial={{ opacity: 0, scale: 1.05 }}
