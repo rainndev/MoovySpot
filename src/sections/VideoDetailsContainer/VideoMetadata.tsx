@@ -3,7 +3,7 @@ import { CiCalendarDate } from "react-icons/ci";
 import { IoMdTime } from "react-icons/io";
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQueries } from "@tanstack/react-query";
 import { useSeasonOptions } from "@/query-options/QuerySeasonOptions";
 import { MdOutlineVideocam, MdOutlineVideocamOff } from "react-icons/md";
 import type { SeasonInfo, Episode } from "@/types/TvSeriesTypes";
@@ -17,6 +17,10 @@ import {
 } from "@/components/ui/select";
 import LoadingAnimation from "../../components/LoadingAnimation";
 import EpisodeCard from "../../components/EpisodeCard";
+import { useCollectionOptions } from "@/query-options/QueryCollectionOptions";
+import WatchCard from "@/components/WatchCard";
+import type { MediaItem } from "@/types/TMDBTypes";
+import CollectionCard from "@/components/CollectionCard";
 interface Genre {
   id: number;
   name: string;
@@ -40,6 +44,7 @@ const VideoMetadata = ({ data }: VideoMetadataProps) => {
     watchSeasonsData,
     watchDate,
     showTrailer,
+    collection_id,
     setShowTrailer,
     numericId,
     MEDIA_TYPE,
@@ -49,17 +54,26 @@ const VideoMetadata = ({ data }: VideoMetadataProps) => {
   const [season, setSeason] = useState(
     String(watchSeasonsData[0]?.season_number),
   );
+
   const isMovie = MEDIA_TYPE === "movie";
 
-  const {
-    data: seasonData,
-    isLoading,
-    error,
-    isError,
-  } = useQuery({
-    ...useSeasonOptions(+season, numericId),
-    enabled: !isMovie,
+  // const { data: seasonData, isLoading, error, isError } = useQuery();
+
+  const [seasonDetails, collectionData] = useQueries({
+    queries: [
+      {
+        ...useSeasonOptions(+season, numericId),
+        enabled: !isMovie,
+      },
+      {
+        ...useCollectionOptions(collection_id),
+        enabled:
+          collection_id !== null && collection_id !== undefined && isMovie,
+      },
+    ],
   });
+  if (!seasonDetails) return;
+  const { data: seasonData, isLoading, error, isError } = seasonDetails;
 
   return (
     <div className="z-2 -translate-y-20 p-5 md:-translate-y-50 lg:-translate-y-100">
@@ -207,6 +221,24 @@ const VideoMetadata = ({ data }: VideoMetadataProps) => {
               ))}
           </div>
         </div>
+      )}
+
+      {/* for movie collection */}
+      {isMovie && collectionData.isSuccess && (
+        <>
+          <h1 className="mt-10 font-[SansationLight] text-[clamp(.8rem,1.5vw,1rem)]">
+            {collectionData?.data?.name}
+          </h1>
+          <div className="mt-5 grid w-full grid-cols-2 gap-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-6">
+            {collectionData &&
+              collectionData?.data?.parts.map((data: MediaItem) => (
+                <CollectionCard
+                  key={data.id}
+                  movie={{ ...data, type: "movie" }}
+                />
+              ))}
+          </div>
+        </>
       )}
     </div>
   );

@@ -19,6 +19,7 @@ export const useWatchData = (MEDIA_TYPE: string, id: number) => {
   });
 
   const [watchData, watchImage, videoDetails] = queries;
+  const collection_id = watchData.data?.belongs_to_collection?.id || null;
 
   const trailerUrl =
     videoDetails.data && formatVideoUrl(videoDetails.data[0]?.key);
@@ -78,6 +79,7 @@ export const useWatchData = (MEDIA_TYPE: string, id: number) => {
     watchOverview,
     watchRuntime,
     watchEpisodes,
+    collection_id,
     watchLogoUrl,
     watchSeasonsData,
     watchSeasons,

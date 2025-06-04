@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useLocation } from "react-router-dom";
 import LoadingAnimation from "@/components/LoadingAnimation";
 import VideoMetadata from "@/sections/VideoDetailsContainer/VideoMetadata";
@@ -39,6 +39,7 @@ const VideoDetailsPage = () => {
     watchRuntime,
     watchSeasons,
     watchLogoUrl,
+    collection_id,
     watchBackdropUrl,
     isLoading,
     watchSeasonsData,
@@ -49,47 +50,29 @@ const VideoDetailsPage = () => {
   } = useWatchData(MEDIA_TYPE, numericId);
 
   const isTrailerPlayble = ReactPlayer.canPlay(trailerUrl);
+  // console.log("collection parts ----------", collection_data.data?.parts);
+  // console.log("collection title ----------", collection_data.data?.name);
 
-  const metaData = useMemo(
-    () => ({
-      watchGenres,
-      watchOverview,
-      watchRuntime,
-      watchTagline,
-      watchLogoUrl,
-      watchEpisodes,
-      showTrailer,
-      setShowTrailer,
-      watchTitle,
-      MEDIA_TYPE,
-      isTrailerPlayble,
-      watchSeasonsData,
-      numericId,
-      watchSeasons,
-      handleAddToWatchlist,
-      watchDate,
-      isBookmarked,
-    }),
-    [
-      watchGenres,
-      watchOverview,
-      watchRuntime,
-      watchTagline,
-      watchLogoUrl,
-      watchEpisodes,
-      watchTitle,
-      showTrailer,
-      setShowTrailer,
-      numericId,
-      watchSeasonsData,
-      MEDIA_TYPE,
-      isTrailerPlayble,
-      watchSeasons,
-      handleAddToWatchlist,
-      watchDate,
-      isBookmarked,
-    ],
-  );
+  const metaData = {
+    watchGenres,
+    watchOverview,
+    watchRuntime,
+    watchTagline,
+    watchLogoUrl,
+    watchEpisodes,
+    showTrailer,
+    setShowTrailer,
+    watchTitle,
+    MEDIA_TYPE,
+    isTrailerPlayble,
+    watchSeasonsData,
+    numericId,
+    collection_id,
+    watchSeasons,
+    handleAddToWatchlist,
+    watchDate,
+    isBookmarked,
+  };
 
   useEffect(() => {
     if (watchData?.data) {
