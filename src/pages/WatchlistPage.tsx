@@ -2,6 +2,26 @@ import DetailsCardWithTime from "@/components/DetailsCardWithTime";
 import { useWatchListStore } from "@/store/WatchListStore";
 import { useState } from "react";
 import { FaEdit } from "react-icons/fa";
+import { AnimatePresence, motion } from "framer-motion";
+
+const container = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+    },
+  },
+  exit: { opacity: 0 },
+};
+
+const item = {
+  hidden: { opacity: 0 },
+  show: { opacity: 1 },
+  exit: {
+    opacity: 0,
+  },
+};
 
 const WatchlistPage = () => {
   const watchList = useWatchListStore((state) => state.watchList);
@@ -55,11 +75,20 @@ const WatchlistPage = () => {
 
       {/* content */}
       <div className="h-full w-full">
-        <div className="grid w-full grid-cols-2 gap-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-6">
-          {sortedWatchList.map((movie, i: number) => (
-            <DetailsCardWithTime isEdit={isEdit} key={i} movie={movie} />
-          ))}
-        </div>
+        <motion.div
+          variants={container}
+          initial="hidden"
+          animate="show"
+          className="grid w-full grid-cols-2 gap-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-6"
+        >
+          <AnimatePresence>
+            {sortedWatchList.map((movie) => (
+              <motion.div key={movie.id} variants={item} layout>
+                <DetailsCardWithTime isEdit={isEdit} movie={movie} />
+              </motion.div>
+            ))}
+          </AnimatePresence>
+        </motion.div>
         <div className="h-20" />
       </div>
     </div>
