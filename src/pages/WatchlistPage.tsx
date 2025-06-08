@@ -1,8 +1,11 @@
 import DetailsCardWithTime from "@/components/DetailsCardWithTime";
 import { useWatchListStore } from "@/store/WatchListStore";
+import { useState } from "react";
+import { FaEdit } from "react-icons/fa";
 
 const WatchlistPage = () => {
   const watchList = useWatchListStore((state) => state.watchList);
+  const [isEdit, setEdit] = useState(false);
   // const clearRecentlyView = useRecentlyViewStore(
   //   (state) => state.clearRecentlyView,
   // );
@@ -31,9 +34,19 @@ const WatchlistPage = () => {
       {/* header */}
 
       <div className="mt-5 mb-10 w-full">
-        <h1 className="font-[ClashDisplay] text-[clamp(1.3rem,3vw,2rem)] font-medium">
-          Watch<span className="text-logo-blue">list</span>
-        </h1>
+        <div className="flex items-center gap-5">
+          <h1 className="font-[ClashDisplay] text-[clamp(1.3rem,3vw,2rem)] font-medium">
+            Watch<span className="text-logo-blue">list</span>
+          </h1>
+          <div
+            onClick={() => setEdit(!isEdit)}
+            className="flex cursor-pointer items-center justify-center rounded-full transition-all duration-200 ease-in-out"
+          >
+            <FaEdit
+              className={`${isEdit && "text-logo-blue"} text-[clamp(1rem,3vw,1.125rem)]`}
+            />
+          </div>
+        </div>
 
         <p className="font-[SansationLight] text-[clamp(.8rem,3vw,1rem)]">
           {watchListLength}
@@ -44,7 +57,7 @@ const WatchlistPage = () => {
       <div className="h-full w-full">
         <div className="grid w-full grid-cols-2 gap-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-6">
           {sortedWatchList.map((movie, i: number) => (
-            <DetailsCardWithTime key={i} movie={movie} />
+            <DetailsCardWithTime isEdit={isEdit} key={i} movie={movie} />
           ))}
         </div>
         <div className="h-20" />
