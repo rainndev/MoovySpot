@@ -117,7 +117,7 @@ const VideoDetailsPage = () => {
                     transition={{ duration: 0.5 }}
                     src={watchBackdropUrl}
                     alt="Backdrop"
-                    className="absolute inset-0 h-full w-full object-cover object-center transition-opacity duration-300"
+                    className={`${watchBackdropUrl ? "absolute" : "hidden"} inset-0 h-full w-full object-cover object-center transition-opacity duration-300`}
                   />
                 )}
 

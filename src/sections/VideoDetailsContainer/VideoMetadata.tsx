@@ -18,7 +18,6 @@ import {
 import LoadingAnimation from "../../components/LoadingAnimation";
 import EpisodeCard from "../../components/EpisodeCard";
 import { useCollectionOptions } from "@/query-options/QueryCollectionOptions";
-import WatchCard from "@/components/WatchCard";
 import type { MediaItem } from "@/types/TMDBTypes";
 import CollectionCard from "@/components/CollectionCard";
 interface Genre {
@@ -129,11 +128,15 @@ const VideoMetadata = ({ data }: VideoMetadataProps) => {
           <div className="flex flex-wrap items-center justify-center space-x-2">
             <p className="text-logo-blue inline-flex items-center gap-1">
               Seasons:
-              <span className="text-logo-white/90 px-1">{watchSeasons}</span>
+              <span className="text-logo-white/90 px-1">
+                {watchSeasons || "N/A"}
+              </span>
             </p>
             <p className="text-logo-blue ml-2 inline-flex items-center gap-1">
               Episodes:
-              <span className="text-logo-white/90 px-1">{watchEpisodes}</span>
+              <span className="text-logo-white/90 px-1">
+                {watchEpisodes || "N/A"}
+              </span>
             </p>
           </div>
         )}
