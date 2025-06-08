@@ -1,5 +1,21 @@
 import DetailsCardWithTime from "@/components/DetailsCardWithTime";
 import { useRecentlyViewStore } from "@/store/RecentlyViewStore";
+import { motion } from "framer-motion";
+
+const container = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+    },
+  },
+};
+
+const item = {
+  hidden: { opacity: 0 },
+  show: { opacity: 1 },
+};
 
 const RecentViewPage = () => {
   const recentlyView = useRecentlyViewStore((state) => state.recentlyView);
@@ -21,7 +37,6 @@ const RecentViewPage = () => {
       </div>
     );
   }
-  console.log("recentlyWatched", recentlyView);
 
   return (
     <div className="flex h-dvh w-full flex-col items-center p-3 pb-20 md:p-10 md:pl-25">
@@ -34,11 +49,18 @@ const RecentViewPage = () => {
 
       {/* content */}
       <div className="h-full w-full">
-        <div className="grid w-full grid-cols-2 gap-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-6">
+        <motion.div
+          variants={container}
+          initial="hidden"
+          animate="show"
+          className="grid w-full grid-cols-2 gap-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-6"
+        >
           {sortedRecentlyView.map((movie, i: number) => (
-            <DetailsCardWithTime key={i} movie={movie} />
+            <motion.div variants={item} layout>
+              <DetailsCardWithTime key={i} movie={movie} />
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
 
         <div className="h-20" />
       </div>
