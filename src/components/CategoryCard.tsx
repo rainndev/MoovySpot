@@ -1,18 +1,45 @@
 import { Link } from "react-router-dom";
 import { formatImagePath, formatWatchUrl } from "@/lib/watch-utils";
 import type { MediaItem } from "@/types/TMDBTypes";
+import { useEffect, useRef } from "react";
+import { useAnimation, useInView, motion } from "motion/react";
 
 interface CategoryCardProps {
   movie: MediaItem;
 }
 const CategoryCard = ({ movie }: CategoryCardProps) => {
+  const ref = useRef(null);
+  const controls = useAnimation();
+  const inView = useInView(ref, {
+    amount: 0.3,
+    once: true,
+  });
+
+  useEffect(() => {
+    const delay = Math.random() * 0.2;
+    if (inView) {
+      controls.start({
+        opacity: 1,
+        y: 0,
+        transition: {
+          delay,
+          duration: 0.4,
+          ease: "easeOut",
+        },
+      });
+    }
+  }, [inView]);
+
   const type = movie.type;
   if (!movie.poster_path) return null;
   if (!movie.title && !movie.name) return null;
 
   return (
     <Link to={formatWatchUrl(movie.id, type)}>
-      <div
+      <motion.div
+        ref={ref}
+        initial={{ opacity: 0, y: 20 }}
+        animate={controls}
         className={`group h-full w-full flex-shrink-0 snap-start overflow-hidden`}
       >
         <div className="bg-logo-black/50 relative w-full overflow-hidden rounded-lg transition-all duration-300 ease-in-out hover:shadow-xl md:rounded-2xl">
@@ -35,7 +62,7 @@ const CategoryCard = ({ movie }: CategoryCardProps) => {
           {movie.title || movie.name}
         </h2>
         */}
-      </div>
+      </motion.div>
     </Link>
   );
 };

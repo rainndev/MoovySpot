@@ -58,6 +58,8 @@ const CategoryPage = () => {
     setSelectedGenre(undefined);
   }, [selectedType]);
 
+  console.log("data?.pages", data?.pages);
+
   return (
     <div className="flex h-dvh w-full flex-col items-center p-3 pb-20 md:p-10 md:pl-25">
       {/* header */}
