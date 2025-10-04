@@ -3,7 +3,7 @@ import { useGenreOptions } from "@/query-options/QueryGenreOptions";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useInView } from "react-intersection-observer";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import type { MediaItem, MediaType } from "@/types/TMDBTypes";
 import LoadingAnimation from "@/components/LoadingAnimation";
 
@@ -112,14 +112,14 @@ const CategoryPage = () => {
 
       <div className="mt-5 grid w-full grid-cols-2 gap-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-6">
         {data?.pages.map((page, i) => (
-          <React.Fragment key={i}>
+          <Fragment key={i}>
             {page.results.map((data: MediaItem) => (
               <CategoryCard
                 key={data.id}
                 movie={{ ...data, type: selectedType }}
               />
             ))}
-          </React.Fragment>
+          </Fragment>
         ))}
 
         <div className="h-20 w-full" ref={loadMoreRef}></div>
