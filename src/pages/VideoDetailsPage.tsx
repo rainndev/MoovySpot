@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useParams, useLocation } from "react-router-dom";
 import LoadingAnimation from "@/components/LoadingAnimation";
 import VideoMetadata from "@/sections/VideoDetailsContainer/VideoMetadata";
 import { useRecentlyViewStore } from "@/store/RecentlyViewStore";
@@ -8,14 +7,17 @@ import { GoBookmark, GoBookmarkFill } from "react-icons/go";
 import { motion } from "framer-motion";
 import TrailerVideo from "@/components/TrailerVideo";
 import ReactPlayer from "react-player";
+import type { VideoDetailsPageType } from "@/routes/details.$id";
 
-const VideoDetailsPage = () => {
-  const { id } = useParams();
-  const location = useLocation();
+interface VideoDetailsPageProps {
+  id: string;
+  searchParams: VideoDetailsPageType;
+}
+
+const VideoDetailsPage = ({ id, searchParams }: VideoDetailsPageProps) => {
   const addRecentlyView = useRecentlyViewStore((state) => state.addWatch);
   const [showTrailer, setShowTrailer] = useState(false);
-  const queryParams = new URLSearchParams(location.search);
-  const MEDIA_TYPE = queryParams.get("type");
+  const MEDIA_TYPE = searchParams.type;
   const numericId = Number(id);
 
   if (!MEDIA_TYPE || !id || isNaN(numericId)) {

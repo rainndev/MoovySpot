@@ -1,6 +1,6 @@
-import { Link } from "react-router-dom";
+import { Link } from "@tanstack/react-router";
 // import { FaStar } from "react-icons/fa";
-import { formatImagePath, formatWatchUrl } from "@/lib/watch-utils";
+import { formatImagePath } from "@/lib/watch-utils";
 import type { MediaItem } from "@/types/TMDBTypes";
 import { useWatchTypeStore } from "@/store/WatchTypeStore";
 
@@ -16,8 +16,13 @@ const WatchCard = ({ movie }: WatchCardProps) => {
   if (!movie.poster_path) return null;
   if (!movie.title && !movie.name) return null;
 
+  // to={formatWatchUrl(movie.id, watchType)}
   return (
-    <Link to={formatWatchUrl(movie.id, watchType)}>
+    <Link
+      params={{ id: String(movie.id) }}
+      search={{ type: watchType }}
+      to="/details/$id"
+    >
       <div
         className={`group h-full ${timeAdded ? "w-full" : "w-[150px] md:w-[180px] xl:w-[230px]"} flex-shrink-0 snap-start overflow-hidden`}
       >

@@ -1,10 +1,10 @@
 import { useSearchModalStore } from "@/store/SearchModalStore";
 import { BiSearchAlt } from "react-icons/bi";
 import { RiMovie2AiFill } from "react-icons/ri";
-import { NavLink } from "react-router-dom";
+import { Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { navigationOptions } from "@/data/navigation-data";
-import React from "react";
+import { createElement } from "react";
 
 const Navigation = () => {
   const toggleModal = useSearchModalStore((state) => state.toggleModal);
@@ -23,16 +23,16 @@ const Navigation = () => {
         <div>
           <motion.ul className="text-logo-white flex flex-col justify-between space-y-8 text-2xl">
             {navigationOptions.map(({ slug, icon }) => (
-              <NavLink to={slug} key={slug}>
+              <Link to={slug} key={slug}>
                 <motion.li
                   initial={{ opacity: 0.9, y: 0 }}
                   whileHover={{ scale: 1.1, opacity: 1 }}
                   whileTap={{ scale: 0.9, rotate: 10 }}
                   className="hover:text-logo-blue cursor-pointer"
                 >
-                  {React.createElement(icon)}
+                  {createElement(icon)}
                 </motion.li>
-              </NavLink>
+              </Link>
             ))}
           </motion.ul>
         </div>

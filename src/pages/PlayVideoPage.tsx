@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from "react";
-import { useParams, useSearchParams } from "react-router-dom";
 import { FaServer } from "react-icons/fa6";
 import { serverUrlOption } from "@/data/server-data";
 
@@ -10,14 +9,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import type { PlaySearch } from "@/routes/play.$id";
 
-const PlayVideoPage = () => {
-  const { id } = useParams();
-  const [searchParams] = useSearchParams();
+interface PlayVideoPageProps {
+  id: string;
+  searchParams: PlaySearch;
+}
 
-  const MEDIA_TYPE = searchParams.get("type");
-  const EPISODE = searchParams.get("episode");
-  const SEASON = searchParams.get("season");
+const PlayVideoPage = ({ id, searchParams }: PlayVideoPageProps) => {
+  const MEDIA_TYPE = searchParams.type;
+  const EPISODE = searchParams.episode;
+  const SEASON = searchParams.season;
   const [server, setServer] = useState("");
   const isMovie = MEDIA_TYPE === "movie";
 

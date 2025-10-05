@@ -1,5 +1,5 @@
-import { Link } from "react-router-dom";
-import { formatImagePath, formatWatchUrl } from "@/lib/watch-utils";
+import { Link } from "@tanstack/react-router";
+import { formatImagePath } from "@/lib/watch-utils";
 import type { MediaItem } from "@/types/TMDBTypes";
 import { useEffect, useRef } from "react";
 import { useAnimation, useInView, motion } from "motion/react";
@@ -35,7 +35,11 @@ const CategoryCard = ({ movie }: CategoryCardProps) => {
   if (!movie.title && !movie.name) return null;
 
   return (
-    <Link to={formatWatchUrl(movie.id, type)}>
+    <Link
+      search={{ type: type }}
+      params={{ id: String(movie.id) }}
+      to="/details/$id"
+    >
       <motion.div
         ref={ref}
         initial={{ opacity: 0, y: 20 }}

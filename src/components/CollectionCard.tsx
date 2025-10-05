@@ -1,5 +1,5 @@
-import { Link } from "react-router-dom";
-import { formatImagePath, formatWatchUrl } from "@/lib/watch-utils";
+import { Link } from "@tanstack/react-router";
+import { formatImagePath } from "@/lib/watch-utils";
 import type { MediaItem } from "@/types/TMDBTypes";
 
 interface CollectionCardProps {
@@ -13,7 +13,11 @@ const CollectionCard = ({ movie }: CollectionCardProps) => {
   if (!movie.title && !movie.name) return null;
 
   return (
-    <Link to={formatWatchUrl(movie.id, type)}>
+    <Link
+      search={{ type: type }}
+      params={{ id: String(movie.id) }}
+      to="/play/$id"
+    >
       <div className="group h-full w-full flex-shrink-0 snap-start overflow-hidden">
         <div className="bg-logo-black/50 relative w-full overflow-hidden rounded-lg transition-all duration-300 ease-in-out hover:shadow-xl md:rounded-2xl">
           <div className="w-full">

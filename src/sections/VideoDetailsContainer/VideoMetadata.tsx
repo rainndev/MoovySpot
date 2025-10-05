@@ -1,8 +1,8 @@
-import { formatRuntime, formatWatchUrl } from "@/lib/watch-utils";
+import { formatRuntime } from "@/lib/watch-utils";
 import { CiCalendarDate } from "react-icons/ci";
 import { IoMdTime } from "react-icons/io";
-import { Link } from "react-router-dom";
-import { useState } from "react";
+import { Link } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
 import { useQueries } from "@tanstack/react-query";
 import { useSeasonOptions } from "@/query-options/QuerySeasonOptions";
 import { MdOutlineVideocam, MdOutlineVideocamOff } from "react-icons/md";
@@ -50,9 +50,14 @@ const VideoMetadata = ({ data }: VideoMetadataProps) => {
   } = data;
 
   const limitGenres = watchGenres.slice(0, 3);
-  const [season, setSeason] = useState(
-    String(watchSeasonsData[0]?.season_number),
-  );
+  const [season, setSeason] = useState<number | undefined>(undefined);
+
+  // When watchSeasonsData loads, set the first season as default
+  useEffect(() => {
+    if (watchSeasonsData && watchSeasonsData.length > 0) {
+      setSeason(watchSeasonsData[0].season_number);
+    }
+  }, [watchSeasonsData]);
 
   const isMovie = MEDIA_TYPE === "movie";
 
@@ -61,7 +66,7 @@ const VideoMetadata = ({ data }: VideoMetadataProps) => {
   const [seasonDetails, collectionData] = useQueries({
     queries: [
       {
-        ...useSeasonOptions(+season, numericId),
+        ...useSeasonOptions(season !== undefined ? +season : 1, numericId),
         enabled: !isMovie,
       },
       {
@@ -148,23 +153,37 @@ const VideoMetadata = ({ data }: VideoMetadataProps) => {
       </p>
 
       {/* watch button */}
-
+      {/* to={formatWatchUrl(numericId, MEDIA_TYPE, "play")} */}
       <div className="flex space-x-2">
-        <Link
-          to={
-            isMovie
-              ? formatWatchUrl(numericId, MEDIA_TYPE, "play")
-              : `/play/${numericId}?type=tv&season=${watchSeasonsData[0].season_number}&episode=1`
-          }
-        >
-          <button className="bg-logo-blue drop-shadow-logo-blue/5 text-logo-black hover:bg-logo-blue/60 active:bg-logo-blue/60 flex cursor-pointer items-center rounded-full px-10 py-2 font-[ClashDisplay] text-[clamp(.7rem,3vw,1rem)] font-medium text-nowrap drop-shadow-2xl transition-all duration-300 ease-in-out">
-            <p>
-              {isMovie
-                ? "Watch Now"
-                : `Watch (S${watchSeasonsData[0].season_number} - EP1)`}
-            </p>
-          </button>
-        </Link>
+        {isMovie ? (
+          <Link
+            params={{ id: numericId }}
+            search={{ type: MEDIA_TYPE }}
+            to="/play/$id"
+          >
+            <button className="bg-logo-blue drop-shadow-logo-blue/5 text-logo-black hover:bg-logo-blue/60 active:bg-logo-blue/60 flex cursor-pointer items-center rounded-full px-10 py-2 font-[ClashDisplay] text-[clamp(.7rem,3vw,1rem)] font-medium text-nowrap drop-shadow-2xl transition-all duration-300 ease-in-out">
+              <p>Watch Now</p>
+            </button>
+          </Link>
+        ) : (
+          <Link
+            params={{ id: numericId }}
+            search={{
+              type: "tv",
+              season: watchSeasonsData[0].season_number,
+              episode: 1,
+            }}
+            to="/play/$id"
+          >
+            <button className="bg-logo-blue drop-shadow-logo-blue/5 text-logo-black hover:bg-logo-blue/60 active:bg-logo-blue/60 flex cursor-pointer items-center rounded-full px-10 py-2 font-[ClashDisplay] text-[clamp(.7rem,3vw,1rem)] font-medium text-nowrap drop-shadow-2xl transition-all duration-300 ease-in-out">
+              <p>
+                {isMovie
+                  ? "Watch Now"
+                  : `Watch (S${watchSeasonsData[0].season_number} - EP1)`}
+              </p>
+            </button>
+          </Link>
+        )}
         <button
           disabled={!isTrailerPlayble}
           onClick={() => setShowTrailer(!showTrailer)}
@@ -187,9 +206,14 @@ const VideoMetadata = ({ data }: VideoMetadataProps) => {
       {!isMovie && (
         <div className="mt-5">
           {/* select seasons */}
-          <Select value={season} onValueChange={(value) => setSeason(value)}>
+          <Select
+            value={String(season)}
+            onValueChange={(value) => setSeason(+value)}
+          >
             <SelectTrigger className="w-fit text-[clamp(.7rem,3vw,.9rem)]">
-              <SelectValue placeholder={watchSeasonsData[0].name} />
+              <SelectValue
+                placeholder={watchSeasonsData[0]?.name || "Select a season"}
+              />
             </SelectTrigger>
             <SelectContent>
               {watchSeasonsData.map((seasonData: SeasonInfo, index: number) => (
@@ -216,7 +240,13 @@ const VideoMetadata = ({ data }: VideoMetadataProps) => {
             {seasonData &&
               seasonData.episodes.map((episode: Episode) => (
                 <Link
-                  to={`/play/${numericId}?type=tv&season=${season}&episode=${episode.episode_number}`}
+                  to="/play/$id"
+                  params={{ id: numericId }}
+                  search={{
+                    type: "tv",
+                    season: season,
+                    episode: episode.episode_number,
+                  }}
                   key={episode.id}
                 >
                   <EpisodeCard episode={episode} />

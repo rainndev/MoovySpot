@@ -1,5 +1,5 @@
-import { Link } from "react-router-dom";
-import { getTimeAgo, formatImagePath, formatWatchUrl } from "@/lib/watch-utils";
+import { Link } from "@tanstack/react-router";
+import { getTimeAgo, formatImagePath } from "@/lib/watch-utils";
 import { CiClock2 } from "react-icons/ci";
 import type { MediaItem } from "@/types/TMDBTypes";
 import { MdDelete } from "react-icons/md";
@@ -45,8 +45,11 @@ const DetailsCardWithTime = ({ isEdit = false, movie }: WatchCardProps) => {
 
   return (
     <Link
+      disabled={isEdit}
       className={`group h-full ${timeAdded ? "w-full" : "w-[120px] md:w-[180px] xl:w-[230px]"} flex-shrink-0 snap-start overflow-hidden`}
-      to={isEdit ? "#" : formatWatchUrl(movie.id, type)}
+      params={{ id: String(movie.id) }}
+      search={{ type: type }}
+      to={"/details/$id"}
     >
       <motion.div ref={ref} initial={{ opacity: 0, y: 20 }} animate={controls}>
         <div

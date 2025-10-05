@@ -3,8 +3,8 @@ import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { IoSearch } from "react-icons/io5";
 import { IoIosClose } from "react-icons/io";
-import { formatImagePath, formatWatchUrl } from "@/lib/watch-utils";
-import { Link } from "react-router-dom";
+import { formatImagePath } from "@/lib/watch-utils";
+import { Link } from "@tanstack/react-router";
 import { AnimatePresence, motion } from "framer-motion";
 import type { Movie, TVShow } from "@/types/TMDBTypes";
 import { useSearchModalStore } from "@/store/SearchModalStore";
@@ -23,7 +23,7 @@ const childVariant = {
 
 const SearchModal = () => {
   const toggleModal = useSearchModalStore((state) => state.toggleModal);
-  const [type, setType] = useState("movie");
+  const [type, setType] = useState<"movie" | "tv">("movie");
   const [searchTerm, setSearchTerm] = useState("");
   const [debouncedTerm, setDebouncedTerm] = useState(searchTerm);
 
@@ -125,7 +125,9 @@ const SearchModal = () => {
                     key={watch.id}
                   >
                     <Link
-                      to={formatWatchUrl(watch.id, watch.media_type || type)}
+                      params={{ id: String(watch.id) }}
+                      search={{ type: watch.media_type || type }}
+                      to="/details/$id"
                       key={watch.id}
                       onClick={() => toggleModal()}
                       className="hover:bg-logo-white/10 flex w-full cursor-pointer p-4 px-5 py-2 transition-colors duration-300 ease-in-out"

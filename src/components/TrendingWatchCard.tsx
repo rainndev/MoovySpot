@@ -1,9 +1,9 @@
-import { formatImagePath, formatWatchUrl } from "@/lib/watch-utils";
+import { formatImagePath } from "@/lib/watch-utils";
 import { useGenreOptions } from "@/query-options/QueryGenreOptions";
 import { useWatchTypeStore } from "@/store/WatchTypeStore";
 import type { MediaItem } from "@/types/TMDBTypes";
 import { FaStar } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link } from "@tanstack/react-router";
 
 interface TrendingWatchContainerProps {
   itemData: MediaItem;
@@ -42,9 +42,14 @@ const TrendingWatchCard = ({ itemData }: TrendingWatchContainerProps) => {
       3,
     ) || [];
 
+  // to={formatWatchUrl(itemData.id, watchType)}
   return (
     <div className="relative aspect-[3/2] h-100 w-full snap-start rounded-lg">
-      <Link to={formatWatchUrl(itemData.id, watchType)}>
+      <Link
+        params={{ id: String(itemData.id) }}
+        search={{ type: watchType }}
+        to="/details/$id"
+      >
         <img
           src={BG_IMAGE_URL}
           className="absolute inset-0 h-full w-full shrink-0 rounded-lg object-cover"
