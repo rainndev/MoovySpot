@@ -113,6 +113,7 @@ const VideoDetailsPage = ({ id, searchParams }: VideoDetailsPageProps) => {
                   />
                 ) : (
                   <motion.img
+                    data-testid="trailer-banner"
                     initial={{ opacity: 0, scale: 1.05 }}
                     whileInView={{ opacity: 1, scale: 1 }}
                     animate={{ opacity: 1 }}
@@ -132,6 +133,7 @@ const VideoDetailsPage = ({ id, searchParams }: VideoDetailsPageProps) => {
 
                 {/* Bookmark Icon */}
                 <div
+                  data-testid="favorite-button"
                   onClick={() => handleAddToWatchlist()}
                   className="absolute top-5 right-5 ml-2 text-2xl md:top-10 md:right-10 md:text-3xl"
                 >

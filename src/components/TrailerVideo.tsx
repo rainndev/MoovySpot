@@ -8,7 +8,10 @@ interface TrailerVideo {
 
 const TrailerVideo = ({ trailerUrl, setShowTrailer }: TrailerVideo) => {
   return (
-    <div className="fade-in pointer-events-none absolute inset-0 h-[120%] w-full -translate-y-15 opacity-100 transition-opacity duration-300 md:h-full">
+    <div
+      data-testid="trailer-video"
+      className="fade-in pointer-events-none absolute inset-0 h-[120%] w-full -translate-y-15 opacity-100 transition-opacity duration-300 md:h-full"
+    >
       <ReactPlayer
         playing
         url={trailerUrl}
