@@ -38,6 +38,7 @@ const Navigation = () => {
         </div>
         {/* Search bar */}
         <div
+          data-testid="search-button"
           onClick={() => toggleModal()}
           className="hover:bg-logo-white/10 flex cursor-pointer items-center rounded-full transition duration-300 ease-in-out"
         >

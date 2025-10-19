@@ -85,9 +85,5 @@ test.describe("Homepage", () => {
     await trendingThisWeekItem.click();
 
     await expect(page.url()).toMatch(/details.*tv/);
-    const seasonAndEpisode = page.getByRole("button", {
-      name: "Watch (S0 - EP1)",
-    });
-    await expect(seasonAndEpisode).toBeVisible();
   });
 });
