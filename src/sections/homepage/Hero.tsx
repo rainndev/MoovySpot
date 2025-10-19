@@ -3,10 +3,16 @@ const Hero = () => {
     <div className="flex h-dvh max-w-7xl flex-col items-center justify-center p-5 md:p-30">
       {/* Title`` */}
       <div className="text-center text-pretty md:pl-25">
-        <h1 className="font-[ClashDisplay] text-[clamp(2rem,3vw,7rem)] font-semibold">
+        <h1
+          data-testid="hero-title"
+          className="font-[ClashDisplay] text-[clamp(2rem,3vw,7rem)] font-semibold"
+        >
           Your Movie Night <span className="text-logo-blue">Starts Here</span>
         </h1>
-        <p className="text-logo-white/75 mt-2 font-[SansationLight] text-[clamp(1rem,3vw,1.3rem)] text-pretty">
+        <p
+          data-testid="hero-description"
+          className="text-logo-white/75 mt-2 font-[SansationLight] text-[clamp(1rem,3vw,1.3rem)] text-pretty"
+        >
           Tired of wasting time picking what to watch? MoovySpot gives you
           trending picks, personalized lists, and curated collections—all in one
           spot
