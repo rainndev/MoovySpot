@@ -67,6 +67,7 @@ const DetailsCardWithTime = ({ isEdit = false, movie }: WatchCardProps) => {
             />
           </div>
           <div
+            data-testid="delete-item-watchlist"
             onClick={() => remoteWatchList(movie.id)}
             className={`${isEdit ? "absolute" : "hidden"} top-0 right-0 z-2 p-3`}
           >

@@ -40,6 +40,7 @@ const WatchlistPage = () => {
             Watch<span className="text-logo-blue">list</span>
           </h1>
           <div
+            data-testid="edit-watchlist"
             onClick={() => setEdit(!isEdit)}
             className="flex cursor-pointer items-center justify-center rounded-full transition-all duration-200 ease-in-out"
           >
@@ -59,7 +60,11 @@ const WatchlistPage = () => {
         <div className="grid w-full grid-cols-2 gap-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-6">
           <AnimatePresence>
             {sortedWatchList.map((movie) => (
-              <motion.div key={movie.id} layout>
+              <motion.div
+                data-testid="movie-item-watchlist"
+                key={movie.id}
+                layout
+              >
                 <DetailsCardWithTime isEdit={isEdit} movie={movie} />
               </motion.div>
             ))}
