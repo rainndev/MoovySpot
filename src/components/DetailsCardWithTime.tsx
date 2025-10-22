@@ -57,6 +57,7 @@ const DetailsCardWithTime = ({ isEdit = false, movie }: WatchCardProps) => {
         >
           <div className="w-full">
             <img
+              data-testid="card-show-image"
               onContextMenu={(e) => e.preventDefault()}
               onDragStart={(e) => e.preventDefault()}
               loading="lazy"
