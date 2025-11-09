@@ -1,4 +1,3 @@
-import PlayVideoPage from "@/pages/PlayVideoPage";
 import { createFileRoute } from "@tanstack/react-router";
 import { z } from "zod";
 
@@ -15,13 +14,5 @@ const PlaySearchSchema = z.object({
 export type PlaySearch = z.infer<typeof PlaySearchSchema>;
 
 export const Route = createFileRoute("/play/$id")({
-  component: RouteComponent,
   validateSearch: PlaySearchSchema,
 });
-
-function RouteComponent() {
-  const search = Route.useSearch();
-  const { id } = Route.useParams();
-
-  return <PlayVideoPage searchParams={search} id={id} />;
-}

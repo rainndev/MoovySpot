@@ -8,67 +8,70 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
+import { createFileRoute } from '@tanstack/react-router'
+
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as WatchlistRouteImport } from './routes/watchlist'
-import { Route as RecentRouteImport } from './routes/recent'
-import { Route as CategoryRouteImport } from './routes/category'
-import { Route as IndexRouteImport } from './routes/index'
 import { Route as PlayIdRouteImport } from './routes/play.$id'
 import { Route as DetailsIdRouteImport } from './routes/details.$id'
 
-const WatchlistRoute = WatchlistRouteImport.update({
+const WatchlistLazyRouteImport = createFileRoute('/watchlist')()
+const RecentLazyRouteImport = createFileRoute('/recent')()
+const CategoryLazyRouteImport = createFileRoute('/category')()
+const IndexLazyRouteImport = createFileRoute('/')()
+
+const WatchlistLazyRoute = WatchlistLazyRouteImport.update({
   id: '/watchlist',
   path: '/watchlist',
   getParentRoute: () => rootRouteImport,
-} as any)
-const RecentRoute = RecentRouteImport.update({
+} as any).lazy(() => import('./routes/watchlist.lazy').then((d) => d.Route))
+const RecentLazyRoute = RecentLazyRouteImport.update({
   id: '/recent',
   path: '/recent',
   getParentRoute: () => rootRouteImport,
-} as any)
-const CategoryRoute = CategoryRouteImport.update({
+} as any).lazy(() => import('./routes/recent.lazy').then((d) => d.Route))
+const CategoryLazyRoute = CategoryLazyRouteImport.update({
   id: '/category',
   path: '/category',
   getParentRoute: () => rootRouteImport,
-} as any)
-const IndexRoute = IndexRouteImport.update({
+} as any).lazy(() => import('./routes/category.lazy').then((d) => d.Route))
+const IndexLazyRoute = IndexLazyRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
 const PlayIdRoute = PlayIdRouteImport.update({
   id: '/play/$id',
   path: '/play/$id',
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any).lazy(() => import('./routes/play.$id.lazy').then((d) => d.Route))
 const DetailsIdRoute = DetailsIdRouteImport.update({
   id: '/details/$id',
   path: '/details/$id',
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any).lazy(() => import('./routes/details.$id.lazy').then((d) => d.Route))
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/category': typeof CategoryRoute
-  '/recent': typeof RecentRoute
-  '/watchlist': typeof WatchlistRoute
+  '/': typeof IndexLazyRoute
+  '/category': typeof CategoryLazyRoute
+  '/recent': typeof RecentLazyRoute
+  '/watchlist': typeof WatchlistLazyRoute
   '/details/$id': typeof DetailsIdRoute
   '/play/$id': typeof PlayIdRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/category': typeof CategoryRoute
-  '/recent': typeof RecentRoute
-  '/watchlist': typeof WatchlistRoute
+  '/': typeof IndexLazyRoute
+  '/category': typeof CategoryLazyRoute
+  '/recent': typeof RecentLazyRoute
+  '/watchlist': typeof WatchlistLazyRoute
   '/details/$id': typeof DetailsIdRoute
   '/play/$id': typeof PlayIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
-  '/category': typeof CategoryRoute
-  '/recent': typeof RecentRoute
-  '/watchlist': typeof WatchlistRoute
+  '/': typeof IndexLazyRoute
+  '/category': typeof CategoryLazyRoute
+  '/recent': typeof RecentLazyRoute
+  '/watchlist': typeof WatchlistLazyRoute
   '/details/$id': typeof DetailsIdRoute
   '/play/$id': typeof PlayIdRoute
 }
@@ -100,10 +103,10 @@ export interface FileRouteTypes {
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  CategoryRoute: typeof CategoryRoute
-  RecentRoute: typeof RecentRoute
-  WatchlistRoute: typeof WatchlistRoute
+  IndexLazyRoute: typeof IndexLazyRoute
+  CategoryLazyRoute: typeof CategoryLazyRoute
+  RecentLazyRoute: typeof RecentLazyRoute
+  WatchlistLazyRoute: typeof WatchlistLazyRoute
   DetailsIdRoute: typeof DetailsIdRoute
   PlayIdRoute: typeof PlayIdRoute
 }
@@ -114,28 +117,28 @@ declare module '@tanstack/react-router' {
       id: '/watchlist'
       path: '/watchlist'
       fullPath: '/watchlist'
-      preLoaderRoute: typeof WatchlistRouteImport
+      preLoaderRoute: typeof WatchlistLazyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/recent': {
       id: '/recent'
       path: '/recent'
       fullPath: '/recent'
-      preLoaderRoute: typeof RecentRouteImport
+      preLoaderRoute: typeof RecentLazyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/category': {
       id: '/category'
       path: '/category'
       fullPath: '/category'
-      preLoaderRoute: typeof CategoryRouteImport
+      preLoaderRoute: typeof CategoryLazyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
       id: '/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+      preLoaderRoute: typeof IndexLazyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/play/$id': {
@@ -156,10 +159,10 @@ declare module '@tanstack/react-router' {
 }
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
-  CategoryRoute: CategoryRoute,
-  RecentRoute: RecentRoute,
-  WatchlistRoute: WatchlistRoute,
+  IndexLazyRoute: IndexLazyRoute,
+  CategoryLazyRoute: CategoryLazyRoute,
+  RecentLazyRoute: RecentLazyRoute,
+  WatchlistLazyRoute: WatchlistLazyRoute,
   DetailsIdRoute: DetailsIdRoute,
   PlayIdRoute: PlayIdRoute,
 }

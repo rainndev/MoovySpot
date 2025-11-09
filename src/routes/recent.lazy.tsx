@@ -1,7 +1,7 @@
 import RecentViewPage from "@/pages/RecentViewPage";
-import { createFileRoute } from "@tanstack/react-router";
+import { createLazyFileRoute } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/recent")({
+export const Route = createLazyFileRoute("/recent")({
   component: RouteComponent,
 });
 

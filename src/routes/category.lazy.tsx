@@ -1,7 +1,7 @@
 import CategoryPage from "@/pages/CategoryPage";
-import { createFileRoute } from "@tanstack/react-router";
+import { createLazyFileRoute } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/category")({
+export const Route = createLazyFileRoute("/category")({
   component: RouteComponent,
 });
 

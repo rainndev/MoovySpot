@@ -7,7 +7,7 @@ import { GoBookmark, GoBookmarkFill } from "react-icons/go";
 import { motion } from "framer-motion";
 import TrailerVideo from "@/components/TrailerVideo";
 import ReactPlayer from "react-player";
-import type { VideoDetailsPageType } from "@/routes/details.$id";
+import type { VideoDetailsPageType } from "@/routes/details.$id.lazy";
 
 interface VideoDetailsPageProps {
   id: string;
