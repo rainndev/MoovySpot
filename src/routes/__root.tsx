@@ -21,17 +21,6 @@ function RootComponent() {
         <BottomNav />
 
         <Outlet />
-
-        {/* <Suspense fallback={<LoadingAnimation />}>
-          <Routes>
-            <Route path="/" element={<Homepage />} />
-            <Route path="/watchlist" element={<WatchlistPage />} />
-            <Route path="/recent" element={<RecentViewPage />} />
-            <Route path="/category" element={<CategoryPage />} />
-            <Route path="/details/:id" element={<VideoDetailsPage />} />
-            <Route path="/play/:id" element={<PlayVideoPage />} />
-          </Routes>
-        </Suspense> */}
       </div>
     </React.Fragment>
   );
