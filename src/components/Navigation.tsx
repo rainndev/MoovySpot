@@ -28,7 +28,7 @@ const Navigation = () => {
                   initial={{ opacity: 0.9, y: 0 }}
                   whileHover={{ scale: 1.1, opacity: 1 }}
                   whileTap={{ scale: 0.9, rotate: 10 }}
-                  className="hover:text-logo-blue cursor-pointer"
+                  className="hover:text-logo-blue navigation-option cursor-pointer"
                 >
                   {createElement(icon)}
                 </motion.li>

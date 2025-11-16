@@ -16,7 +16,7 @@ const CollectionCard = ({ movie }: CollectionCardProps) => {
     <Link
       search={{ type: type }}
       params={{ id: String(movie.id) }}
-      to="/play/$id"
+      to="/details/$id"
     >
       <div className="group h-full w-full flex-shrink-0 snap-start overflow-hidden">
         <div className="bg-logo-black/50 relative w-full overflow-hidden rounded-lg transition-all duration-300 ease-in-out hover:shadow-xl md:rounded-2xl">
