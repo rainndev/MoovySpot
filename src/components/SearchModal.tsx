@@ -1,13 +1,16 @@
-import { useSearchOptions } from "@/query-options/QueryOptions";
-import { useQuery } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
-import { IoSearch } from "react-icons/io5";
-import { IoIosClose } from "react-icons/io";
 import { formatImagePath } from "@/lib/watch-utils";
+import { useSearchOptions } from "@/query-options/QueryOptions";
+import { useSearchModalStore } from "@/store/SearchModalStore";
+import type { MediaItem, Movie, TVShow } from "@/types/TMDBTypes";
+import { useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import { AnimatePresence, motion } from "framer-motion";
-import type { Movie, TVShow } from "@/types/TMDBTypes";
-import { useSearchModalStore } from "@/store/SearchModalStore";
+import { useEffect, useState } from "react";
+import { CiGrid41 } from "react-icons/ci";
+import { IoMdClose } from "react-icons/io";
+import { IoSearch } from "react-icons/io5";
+import { TbMoodEmpty } from "react-icons/tb";
+import WatchCard from "./WatchCard";
 
 const parentVariant = {
   visible: {
@@ -26,6 +29,7 @@ const SearchModal = () => {
   const [type, setType] = useState<"movie" | "tv">("movie");
   const [searchTerm, setSearchTerm] = useState("");
   const [debouncedTerm, setDebouncedTerm] = useState(searchTerm);
+  const [isGridView, setGridView] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -60,10 +64,12 @@ const SearchModal = () => {
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -20 }}
         transition={{ duration: 0.3 }}
-        className="bg-opacity-50 bg-logo-black/10 text-logo-white fixed inset-0 z-50 flex items-center justify-center p-5 backdrop-blur-md"
+        className="bg-opacity-50 bg-logo-black/10 text-logo-white fixed inset-0 z-50 flex items-center justify-center p-5 backdrop-blur-md md:p-10"
       >
         {/* Search input container */}
-        <div className="bg-logo-black/85 text-md border-logo-white/5 flex w-full max-w-5xl flex-col items-start rounded-xl border pb-5 shadow-lg">
+        <div
+          className={`bg-logo-black/85 text-md border-logo-white/5 flex w-full flex-col items-start rounded-xl border pb-5 shadow-lg ${isGridView ? "h-full w-full" : "max-h-[80vh] max-w-5xl"} overflow-hidden`}
+        >
           {/* Search icon and input field */}
           <div className="flex w-full items-center p-4 px-5">
             <IoSearch />
@@ -75,10 +81,17 @@ const SearchModal = () => {
               placeholder="Search..."
             />
             <div
-              onClick={() => toggleModal()}
-              className="text-logo-white/50 hover:text-logo-white ml-2 cursor-pointer text-2xl transition-colors duration-300 ease-in-out"
+              onClick={() => setGridView(!isGridView)}
+              className={`${isGridView ? "text-logo-blue" : "text-logo-white/50"} hover:text-logo-white ml-2 cursor-pointer text-xl transition-colors duration-300 ease-in-out`}
             >
-              <IoIosClose />
+              <CiGrid41 />
+            </div>
+
+            <div
+              onClick={() => toggleModal()}
+              className="text-logo-white/50 hover:text-logo-white ml-2 cursor-pointer text-xl transition-colors duration-300 ease-in-out"
+            >
+              <IoMdClose />
             </div>
           </div>
           <div className="bg bg-logo-white/5 h-[1px] w-full" />
@@ -110,79 +123,98 @@ const SearchModal = () => {
             </motion.p>
           )}
           {/* Search results */}
-          <div className="hide-scrollbar max-h-[50vh] w-full overflow-y-auto">
-            {data && data.results && data.results.length > 0 ? (
-              <motion.div
-                variants={parentVariant}
-                initial="hidden"
-                animate="visible"
-                className="flex w-full flex-col items-start space-y-2"
-              >
-                {data.results.map((watch: Movie & TVShow) => (
-                  <motion.div
-                    variants={childVariant}
-                    className="w-full"
-                    key={watch.id}
-                  >
-                    <Link
-                      params={{ id: String(watch.id) }}
-                      search={{ type: watch.media_type || type }}
-                      to="/details/$id"
-                      key={watch.id}
-                      onClick={() => toggleModal()}
-                      className="hover:bg-logo-white/10 flex w-full cursor-pointer p-4 px-5 py-2 transition-colors duration-300 ease-in-out"
-                    >
-                      <div className="flex-shrink-0">
-                        {watch.poster_path ? (
-                          <img
-                            loading="lazy"
-                            className="aspect-[10/16] w-25 rounded-md object-cover md:w-30"
-                            src={formatImagePath(watch.poster_path, "w300")}
-                            alt={watch.original_title}
-                          />
-                        ) : (
-                          <div className="bg-logo-background text-logo-white/30 flex aspect-[10/16] w-25 animate-pulse items-center justify-center rounded-md text-[clamp(.6rem,3vw,.8rem)] md:w-30">
-                            No Image
-                          </div>
-                        )}
-                      </div>
 
-                      <div className="flex min-w-0 flex-col items-start justify-center pl-4">
-                        {/* title */}
-                        <p className="text-logo-white truncate font-[ClashDisplay] text-[clamp(1.125rem,3vw,1.5rem)]">
-                          {watch.title || watch.name}
-                        </p>
-                        <p className="text-logo-white/50 text-sm">
-                          {watch.release_date
-                            ? new Date(watch.release_date).getFullYear()
-                            : watch.first_air_date
-                              ? new Date(watch.first_air_date).getFullYear()
-                              : "Unknown Year"}
-                        </p>
-                        <p className="text-logo-white/50 text-sm">
-                          Language: {watch.original_language.toUpperCase()}
-                        </p>
-                        <p className="text-logo-white/50 text-sm">
-                          Released date:{" "}
-                          {
-                            (
-                              watch.release_date ||
-                              watch.first_air_date ||
-                              ""
-                            ).split("-")[0]
-                          }
-                        </p>
-                      </div>
-                    </Link>
-                  </motion.div>
-                ))}
-              </motion.div>
-            ) : (
-              <div className="flex h-full w-full items-center justify-center p-4 px-5 text-[clamp(.8rem,3vw,1rem)]">
-                <p className="text-logo-white">No results found</p>
-              </div>
-            )}
-          </div>
+          {isGridView ? (
+            <div className="hide-scrollbar mt-5 grid h-full w-full grid-cols-[repeat(auto-fit,minmax(150px,1fr))] items-center gap-2 overflow-y-auto [mask-image:linear-gradient(to_bottom,transparent,black_100px,black_calc(100%-100px),transparent)] p-5 [-webkit-mask-image:linear-gradient(to_bottom,transparent,black_100px,black_calc(100%-100px),transparent)] md:grid-cols-[repeat(auto-fit,minmax(180px,1fr))] xl:grid-cols-[repeat(auto-fit,minmax(230px,1fr))]">
+              {data && data.results && data.results.length > 0 ? (
+                data?.results?.map((watch: MediaItem) => (
+                  <WatchCard key={watch.id} movie={watch} />
+                ))
+              ) : (
+                <div className="text-logo-white/50 flex h-full w-full items-center justify-center gap-2 p-4 px-5 text-[clamp(.8rem,3vw,1rem)]">
+                  <TbMoodEmpty className="text-lg" />
+                  <p>No results found</p>
+                </div>
+              )}
+            </div>
+          ) : (
+            <div
+              className={`hide-scrollbar ${isGridView ? "h-full" : "max-h-[50vh]"} w-full overflow-y-auto [mask-image:linear-gradient(to_bottom,transparent,black_100px,black_calc(100%-100px),transparent)] [-webkit-mask-image:linear-gradient(to_bottom,transparent,black_100px,black_calc(100%-100px),transparent)]`}
+            >
+              {data && data.results && data.results.length > 0 ? (
+                <motion.div
+                  variants={parentVariant}
+                  initial="hidden"
+                  animate="visible"
+                  className="flex w-full flex-col items-start space-y-2"
+                >
+                  {data.results.map((watch: Movie & TVShow) => (
+                    <motion.div
+                      variants={childVariant}
+                      className="w-full"
+                      key={watch.id}
+                    >
+                      <Link
+                        params={{ id: String(watch.id) }}
+                        search={{ type: watch.media_type || type }}
+                        to="/details/$id"
+                        key={watch.id}
+                        onClick={() => toggleModal()}
+                        className="hover:bg-logo-white/10 flex w-full cursor-pointer p-4 px-5 py-2 transition-colors duration-300 ease-in-out"
+                      >
+                        <div className="flex-shrink-0">
+                          {watch.poster_path ? (
+                            <img
+                              loading="lazy"
+                              className="aspect-[10/16] w-25 rounded-md object-cover md:w-30"
+                              src={formatImagePath(watch.poster_path, "w300")}
+                              alt={watch.original_title}
+                            />
+                          ) : (
+                            <div className="bg-logo-background text-logo-white/30 flex aspect-[10/16] w-25 animate-pulse items-center justify-center rounded-md text-[clamp(.6rem,3vw,.8rem)] md:w-30">
+                              No Image
+                            </div>
+                          )}
+                        </div>
+
+                        <div className="flex min-w-0 flex-col items-start justify-center pl-4">
+                          {/* title */}
+                          <p className="text-logo-white truncate font-[ClashDisplay] text-[clamp(1.125rem,3vw,1.5rem)]">
+                            {watch.title || watch.name}
+                          </p>
+                          <p className="text-logo-white/50 text-sm">
+                            {watch.release_date
+                              ? new Date(watch.release_date).getFullYear()
+                              : watch.first_air_date
+                                ? new Date(watch.first_air_date).getFullYear()
+                                : "Unknown Year"}
+                          </p>
+                          <p className="text-logo-white/50 text-sm">
+                            Language: {watch.original_language.toUpperCase()}
+                          </p>
+                          <p className="text-logo-white/50 text-sm">
+                            Released date:{" "}
+                            {
+                              (
+                                watch.release_date ||
+                                watch.first_air_date ||
+                                ""
+                              ).split("-")[0]
+                            }
+                          </p>
+                        </div>
+                      </Link>
+                    </motion.div>
+                  ))}
+                </motion.div>
+              ) : (
+                <div className="text-logo-white/50 flex h-full min-h-[40vh] w-full items-center justify-center gap-2 p-4 px-5 text-[clamp(.8rem,3vw,1rem)]">
+                  <TbMoodEmpty className="text-lg" />
+                  <p>No results found</p>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </motion.div>
     </AnimatePresence>

@@ -1,8 +1,8 @@
 import { Link } from "@tanstack/react-router";
 // import { FaStar } from "react-icons/fa";
 import { formatImagePath } from "@/lib/watch-utils";
-import type { MediaItem } from "@/types/TMDBTypes";
 import { useWatchTypeStore } from "@/store/WatchTypeStore";
+import type { MediaItem } from "@/types/TMDBTypes";
 
 interface WatchCardProps {
   movie: MediaItem;
@@ -41,19 +41,6 @@ const WatchCard = ({ movie }: WatchCardProps) => {
 
           <div className="bg-logo-black/50 pointer-events-none absolute inset-0 [mask-image:radial-gradient(ellipse_at_center,transparent_20%,#14c4b4)]" />
         </div>
-        {/* <h2 className="mt-5 truncate text-[clamp(.8rem,3vw,1.1rem)] font-normal text-white">
-          {movie.title || movie.name}
-        </h2>
-        <div className="mt-1 mb-4 flex items-center justify-between text-[clamp(.65rem,3vw,.8rem)]">
-          <p className="text-logo-white/50">
-            {date ? new Date(date).getFullYear() : "Unknown Year"}
-          </p>
-
-          <div className="flex items-center text-amber-300">
-            <FaStar />
-            <p className="ml-2">{movie.vote_average.toFixed(1)}</p>
-          </div>
-        </div> */}
       </div>
     </Link>
   );
