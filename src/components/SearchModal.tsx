@@ -135,7 +135,9 @@ const SearchModal = () => {
           <div className="hide-scrollbar mt-5 grid h-full w-full grid-cols-[repeat(auto-fit,minmax(150px,1fr))] gap-2 overflow-y-auto [mask-image:linear-gradient(to_bottom,transparent,black_100px,black_calc(100%-100px),transparent)] p-5 [-webkit-mask-image:linear-gradient(to_bottom,transparent,black_100px,black_calc(100%-100px),transparent)] md:grid-cols-[repeat(auto-fit,minmax(180px,1fr))] xl:grid-cols-[repeat(auto-fit,minmax(230px,1fr))]">
             {data && data.results && data.results.length > 0 ? (
               data?.results?.map((watch: MediaItem) => (
-                <WatchCard key={watch.id} movie={watch} />
+                <div onClick={toggleModal}>
+                  <WatchCard key={watch.id} movie={watch} />
+                </div>
               ))
             ) : (
               <div className="text-logo-white/50 flex h-full w-full items-center justify-center gap-2 p-4 px-5 text-[clamp(.8rem,3vw,1rem)]">
