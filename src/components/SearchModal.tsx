@@ -1,7 +1,7 @@
 import { formatImagePath } from "@/lib/watch-utils";
 import { useSearchOptions } from "@/query-options/QueryOptions";
 import { useSearchModalStore } from "@/store/SearchModalStore";
-import type { MediaItem, Movie, TVShow } from "@/types/TMDBTypes";
+import type { MediaItem } from "@/types/TMDBTypes";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
@@ -40,22 +40,24 @@ const SearchModal = () => {
   }, [searchTerm]);
 
   const { data, isLoading, error, isError } = useQuery({
-    ...useSearchOptions(searchTerm, 1, type),
+    ...useSearchOptions(debouncedTerm, 1, type),
     enabled: debouncedTerm.length > 0,
     refetchOnWindowFocus: false,
   });
 
   if (isLoading)
-    <div className="bg-opacity-50 bg-logo-black/10 fixed inset-0 z-50 flex items-center justify-center backdrop-blur-md">
-      <div className="text-logo-white">Loading...</div>
-    </div>;
+    return (
+      <div className="bg-opacity-50 bg-logo-black/10 fixed inset-0 z-50 flex items-center justify-center backdrop-blur-md">
+        <div className="text-logo-white">Loading...</div>
+      </div>
+    );
 
   if (isError)
-    <div className="bg-opacity-50 bg-logo-black/10 fixed inset-0 z-50 flex items-center justify-center backdrop-blur-md">
-      <div className="text-logo-white">Error: {error.message}</div>
-    </div>;
-
-  console.log("Search results:", data);
+    return (
+      <div className="bg-opacity-50 bg-logo-black/10 fixed inset-0 z-50 flex items-center justify-center backdrop-blur-md">
+        <div className="text-logo-white">Error: {error.message}</div>
+      </div>
+    );
 
   return (
     <motion.div
@@ -135,8 +137,8 @@ const SearchModal = () => {
           <div className="hide-scrollbar mt-5 grid h-full w-full grid-cols-[repeat(auto-fit,minmax(150px,1fr))] gap-2 overflow-y-auto [mask-image:linear-gradient(to_bottom,transparent,black_100px,black_calc(100%-100px),transparent)] p-5 [-webkit-mask-image:linear-gradient(to_bottom,transparent,black_100px,black_calc(100%-100px),transparent)] md:grid-cols-[repeat(auto-fit,minmax(180px,1fr))] xl:grid-cols-[repeat(auto-fit,minmax(230px,1fr))]">
             {data && data.results && data.results.length > 0 ? (
               data?.results?.map((watch: MediaItem) => (
-                <div onClick={toggleModal}>
-                  <WatchCard key={watch.id} movie={watch} />
+                <div key={`${type}-${watch.id}`} onClick={toggleModal}>
+                  <WatchCard movie={{ ...watch, type }} />
                 </div>
               ))
             ) : (
@@ -155,19 +157,19 @@ const SearchModal = () => {
                 variants={parentVariant}
                 initial="hidden"
                 animate="visible"
+                key={`${type}-${debouncedTerm}`}
                 className="flex w-full flex-col items-start space-y-2"
               >
-                {data.results.map((watch: Movie & TVShow) => (
+                {data.results.map((watch: MediaItem) => (
                   <motion.div
                     variants={childVariant}
                     className="w-full"
-                    key={watch.id}
+                    key={`${type}-${watch.id}`}
                   >
                     <Link
                       params={{ id: String(watch.id) }}
-                      search={{ type: watch.media_type || type }}
+                      search={{ type }}
                       to="/details/$id"
-                      key={watch.id}
                       onClick={() => toggleModal()}
                       className="hover:bg-logo-white/10 flex w-full cursor-pointer p-4 px-5 py-2 transition-colors duration-300 ease-in-out"
                     >
@@ -177,7 +179,7 @@ const SearchModal = () => {
                             loading="lazy"
                             className="aspect-[10/16] w-25 rounded-md object-cover md:w-30"
                             src={formatImagePath(watch.poster_path, "w300")}
-                            alt={watch.original_title}
+                            alt={watch.title || watch.name || "Untitled"}
                           />
                         ) : (
                           <div className="bg-logo-background text-logo-white/30 flex aspect-[10/16] w-25 animate-pulse items-center justify-center rounded-md text-[clamp(.6rem,3vw,.8rem)] md:w-30">
