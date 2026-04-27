@@ -188,7 +188,7 @@ const VideoMetadata = ({ data }: VideoMetadataProps) => {
             <p className="text-logo-white/60 text-[clamp(.65rem,2.8vw,.8rem)] tracking-[0.15em] uppercase">
               {item.label}
             </p>
-            <p className="text-logo-white mt-1 font-[ClashDisplay] text-[clamp(.85rem,3vw,1rem)]">
+            <p className="text-logo-white mt-1 font-[ClashDisplay] text-[clamp(.75rem,3vw,1rem)]">
               {item.value}
             </p>
           </div>
