@@ -1,6 +1,6 @@
+import { serverUrlOption } from "@/data/server-data";
 import { useEffect, useMemo, useState } from "react";
 import { FaServer } from "react-icons/fa6";
-import { serverUrlOption } from "@/data/server-data";
 
 import {
   Select,
@@ -67,7 +67,7 @@ const PlayVideoPage = ({ id, searchParams }: PlayVideoPageProps) => {
           <SelectContent>
             {serverOptions.map((option, i) => (
               <SelectItem key={i} value={option}>
-                Server {i + 1}
+                {serverUrlOption[i].name}
               </SelectItem>
             ))}
           </SelectContent>
