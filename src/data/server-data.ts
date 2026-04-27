@@ -10,9 +10,9 @@ export const serverUrlOption: ServerOption[] = [
   {
     name: "Alpha",
     movieLink:
-      "https://zxcstream.xyz/player/movie/##id##?autoplay=true&color=14c4b4",
+      "https://zxcstream.xyz/player/movie/##id##?autoplay=true&color=14c4b4&domainAd=moovy-spot.pages.dev",
     tvLink:
-      "https://zxcstream.xyz/player/tv/##id##/##season##/##episode##?autoplay=true&color=14c4b4",
+      "https://zxcstream.xyz/player/tv/##id##/##season##/##episode##?autoplay=true&color=14c4b4&domainAd=moovy-spot.pages.dev",
   },
   {
     name: "Beta",
