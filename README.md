@@ -6,7 +6,7 @@ MoovySpot is a modern movie discovery web application built with **Vite**, **Tai
 
 ---
 
-## 🚀 Features
+## Features
 
 - **Trending** movies and TV shows of the day and week
 - **Upcoming** movies
@@ -19,7 +19,7 @@ MoovySpot is a modern movie discovery web application built with **Vite**, **Tai
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 - **Frontend:** Vite + React + TypeScript
 - **Styling:** TailwindCSS + Shadcn/UI + Framer Motion
@@ -31,7 +31,7 @@ MoovySpot is a modern movie discovery web application built with **Vite**, **Tai
 
 ---
 
-## 📦 Installation
+## Installation
 
 ```bash
 git clone https://github.com/rainndev/MoovySpot.git
@@ -41,7 +41,7 @@ pnpm install
 
 ---
 
-## ⚙️ Environment Variables
+## Environment Variables
 
 Create a `.env` file in the root directory using the format below:
 
@@ -53,7 +53,7 @@ VITE_TMDB_API_BASE_URL = "https://api.themoviedb.org/3"
 
 ---
 
-## 🧠 License
+## License
 
 Permission is hereby granted to any person obtaining a copy of this software (the “Software”) to use, copy, and modify the Software for personal or educational purposes only, subject to the following conditions:
 
@@ -69,7 +69,7 @@ You must retain the above copyright notice and this license in all copies or sub
 
 The Software is provided “as is”, without warranty of any kind, express or implied, including but not limited to the warranties of merchantability, fitness for a particular purpose, and noninfringement. In no event shall the authors or copyright holders be liable for any claim, damages, or other liability, whether in an action of contract, tort, or otherwise, arising from, out of, or in connection with the Software or the use or other dealings in the Software.
 
-## 📸 Preview
+## Preview
 
 ### Desktop
 
