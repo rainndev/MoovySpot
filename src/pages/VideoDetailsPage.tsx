@@ -1,13 +1,13 @@
-import { useEffect, useState } from "react";
 import LoadingAnimation from "@/components/LoadingAnimation";
+import TrailerVideo from "@/components/TrailerVideo";
+import { useWatchData } from "@/hooks/use-watch-data";
+import type { VideoDetailsPageType } from "@/routes/details.$id";
 import VideoMetadata from "@/sections/VideoDetailsContainer/VideoMetadata";
 import { useRecentlyViewStore } from "@/store/RecentlyViewStore";
-import { useWatchData } from "@/hooks/use-watch-data";
-import { GoBookmark, GoBookmarkFill } from "react-icons/go";
 import { motion } from "framer-motion";
-import TrailerVideo from "@/components/TrailerVideo";
+import { useEffect, useState } from "react";
+import { GoBookmark, GoBookmarkFill } from "react-icons/go";
 import ReactPlayer from "react-player";
-import type { VideoDetailsPageType } from "@/routes/details.$id";
 
 interface VideoDetailsPageProps {
   id: string;
@@ -74,6 +74,7 @@ const VideoDetailsPage = ({ id, searchParams }: VideoDetailsPageProps) => {
     handleAddToWatchlist,
     watchDate,
     isBookmarked,
+    watchDetails: watchData?.data,
   };
 
   useEffect(() => {

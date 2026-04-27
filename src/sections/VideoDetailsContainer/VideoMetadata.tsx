@@ -1,13 +1,14 @@
-import { formatRuntime } from "@/lib/watch-utils";
-import { CiCalendarDate } from "react-icons/ci";
-import { IoMdTime } from "react-icons/io";
+import { formatImagePath, formatRuntime } from "@/lib/watch-utils";
+import { useSeasonOptions } from "@/query-options/QuerySeasonOptions";
+import type { Episode, SeasonInfo } from "@/types/TvSeriesTypes";
+import { useQueries } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { useQueries } from "@tanstack/react-query";
-import { useSeasonOptions } from "@/query-options/QuerySeasonOptions";
+import { CiCalendarDate } from "react-icons/ci";
+import { IoMdTime } from "react-icons/io";
 import { MdOutlineVideocam, MdOutlineVideocamOff } from "react-icons/md";
-import type { SeasonInfo, Episode } from "@/types/TvSeriesTypes";
 
+import CollectionCard from "@/components/CollectionCard";
 import {
   Select,
   SelectContent,
@@ -15,11 +16,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import LoadingAnimation from "../../components/LoadingAnimation";
-import EpisodeCard from "../../components/EpisodeCard";
 import { useCollectionOptions } from "@/query-options/QueryCollectionOptions";
-import type { MediaItem } from "@/types/TMDBTypes";
-import CollectionCard from "@/components/CollectionCard";
+import { useCreditsOptions } from "@/query-options/QueryCreditsOptions";
+import type { MediaItem, TmdbCastMember } from "@/types/TMDBTypes";
+import EpisodeCard from "../../components/EpisodeCard";
+import LoadingAnimation from "../../components/LoadingAnimation";
 interface Genre {
   id: number;
   name: string;
@@ -47,6 +48,7 @@ const VideoMetadata = ({ data }: VideoMetadataProps) => {
     setShowTrailer,
     numericId,
     MEDIA_TYPE,
+    watchDetails,
   } = data;
 
   const limitGenres = watchGenres.slice(0, 3);
@@ -63,7 +65,7 @@ const VideoMetadata = ({ data }: VideoMetadataProps) => {
 
   // const { data: seasonData, isLoading, error, isError } = useQuery();
 
-  const [seasonDetails, collectionData] = useQueries({
+  const [seasonDetails, collectionData, creditsData] = useQueries({
     queries: [
       {
         ...useSeasonOptions(season !== undefined ? +season : 1, numericId),
@@ -74,10 +76,35 @@ const VideoMetadata = ({ data }: VideoMetadataProps) => {
         enabled:
           collection_id !== null && collection_id !== undefined && isMovie,
       },
+      {
+        ...useCreditsOptions(MEDIA_TYPE, numericId),
+        enabled: !!MEDIA_TYPE && !!numericId,
+      },
     ],
   });
+
   if (!seasonDetails) return;
   const { data: seasonData, isLoading, error, isError } = seasonDetails;
+  const castList = (creditsData.data || []).slice(0, 12);
+
+  const extraInfo = [
+    {
+      label: "Rating",
+      value: watchDetails?.vote_average
+        ? `${watchDetails.vote_average.toFixed(1)} / 10`
+        : "N/A",
+    },
+    {
+      label: "Language",
+      value: watchDetails?.original_language
+        ? String(watchDetails.original_language).toUpperCase()
+        : "N/A",
+    },
+    {
+      label: "Status",
+      value: watchDetails?.status || "N/A",
+    },
+  ];
 
   return (
     <div className="z-2 -translate-y-20 p-5 md:-translate-y-50 lg:-translate-y-100">
@@ -151,6 +178,61 @@ const VideoMetadata = ({ data }: VideoMetadataProps) => {
       <p className="text-logo-white/90 mb-5 w-full text-start font-[SansationLight] text-[clamp(.8rem,1.8vw,1.2rem)]">
         {watchOverview || "No overview available."}
       </p>
+
+      <div className="mb-5 grid w-full grid-cols-1 gap-3 sm:grid-cols-3">
+        {extraInfo.map((item) => (
+          <div
+            key={item.label}
+            className="bg-logo-black/40 border-logo-white/10 rounded-md border px-4 py-3"
+          >
+            <p className="text-logo-white/60 text-[clamp(.65rem,2.8vw,.8rem)] tracking-[0.15em] uppercase">
+              {item.label}
+            </p>
+            <p className="text-logo-white mt-1 font-[ClashDisplay] text-[clamp(.85rem,3vw,1rem)]">
+              {item.value}
+            </p>
+          </div>
+        ))}
+      </div>
+
+      <div className="mt-8 mb-5">
+        <h2 className="font-[ClashDisplay] text-[clamp(1rem,3vw,1.4rem)]">
+          Cast
+        </h2>
+        {castList.length > 0 ? (
+          <div className="hide-scrollbar mt-4 flex gap-3 overflow-x-auto pb-2">
+            {castList.map((cast: TmdbCastMember) => (
+              <div
+                key={cast.id}
+                className="bg-logo-black/40 border-logo-white/10 w-[130px] flex-shrink-0 rounded-md border p-4"
+              >
+                {cast.profile_path ? (
+                  <img
+                    src={formatImagePath(cast.profile_path, "w300")}
+                    alt={cast.name}
+                    className="aspect-square w-full rounded-full object-cover"
+                    loading="lazy"
+                  />
+                ) : (
+                  <div className="bg-logo-white/5 text-logo-white/50 flex aspect-square w-full items-center justify-center rounded-full px-2 text-center text-[clamp(.55rem,2.5vw,.7rem)]">
+                    No Image
+                  </div>
+                )}
+                <p className="text-logo-white mt-2 line-clamp-1 font-[ClashDisplay] text-[clamp(.65rem,2.8vw,1rem)]">
+                  {cast.name}
+                </p>
+                <p className="text-logo-white/60 line-clamp-1 text-[clamp(.55rem,2.5vw,.7rem)]">
+                  {cast.character || "Unknown"}
+                </p>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p className="text-logo-white/60 mt-2 text-[clamp(.75rem,2.8vw,.9rem)]">
+            Cast information is unavailable.
+          </p>
+        )}
+      </div>
 
       {/* watch button */}
       {/* to={formatWatchUrl(numericId, MEDIA_TYPE, "play")} */}
