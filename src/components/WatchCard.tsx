@@ -4,16 +4,17 @@ import type { MediaItem } from "@/types/TMDBTypes";
 
 interface WatchCardProps {
   movie: MediaItem;
+  mediaType?: "movie" | "tv";
 }
 
-const WatchCard = ({ movie }: WatchCardProps) => {
+const WatchCard = ({ movie, mediaType }: WatchCardProps) => {
   const watchType = useWatchTypeStore((state) => state.watchType);
   const timeAdded = movie.timeAdded;
 
   return (
     <MediaPosterCard
       media={movie}
-      type={watchType}
+      type={mediaType ?? watchType}
       wrapperClassName={
         timeAdded ? "w-full" : "w-[150px] md:w-[180px] xl:w-[230px]"
       }

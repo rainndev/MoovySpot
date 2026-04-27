@@ -138,7 +138,7 @@ const SearchModal = () => {
             {data && data.results && data.results.length > 0 ? (
               data?.results?.map((watch: MediaItem) => (
                 <div key={`${type}-${watch.id}`} onClick={toggleModal}>
-                  <WatchCard movie={{ ...watch, type }} />
+                  <WatchCard movie={watch} mediaType={type} />
                 </div>
               ))
             ) : (
