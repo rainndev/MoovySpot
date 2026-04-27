@@ -1,10 +1,10 @@
+import { navigationOptions } from "@/data/navigation-data";
 import { useSearchModalStore } from "@/store/SearchModalStore";
-import { BiSearchAlt } from "react-icons/bi";
-import { RiMovie2AiFill } from "react-icons/ri";
 import { Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
-import { navigationOptions } from "@/data/navigation-data";
 import { createElement } from "react";
+import { IoSearch } from "react-icons/io5";
+import { RiMovie2AiFill } from "react-icons/ri";
 
 const Navigation = () => {
   const toggleModal = useSearchModalStore((state) => state.toggleModal);
@@ -45,7 +45,7 @@ const Navigation = () => {
           <div
             className={`${isSearchOpen && "text-logo-blue bg-logo-blue/10"} hover:text-logo-blue text-logo-white bg-logo-blue/5 cursor-pointer rounded-full p-2`}
           >
-            <BiSearchAlt className="text-lg" />
+            <IoSearch className="text-lg" />
           </div>
         </div>
       </header>
