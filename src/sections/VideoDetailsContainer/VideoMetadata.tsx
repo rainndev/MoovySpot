@@ -204,21 +204,19 @@ const VideoMetadata = ({ data }: VideoMetadataProps) => {
             {castList.map((cast: TmdbCastMember) => (
               <div
                 key={cast.id}
-                className="bg-logo-black/40 border-logo-white/10 w-[130px] flex-shrink-0 rounded-md border p-4"
+                className="bg-logo-black/40 border-logo-white/10 group hover:bg-logo-black/60 w-[130px] flex-shrink-0 cursor-pointer rounded-lg border p-4 transition-all duration-300 hover:w-[160px]"
               >
                 {cast.profile_path ? (
                   <img
                     src={formatImagePath(cast.profile_path, "w300")}
                     alt={cast.name}
-                    className="aspect-square w-full rounded-full object-cover"
+                    className="aspect-square w-full rounded-full object-cover grayscale transition-all duration-300 group-hover:grayscale-0"
                     loading="lazy"
                   />
                 ) : (
-                  <div className="bg-logo-white/5 text-logo-white/50 flex aspect-square w-full items-center justify-center rounded-full px-2 text-center text-[clamp(.55rem,2.5vw,.7rem)]">
-                    No Image
-                  </div>
+                  <div className="bg-logo-white/5 text-logo-white/50 flex aspect-square w-full items-center justify-center rounded-full px-2 text-center text-[clamp(.55rem,2.5vw,.7rem)]"></div>
                 )}
-                <p className="text-logo-white mt-2 line-clamp-1 font-[ClashDisplay] text-[clamp(.65rem,2.8vw,1rem)]">
+                <p className="text-logo-white group-hover:text-logo-blue mt-2 line-clamp-1 font-[ClashDisplay] text-[clamp(.65rem,2.8vw,1rem)] transition-all">
                   {cast.name}
                 </p>
                 <p className="text-logo-white/60 line-clamp-1 text-[clamp(.55rem,2.5vw,.7rem)]">
