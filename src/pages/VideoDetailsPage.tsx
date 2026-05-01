@@ -4,7 +4,7 @@ import { useWatchData } from "@/hooks/use-watch-data";
 import type { VideoDetailsPageType } from "@/routes/details.$id";
 import VideoMetadata from "@/sections/VideoDetailsContainer/VideoMetadata";
 import { useRecentlyViewStore } from "@/store/RecentlyViewStore";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { useEffect, useState } from "react";
 import { GoBookmark, GoBookmarkFill } from "react-icons/go";
 import ReactPlayer from "react-player";

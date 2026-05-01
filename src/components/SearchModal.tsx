@@ -4,7 +4,7 @@ import { useSearchModalStore } from "@/store/SearchModalStore";
 import type { MediaItem } from "@/types/TMDBTypes";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { useEffect, useState } from "react";
 import { CiGrid41 } from "react-icons/ci";
 import { IoMdClose } from "react-icons/io";

@@ -1,8 +1,8 @@
 import DetailsCardWithTime from "@/components/DetailsCardWithTime";
 import { useWatchListStore } from "@/store/WatchListStore";
+import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
 import { FaEdit } from "react-icons/fa";
-import { AnimatePresence, motion } from "framer-motion";
 
 const WatchlistPage = () => {
   const watchList = useWatchListStore((state) => state.watchList);

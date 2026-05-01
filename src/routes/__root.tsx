@@ -3,7 +3,7 @@ import Navigation from "@/components/Navigation";
 import SearchModal from "@/components/SearchModal";
 import { useSearchModalStore } from "@/store/SearchModalStore";
 import { Outlet, createRootRoute } from "@tanstack/react-router";
-import { AnimatePresence } from "framer-motion";
+import { AnimatePresence } from "motion/react";
 import * as React from "react";
 
 export const Route = createRootRoute({
