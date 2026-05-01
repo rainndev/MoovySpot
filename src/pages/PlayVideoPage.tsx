@@ -156,7 +156,7 @@ const PlayVideoPage = ({ id, searchParams }: PlayVideoPageProps) => {
             </div>
 
             {/* server selection */}
-            <div className="flex flex-col gap-3 rounded-2xl border border-white/10 p-6 backdrop-blur-sm md:flex-row md:items-center md:justify-between">
+            <div className="flex flex-col gap-3 rounded-2xl border border-white/10 p-4 backdrop-blur-sm md:flex-row md:items-center md:justify-between">
               <div>
                 <p className="text-logo-white/50 text-[clamp(.65rem,1vw,0.75rem)] tracking-[0.25em] uppercase">
                   Server
