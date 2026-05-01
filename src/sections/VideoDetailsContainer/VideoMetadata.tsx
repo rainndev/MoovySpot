@@ -107,7 +107,7 @@ const VideoMetadata = ({ data }: VideoMetadataProps) => {
   ];
 
   return (
-    <div className="z-2 -translate-y-20 p-5 md:-translate-y-50 lg:-translate-y-100">
+    <div className="z-2 -translate-y-20 p-3 md:-translate-y-50 md:p-10 lg:-translate-y-100">
       {/* title */}
 
       <div>

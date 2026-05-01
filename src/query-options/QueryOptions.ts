@@ -73,6 +73,20 @@ export const useOptionsImages = (type: string, id: number) => ({
   refetchOnWindowFocus: false,
 });
 
+export const useSimilarOptions = (
+  type: string,
+  id: number,
+  page: number = 1,
+) => ({
+  queryKey: [`${type}-similar-${id}-${page}`],
+  queryFn: () =>
+    axios(
+      `${baseUrl}/${type}/${id}/similar?api_key=${apiKey}&language=en-US&page=${page}`,
+    ).then((res) => res.data),
+  staleTime: 1000 * 60 * 60 * 24,
+  refetchOnWindowFocus: false,
+});
+
 //for search query
 export const useSearchOptions = (
   query: string,
