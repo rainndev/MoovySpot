@@ -1,15 +1,8 @@
+import { BiHistory, BiSolidCategoryAlt } from "react-icons/bi";
 import { GoHomeFill } from "react-icons/go";
 import { LuListVideo } from "react-icons/lu";
-import { BiSolidCategoryAlt } from "react-icons/bi";
-import { BiHistory } from "react-icons/bi";
 
-interface NavigationOption {
-  name: string;
-  slug: string;
-  icon: React.ElementType;
-}
-
-export const navigationOptions: NavigationOption[] = [
+export const navigationOptions = [
   {
     name: "Home",
     slug: "/",
@@ -33,4 +26,6 @@ export const navigationOptions: NavigationOption[] = [
     slug: "/recent",
     icon: BiHistory,
   },
-];
+] as const;
+
+export type NavigationSlug = (typeof navigationOptions)[number]["slug"];
