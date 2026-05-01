@@ -15,20 +15,15 @@ const BottomNav = () => {
   );
 
   return (
-    <div className="bg-logo-black/50 border-logo-blue/20 fixed bottom-0 left-0 z-20 w-full rounded-tl-3xl rounded-tr-3xl border-t backdrop-blur-lg md:hidden">
+    <div className="bg-logo-black/50 border-logo-blue/20 fixed bottom-0 left-0 z-20 w-full overflow-hidden rounded-tl-3xl rounded-tr-3xl border-t backdrop-blur-lg md:hidden">
       <ul className="text-logo-white flex w-full justify-between px-8 py-5 text-xl">
         {navigationOptions.map(({ slug, icon }) => (
-          <Link
-            className="navigation-option"
-            to={slug}
-            key={slug}
-            onClick={() => setSelectedOption(slug)}
-          >
+          <Link to={slug} key={slug} onClick={() => setSelectedOption(slug)}>
             <motion.li
               initial={{ opacity: 0.9, y: 0 }}
               whileHover={{ scale: 1.1, opacity: 1 }}
               whileTap={{ scale: 0.9, rotate: 10 }}
-              className={`hover:text-logo-blue navigation-option cursor-pointer ${selectedOption === slug && "navigation-active"}`}
+              className={`hover:text-logo-blue cursor-pointer ${selectedOption === slug && "navigation-active"}`}
             >
               {createElement(icon)}
             </motion.li>
