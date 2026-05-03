@@ -140,7 +140,7 @@ const PlayVideoPage = ({ id, searchParams }: PlayVideoPageProps) => {
           </h1>
         </div>
 
-        <div className="grid gap-5 lg:grid-cols-[minmax(0,1.65fr)_minmax(320px,0.5fr)]">
+        <div className="grid gap-5 md:grid-cols-[minmax(0,2fr)_minmax(250px,0.5fr)]">
           <section className="space-y-4">
             <div className="overflow-hidden rounded-2xl border border-white/10 bg-black shadow-2xl shadow-black/40">
               <div className="aspect-video w-full">
@@ -156,7 +156,7 @@ const PlayVideoPage = ({ id, searchParams }: PlayVideoPageProps) => {
             </div>
 
             {/* server selection */}
-            <div className="flex flex-col gap-3 rounded-2xl border border-white/10 p-4 backdrop-blur-sm md:flex-row md:items-center md:justify-between">
+            <div className="flex flex-col gap-3 rounded-2xl border border-white/10 p-4 backdrop-blur-sm sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <p className="text-logo-white/50 text-[clamp(.65rem,1vw,0.75rem)] tracking-[0.25em] uppercase">
                   Server
@@ -170,7 +170,7 @@ const PlayVideoPage = ({ id, searchParams }: PlayVideoPageProps) => {
                 onValueChange={(value: string) => setServer(value)}
               >
                 <SelectTrigger
-                  className="w-full md:w-[200px]"
+                  className="w-full text-[clamp(0.70rem,1vw,0.875rem)] sm:w-[150px]"
                   data-testid="play-server-select"
                 >
                   <FaServer className="text-logo-blue shadow-logo-blue/50 shadow-2xl" />
