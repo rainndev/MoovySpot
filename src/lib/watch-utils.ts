@@ -23,12 +23,7 @@ type sizeType = "w300" | "w500" | "w1280" | "w780" | "original";
 export const formatImagePath = (path: string, size: sizeType) => {
   if (!path) return "";
 
-  // Ensure the path starts with a slash
-  if (path.startsWith("/")) {
-    return `https://image.tmdb.org/t/p/${size}${path}`;
-  } else {
-    return `https://image.tmdb.org/t/p/${size}/${path}`;
-  }
+  return `https://image.tmdb.org/t/p/${size}/${path.replace(/^\/+/, "")}`;
 };
 
 //format watch url
