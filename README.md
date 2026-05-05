@@ -6,6 +6,12 @@ MoovySpot is a modern movie discovery web application built with **Vite**, **Tai
 
 ---
 
+## Live Website
+
+https://moovy-spot.pages.dev/
+
+---
+
 ## Features
 
 - **Trending** movies and TV shows of the day and week
