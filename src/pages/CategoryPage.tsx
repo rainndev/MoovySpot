@@ -1,11 +1,12 @@
 import CategoryCard from "@/components/CategoryCard";
+import ErrorUI from "@/components/ErrorUI";
+import LoadingAnimation from "@/components/LoadingAnimation";
 import { useGenreOptions } from "@/query-options/QueryGenreOptions";
+import type { MediaItem, MediaType } from "@/types/TMDBTypes";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { useInView } from "react-intersection-observer";
 import axios from "axios";
 import { Fragment, useEffect, useState } from "react";
-import type { MediaItem, MediaType } from "@/types/TMDBTypes";
-import LoadingAnimation from "@/components/LoadingAnimation";
+import { useInView } from "react-intersection-observer";
 
 interface GenreItem {
   id: number;
@@ -33,19 +34,27 @@ const CategoryPage = () => {
   const { ref: loadMoreRef, inView } = useInView();
 
   const { data: GenreList } = useGenreOptions(selectedType);
-  const { data, fetchNextPage, isLoading, hasNextPage, isFetchingNextPage } =
-    useInfiniteQuery({
-      queryKey: [`${selectedType}-category-${selectedGenre}`],
-      queryFn: ({ pageParam = 1 }) =>
-        fetchMovies(pageParam, selectedType, selectedGenre),
-      initialPageParam: 1,
-      getNextPageParam: (lastPage) => {
-        if (lastPage.page < lastPage.total_pages) {
-          return lastPage.page + 1;
-        }
-        return undefined;
-      },
-    });
+  const {
+    data,
+    fetchNextPage,
+    isLoading,
+    hasNextPage,
+    isFetchingNextPage,
+    isError,
+    error,
+    refetch,
+  } = useInfiniteQuery({
+    queryKey: [`${selectedType}-category-${selectedGenre}`],
+    queryFn: ({ pageParam = 1 }) =>
+      fetchMovies(pageParam, selectedType, selectedGenre),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) => {
+      if (lastPage.page < lastPage.total_pages) {
+        return lastPage.page + 1;
+      }
+      return undefined;
+    },
+  });
 
   useEffect(() => {
     if (inView && hasNextPage && !isFetchingNextPage) {
@@ -59,6 +68,16 @@ const CategoryPage = () => {
   }, [selectedType]);
 
   console.log("data?.pages", data?.pages);
+
+  if (isError) {
+    return (
+      <ErrorUI
+        error={error?.message}
+        onRetry={() => refetch()}
+        fullHeight={true}
+      />
+    );
+  }
 
   return (
     <div className="flex h-dvh w-full flex-col items-center p-3 pb-20 md:p-10 md:pl-25">

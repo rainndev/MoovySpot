@@ -1,4 +1,5 @@
 import EpisodeCard from "@/components/EpisodeCard";
+import ErrorUI from "@/components/ErrorUI";
 import LoadingAnimation from "@/components/LoadingAnimation";
 import { serverUrlOption } from "@/data/server-data";
 import { useWatchData } from "@/hooks/use-watch-data";
@@ -121,11 +122,7 @@ const PlayVideoPage = ({ id, searchParams }: PlayVideoPageProps) => {
   }
 
   if (isError) {
-    return (
-      <div className="flex min-h-dvh w-full items-center justify-center px-5 text-center text-white/70">
-        Error: {error?.message}
-      </div>
-    );
+    return <ErrorUI error={error?.message} />;
   }
 
   return (

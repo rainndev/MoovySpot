@@ -54,9 +54,31 @@ const SearchModal = () => {
 
   if (isError)
     return (
-      <div className="bg-opacity-50 bg-logo-black/10 fixed inset-0 z-50 flex items-center justify-center backdrop-blur-md">
-        <div className="text-logo-white">Error: {error.message}</div>
-      </div>
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -20 }}
+        transition={{ duration: 0.3 }}
+        className="bg-opacity-50 bg-logo-black/10 text-logo-white fixed inset-0 z-50 flex items-center justify-center p-5 backdrop-blur-md md:p-10"
+      >
+        <div className="bg-logo-black/85 border-logo-white/5 flex max-w-md flex-col items-center justify-center gap-4 rounded-xl border p-8 shadow-lg">
+          <div className="text-4xl text-red-500">⚠️</div>
+          <div className="flex flex-col items-center gap-2">
+            <h3 className="text-logo-white text-center font-semibold">
+              Search Error
+            </h3>
+            <p className="text-logo-white/60 text-center text-sm">
+              {error.message || "Failed to search. Please try again."}
+            </p>
+          </div>
+          <button
+            onClick={() => toggleModal()}
+            className="bg-logo-blue hover:bg-logo-blue/90 text-logo-black mt-2 rounded-lg px-6 py-2 font-medium transition-all duration-300"
+          >
+            Close
+          </button>
+        </div>
+      </motion.div>
     );
 
   return (

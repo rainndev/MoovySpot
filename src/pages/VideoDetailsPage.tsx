@@ -1,3 +1,4 @@
+import ErrorUI from "@/components/ErrorUI";
 import LoadingAnimation from "@/components/LoadingAnimation";
 import TrailerVideo from "@/components/TrailerVideo";
 import { useWatchData } from "@/hooks/use-watch-data";
@@ -90,11 +91,7 @@ const VideoDetailsPage = ({ id, searchParams }: VideoDetailsPageProps) => {
   if (isLoading) return <LoadingAnimation />;
 
   if (isError) {
-    return (
-      <div className="flex min-h-screen w-full items-center justify-center">
-        Error: {error?.message}
-      </div>
-    );
+    return <ErrorUI error={error?.message} />;
   }
 
   return (

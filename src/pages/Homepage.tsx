@@ -1,13 +1,14 @@
-import Watch from "@/sections/homepage/Watch";
-import { ThreeDMarqueeBG } from "@/sections/homepage/ThreeDMarqueeBG";
+import ErrorUI from "@/components/ErrorUI";
+import LoadingAnimation from "@/components/LoadingAnimation";
+import { watchData } from "@/data/homepage-data";
+import { useQueryOptions } from "@/query-options/QueryOptions";
+import Disclaimer from "@/sections/homepage/Disclaimer";
 import Hero from "@/sections/homepage/Hero";
+import { ThreeDMarqueeBG } from "@/sections/homepage/ThreeDMarqueeBG";
 import TypeNavigation from "@/sections/homepage/TypeNavigation";
+import Watch from "@/sections/homepage/Watch";
 import { useWatchTypeStore } from "@/store/WatchTypeStore";
 import { useQueries } from "@tanstack/react-query";
-import { useQueryOptions } from "@/query-options/QueryOptions";
-import LoadingAnimation from "@/components/LoadingAnimation";
-import Disclaimer from "@/sections/homepage/Disclaimer";
-import { watchData } from "@/data/homepage-data";
 
 const HomePage = () => {
   const type = useWatchTypeStore((state) => state.watchType);
@@ -20,10 +21,19 @@ const HomePage = () => {
     queries: queriesOptions,
   });
 
+  const handleRetry = () => {
+    data.forEach((query) => query.refetch());
+  };
+
   //check if any query is loading or has an error
   if (data.some((query) => query.isLoading)) return <LoadingAnimation />;
   if (data.find((query) => query.isError))
-    return <div className="h-full w-full">Error: {data[0].error?.message}</div>;
+    return (
+      <ErrorUI
+        error={data.find((query) => query.isError)?.error?.message}
+        onRetry={handleRetry}
+      />
+    );
 
   return (
     <div className="h-dvh">
