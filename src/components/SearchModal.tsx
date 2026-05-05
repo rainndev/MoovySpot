@@ -10,6 +10,7 @@ import { CiGrid41 } from "react-icons/ci";
 import { IoMdClose } from "react-icons/io";
 import { IoSearch } from "react-icons/io5";
 import { TbMoodEmpty } from "react-icons/tb";
+import LoadingAnimation from "./LoadingAnimation";
 import WatchCard from "./WatchCard";
 
 const parentVariant = {
@@ -44,13 +45,6 @@ const SearchModal = () => {
     enabled: debouncedTerm.length > 0,
     refetchOnWindowFocus: false,
   });
-
-  if (isLoading)
-    return (
-      <div className="bg-opacity-50 bg-logo-black/10 fixed inset-0 z-50 flex items-center justify-center backdrop-blur-md">
-        <div className="text-logo-white">Loading...</div>
-      </div>
-    );
 
   if (isError)
     return (
@@ -126,6 +120,7 @@ const SearchModal = () => {
           </div>
         </div>
         <div className="bg bg-logo-white/5 h-[1px] w-full" />
+
         {/* Type */}
         <div className="flex w-full items-center space-x-2 p-5">
           <p
@@ -141,6 +136,13 @@ const SearchModal = () => {
             TV
           </p>
         </div>
+        {/* Loading state */}
+        {isLoading && debouncedTerm.length > 0 && (
+          <div className="flex h-96 w-full items-center justify-center">
+            <LoadingAnimation />
+          </div>
+        )}
+
         {/* total result */}
         {data && (
           <motion.p
@@ -155,7 +157,7 @@ const SearchModal = () => {
         )}
         {/* Search results */}
 
-        {isGridView ? (
+        {!isLoading && isGridView ? (
           <div className="hide-scrollbar mt-5 grid h-full w-full grid-cols-[repeat(auto-fit,minmax(150px,1fr))] gap-2 overflow-y-auto [mask-image:linear-gradient(to_bottom,transparent,black_100px,black_calc(100%-100px),transparent)] p-5 [-webkit-mask-image:linear-gradient(to_bottom,transparent,black_100px,black_calc(100%-100px),transparent)] md:grid-cols-[repeat(auto-fit,minmax(180px,1fr))] xl:grid-cols-[repeat(auto-fit,minmax(230px,1fr))]">
             {data && data.results && data.results.length > 0 ? (
               data?.results?.map((watch: MediaItem) => (
@@ -163,14 +165,19 @@ const SearchModal = () => {
                   <WatchCard movie={watch} mediaType={type} />
                 </div>
               ))
-            ) : (
+            ) : debouncedTerm.length > 0 ? (
               <div className="text-logo-white/50 flex h-full w-full items-center justify-center gap-2 p-4 px-5 text-[clamp(.8rem,3vw,1rem)]">
                 <TbMoodEmpty className="text-lg" />
                 <p>No results found</p>
               </div>
+            ) : (
+              <div className="text-logo-white/50 flex h-full w-full items-center justify-center gap-2 p-4 px-5 text-[clamp(.8rem,3vw,1rem)]">
+                <IoSearch className="text-lg" />
+                <p>No search yet. Type to search...</p>
+              </div>
             )}
           </div>
-        ) : (
+        ) : !isLoading ? (
           <div
             className={`hide-scrollbar ${isGridView ? "h-full" : "max-h-[50vh]"} w-full overflow-y-auto [mask-image:linear-gradient(to_bottom,transparent,black_100px,black_calc(100%-100px),transparent)] [-webkit-mask-image:linear-gradient(to_bottom,transparent,black_100px,black_calc(100%-100px),transparent)]`}
           >
@@ -240,14 +247,19 @@ const SearchModal = () => {
                   </motion.div>
                 ))}
               </motion.div>
-            ) : (
+            ) : debouncedTerm.length > 0 ? (
               <div className="text-logo-white/50 flex h-full min-h-[40vh] w-full items-center justify-center gap-2 p-4 px-5 text-[clamp(.8rem,3vw,1rem)]">
                 <TbMoodEmpty className="text-lg" />
                 <p>No results found</p>
               </div>
+            ) : (
+              <div className="text-logo-white/50 flex h-full min-h-[40vh] w-full items-center justify-center gap-2 p-4 px-5 text-[clamp(.8rem,3vw,1rem)]">
+                <IoSearch className="text-lg" />
+                <p>No search yet. Type to search...</p>
+              </div>
             )}
           </div>
-        )}
+        ) : null}
       </motion.div>
     </motion.div>
   );
