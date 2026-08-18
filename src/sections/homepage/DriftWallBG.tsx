@@ -3,6 +3,7 @@ import DriftWall, { type DriftWallItem } from "@/components/DriftWall";
 import { formatImagePath } from "@/lib/watch-utils";
 import { useQueryOptions } from "@/query-options/QueryOptions";
 import { useQueries } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
 
 interface Movie {
   id: number;
@@ -12,6 +13,34 @@ interface Movie {
   backdrop_path: string;
 }
 
+type ImageSize = "w300" | "w500" | "w780";
+
+interface WallConfig {
+  columns: number;
+  tileWidth: number;
+  tileHeight: number;
+  gap: number;
+  size: ImageSize;
+}
+
+// Pick a wall layout based on viewport width so multiple 16:9 columns stay
+// visible on every screen size (small tiles on mobile, larger on desktop).
+const getWallConfig = (width: number): WallConfig => {
+  if (width < 640) {
+    return { columns: 5, tileWidth: 128, tileHeight: 72, gap: 8, size: "w300" };
+  }
+  if (width < 1024) {
+    return {
+      columns: 6,
+      tileWidth: 220,
+      tileHeight: 124,
+      gap: 12,
+      size: "w500",
+    };
+  }
+  return { columns: 8, tileWidth: 320, tileHeight: 180, gap: 16, size: "w780" };
+};
+
 export function DriftWallBG() {
   const [page1, page2] = useQueries({
     queries: [
@@ -19,6 +48,17 @@ export function DriftWallBG() {
       useQueryOptions("movie", "popular", 2),
     ],
   });
+
+  const [config, setConfig] = useState<WallConfig>(() =>
+    getWallConfig(typeof window !== "undefined" ? window.innerWidth : 1280),
+  );
+
+  useEffect(() => {
+    const handleResize = () => setConfig(getWallConfig(window.innerWidth));
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   if (page1.isLoading && page2.isLoading) return;
 
@@ -39,7 +79,7 @@ export function DriftWallBG() {
   const items: DriftWallItem[] = movieData
     .filter((movie: Movie) => Boolean(movie.backdrop_path))
     .map((movie: Movie) => ({
-      image: formatImagePath(movie.backdrop_path, "w780"),
+      image: formatImagePath(movie.backdrop_path, config.size),
       title: movie.title ?? movie.name,
     }));
 
@@ -47,10 +87,11 @@ export function DriftWallBG() {
     <div className="h-full w-full overflow-hidden">
       <DriftWall
         items={items}
-        columns={8}
-        tileWidth={320}
-        tileHeight={180}
-        gap={16}
+        columns={config.columns}
+        tileWidth={config.tileWidth}
+        tileHeight={config.tileHeight}
+        gap={config.gap}
+        speed={18}
         overlayColor="#0c0c0c"
       />
     </div>
