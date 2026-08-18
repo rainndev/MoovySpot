@@ -3,8 +3,8 @@ import LoadingAnimation from "@/components/LoadingAnimation";
 import { watchData } from "@/data/homepage-data";
 import { useQueryOptions } from "@/query-options/QueryOptions";
 import Disclaimer from "@/sections/homepage/Disclaimer";
+import { DriftWallBG } from "@/sections/homepage/DriftWallBG";
 import Hero from "@/sections/homepage/Hero";
-import { ThreeDMarqueeBG } from "@/sections/homepage/ThreeDMarqueeBG";
 import TypeNavigation from "@/sections/homepage/TypeNavigation";
 import Watch from "@/sections/homepage/Watch";
 import { useWatchTypeStore } from "@/store/WatchTypeStore";
@@ -38,7 +38,7 @@ const HomePage = () => {
   return (
     <div className="h-dvh">
       <div className="relative flex h-dvh w-full items-center justify-center">
-        <ThreeDMarqueeBG />
+        <DriftWallBG />
 
         {/* Background */}
         <div className="from-logo-black to-logo-black/10 pointer-events-none absolute inset-0 bg-gradient-to-t" />
