@@ -44,7 +44,7 @@ const HomePage = () => {
         <div className="from-logo-black to-logo-black/10 pointer-events-none absolute inset-0 bg-gradient-to-t" />
 
         {/* Hero */}
-        <div className="absolute flex w-full items-center justify-center">
+        <div className="pointer-events-none absolute flex w-full items-center justify-center">
           <Hero />
         </div>
       </div>
