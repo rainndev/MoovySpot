@@ -74,6 +74,10 @@ const TrendingWatchContainer = ({ data }: TrendingWatchContainerProps) => {
         scrollSpeed={2}
         font="bold 30px ClashDisplay"
       />
+
+      {/* Gradient fade on the scroll edges */}
+      <div className="from-logo-black pointer-events-none absolute inset-y-0 left-0 z-10 w-16 bg-gradient-to-r to-transparent md:w-40" />
+      <div className="from-logo-black pointer-events-none absolute inset-y-0 right-0 z-10 w-16 bg-gradient-to-l to-transparent md:w-40" />
     </div>
   );
 };
