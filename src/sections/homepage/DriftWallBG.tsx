@@ -1,7 +1,7 @@
 "use client";
 import DriftWall, { type DriftWallItem } from "@/components/DriftWall";
 import { formatImagePath } from "@/lib/watch-utils";
-import { useQueryOptions } from "@/query-options/QueryOptions";
+import { getQueryOptions } from "@/query-options/QueryOptions";
 import { useQueries } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 
@@ -44,8 +44,8 @@ const getWallConfig = (width: number): WallConfig => {
 export function DriftWallBG() {
   const [page1, page2] = useQueries({
     queries: [
-      useQueryOptions("movie", "popular", 1),
-      useQueryOptions("movie", "popular", 2),
+      getQueryOptions("movie", "popular", 1),
+      getQueryOptions("movie", "popular", 2),
     ],
   });
 

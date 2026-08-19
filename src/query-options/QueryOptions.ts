@@ -1,3 +1,5 @@
+import type { MediaResponse } from "@/types/TMDBTypes";
+import type { MediaType } from "@/types/TMDBTypes";
 import type { WatchCategory } from "../types/WatchTypes";
 
 import axios from "axios";
@@ -6,10 +8,10 @@ const apiKey = import.meta.env.VITE_TMDB_API_KEY;
 const baseUrl = import.meta.env.VITE_TMDB_API_BASE_URL;
 
 const fetchData = async (
-  type: string = "movie",
+  type: MediaType = "movie",
   category: WatchCategory,
   page: number = 1,
-) => {
+): Promise<MediaResponse> => {
   try {
     const fetchUrl =
       category === "trending_week" || category === "trending_day"
@@ -28,8 +30,8 @@ const fetchData = async (
 };
 
 //for movies query
-export const useQueryOptions = (
-  type: string,
+export const getQueryOptions = (
+  type: MediaType,
   category: WatchCategory,
   page: number = 1,
 ) => ({
