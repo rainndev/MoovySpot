@@ -46,8 +46,6 @@ const TrendingWatchContainer = ({ data }: TrendingWatchContainerProps) => {
     [trending],
   );
 
-  console.log("TrendingWatchContainer galleryItems:", galleryItems);
-
   const handleItemClick = useCallback(
     (index: number) => {
       const item = trending[index];
