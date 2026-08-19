@@ -76,8 +76,8 @@ const TrendingWatchContainer = ({ data }: TrendingWatchContainerProps) => {
       />
 
       {/* Gradient fade on the scroll edges */}
-      <div className="from-logo-black pointer-events-none absolute inset-y-0 left-0 z-10 w-16 bg-gradient-to-r to-transparent md:w-40" />
-      <div className="from-logo-black pointer-events-none absolute inset-y-0 right-0 z-10 w-16 bg-gradient-to-l to-transparent md:w-40" />
+      <div className="from-logo-black pointer-events-none absolute inset-y-0 left-0 z-10 w-16 bg-linear-to-r to-transparent md:w-40" />
+      <div className="from-logo-black pointer-events-none absolute inset-y-0 right-0 z-10 w-16 bg-linear-to-l to-transparent md:w-40" />
     </div>
   );
 };

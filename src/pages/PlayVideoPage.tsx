@@ -231,7 +231,7 @@ const PlayVideoPage = ({ id, searchParams }: PlayVideoPageProps) => {
                   }}
                 >
                   <SelectTrigger
-                    className="w-[140px]"
+                    className="w-35"
                     data-testid="play-season-select"
                   >
                     <SelectValue placeholder="Select season" />
