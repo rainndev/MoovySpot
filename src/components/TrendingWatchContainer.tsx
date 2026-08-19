@@ -1,41 +1,81 @@
+import { formatImagePath } from "@/lib/watch-utils";
+import { useWatchTypeStore } from "@/store/WatchTypeStore";
 import type { MediaItem, MediaResponse } from "@/types/TMDBTypes";
-import TrendingWatchCard from "./TrendingWatchCard";
-import { GoChevronLeft } from "react-icons/go";
-import { useHorizontalScroll } from "@/hooks/use-horizontal-scroll";
+import { useNavigate } from "@tanstack/react-router";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import CircularGallery from "./CircularGallery";
 
 interface TrendingWatchContainerProps {
-  data: MediaResponse; // Replace 'any' with the actual type of data you expect
+  data: MediaResponse;
 }
 
 const TrendingWatchContainer = ({ data }: TrendingWatchContainerProps) => {
-  const { scrollRef, scroll } = useHorizontalScroll();
+  const navigate = useNavigate();
+  const watchType = useWatchTypeStore((state) => state.watchType);
+
+  // Desktop bends the gallery upward (-2); mobile uses a gentle downward bend (1).
+  const [isDesktop, setIsDesktop] = useState(
+    () =>
+      typeof window !== "undefined" &&
+      window.matchMedia("(min-width: 768px)").matches,
+  );
+
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 768px)");
+    const onChange = (e: MediaQueryListEvent) => setIsDesktop(e.matches);
+    setIsDesktop(mq.matches);
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, []);
+
+  const trending = useMemo(() => {
+    if (!data?.results?.length) return [];
+
+    return data.results
+      .filter((item) => item.poster_path || item.backdrop_path)
+      .slice(0, 12)
+      .map((item: MediaItem) => ({
+        id: item.id,
+        image: formatImagePath(item.poster_path || item.backdrop_path, "w780"),
+        text: item.title || item.name || "Untitled",
+      }));
+  }, [data]);
+
+  const galleryItems = useMemo(
+    () => trending.map(({ image, text }) => ({ image, text })),
+    [trending],
+  );
+
+  console.log("TrendingWatchContainer galleryItems:", galleryItems);
+
+  const handleItemClick = useCallback(
+    (index: number) => {
+      const item = trending[index];
+      if (!item) return;
+
+      navigate({
+        to: "/details/$id",
+        params: { id: String(item.id) },
+        search: { type: watchType },
+      });
+    },
+    [trending, navigate, watchType],
+  );
+
+  if (!galleryItems.length) return null;
 
   return (
-    <div className="relative">
-      <div
-        ref={scrollRef}
-        className="hide-scrollbar flex w-full snap-x snap-mandatory space-x-2 overflow-x-scroll active:cursor-grabbing md:space-x-2"
-      >
-        {/* Left Button */}
-        <div
-          onClick={() => scroll("left")}
-          className="text-logo-white from-logo-black absolute top-0 left-0 z-10 hidden h-full w-15 cursor-pointer items-center justify-start bg-gradient-to-r to-transparent pl-2 md:flex md:w-40"
-        >
-          <GoChevronLeft className="h-5 w-5 md:h-10 md:w-10" />
-        </div>
-
-        {data.results.map((itemData: MediaItem, i: number) => (
-          <TrendingWatchCard key={i} itemData={itemData} />
-        ))}
-
-        {/* Right Button */}
-        <div
-          onClick={() => scroll("right")}
-          className="text-logo-white from-logo-black absolute top-0 right-0 z-10 hidden h-full w-15 cursor-pointer items-center justify-end bg-gradient-to-l to-transparent pr-2 md:flex md:w-40"
-        >
-          <GoChevronLeft className="h-5 w-5 rotate-180 md:h-10 md:w-10" />
-        </div>
-      </div>
+    <div className="relative h-110 w-full md:h-150">
+      <CircularGallery
+        items={galleryItems}
+        onItemClick={handleItemClick}
+        bend={isDesktop ? -2 : -0.5}
+        textColor="#faf9f6"
+        borderRadius={0.05}
+        scrollEase={0.05}
+        scrollSpeed={2}
+        font="bold 30px ClashDisplay"
+      />
     </div>
   );
 };
