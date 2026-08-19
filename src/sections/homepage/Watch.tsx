@@ -15,8 +15,8 @@ const Watch = ({ data, title_header }: Watch) => {
     <div className="relative mb-10">
       {/* header */}
       <h1
-        className={`mb-5 w-full font-[ClashDisplay] text-[clamp(1.125rem,3vw,1.3rem)] font-medium text-white ${
-          isTrendingWeek ? "text-center" : ""
+        className={`mb-10 w-full font-[ClashDisplay] text-[clamp(1.125rem,3vw,1.3rem)] font-medium text-white ${
+          isTrendingWeek || isTrendingToday ? "text-center" : ""
         }`}
       >
         {title_header}
