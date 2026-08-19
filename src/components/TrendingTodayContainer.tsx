@@ -2,7 +2,6 @@ import { formatImagePath } from "@/lib/watch-utils";
 import { useWatchTypeStore } from "@/store/WatchTypeStore";
 import type { MediaItem, MediaResponse, MediaType } from "@/types/TMDBTypes";
 import { Link } from "@tanstack/react-router";
-import { CiLocationArrow1 } from "react-icons/ci";
 
 interface TrendingTodayContainerProps {
   data: MediaResponse;
@@ -22,7 +21,7 @@ const InterestCard = ({ movie, type }: InterestCardProps) => {
   const totalInterest = (movie.vote_count ?? 0).toLocaleString();
 
   return (
-    <div className="flex gap-3 rounded-2xl p-3 transition-colors duration-200">
+    <div className="flex w-[85vw] max-w-sm shrink-0 snap-start gap-3 rounded-2xl p-3 transition-colors duration-200 sm:w-auto sm:max-w-none">
       <Link
         to="/details/$id"
         params={{ id: String(movie.id) }}
@@ -64,7 +63,6 @@ const InterestCard = ({ movie, type }: InterestCardProps) => {
           search={{ type }}
           className="bg-logo-white/10 text-logo-white hover:bg-logo-white/20 mt-1 inline-flex w-fit items-center gap-1.5 rounded-md px-3 py-1.5 text-xs transition-colors duration-200"
         >
-          <CiLocationArrow1 className="h-3 w-3" />
           Details
         </Link>
       </div>
@@ -79,14 +77,14 @@ const TrendingTodayContainer = ({ data }: TrendingTodayContainerProps) => {
 
   const movies = data.results
     .filter((item) => item.backdrop_path || item.poster_path)
-    .slice(0, 9);
+    .slice(0, 12);
 
   return (
-    <div className="relative isolate flex items-center md:py-20">
+    <div className="relative isolate flex items-center py-4 md:py-20">
       {/* grid pattern background */}
       <div className="bg-logo-black absolute inset-0 -z-10 h-full w-full bg-[linear-gradient(to_right,#1a1a1a_1px,transparent_1px),linear-gradient(to_bottom,#1a1a1a_1px,transparent_1px)] mask-[radial-gradient(circle_at_center,black_30%,transparent_70%)] bg-size-[6rem_4rem] [-webkit-mask-image:radial-gradient(circle_at_center,black_30%,transparent_70%)]" />
 
-      <div className="3xl:grid-cols-5 mx-auto grid w-full max-w-7xl grid-cols-1 gap-2 sm:grid-cols-2 xl:grid-cols-3">
+      <div className="hide-scrollbar 3xl:grid-cols-5 mx-auto flex w-full max-w-7xl snap-x snap-mandatory gap-2 overflow-x-auto sm:grid sm:grid-cols-2 sm:overflow-visible xl:grid-cols-3">
         {movies.map((movie: MediaItem) => (
           <InterestCard key={movie.id} movie={movie} type={watchType} />
         ))}
