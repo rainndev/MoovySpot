@@ -29,14 +29,17 @@ const InterestCard = ({ movie, type }: InterestCardProps) => {
         className="shrink-0"
       >
         {image ? (
-          <div className="to-logo-black via-logo-white/20 from-logo-blue/90 rounded-3xl bg-linear-to-br p-px md:p-0.5">
-            <img
-              src={image}
-              alt={title}
-              loading="lazy"
-              draggable={false}
-              className="h-26 w-30 rounded-3xl object-cover md:h-40 md:w-44"
-            />
+          <div className="flex flex-col items-center">
+            <div className="to-logo-background/50 from-logo-white/20 rounded-4xl bg-linear-to-b via-[#292929] p-1 font-mono text-[10px] font-medium tracking-[0.08em] text-white/80 uppercase shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]">
+              <img
+                src={image}
+                alt={title}
+                loading="lazy"
+                draggable={false}
+                className="h-26 w-40 rounded-[30px] object-cover md:h-40 md:w-54"
+              />
+            </div>
+            <div className="to-logo-background/50 from-logo-white/20 mt-2 h-1.5 w-[40%] rounded-full bg-linear-to-b via-[#292929] md:h-2" />
           </div>
         ) : (
           <div className="bg-logo-white/10 text-logo-white/50 flex h-20 w-24 items-center justify-center rounded-xl text-center text-[0.6rem] md:h-24 md:w-28">
@@ -89,7 +92,7 @@ const TrendingTodayContainer = ({ data }: TrendingTodayContainerProps) => {
       {/* grid pattern background */}
       <div className="absolute inset-0 -z-10 h-full w-full bg-[linear-gradient(to_right,rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.05)_1px,transparent_1px)] mask-[radial-gradient(circle_at_center,black_30%,transparent_70%)] bg-size-[6rem_4rem] [-webkit-mask-image:radial-gradient(circle_at_center,black_30%,transparent_70%)]" />
 
-      <div className="hide-scrollbar 3xl:grid-cols-5 mx-auto flex w-full max-w-7xl snap-x snap-mandatory gap-2 overflow-x-auto sm:grid sm:grid-cols-2 sm:overflow-visible xl:grid-cols-3">
+      <div className="hide-scrollbar 3xl:grid-cols-5 mx-auto flex w-full max-w-7xl snap-x snap-mandatory gap-3 overflow-x-auto sm:grid sm:grid-cols-2 sm:overflow-visible xl:grid-cols-3">
         {movies.map((movie: MediaItem) => (
           <InterestCard key={movie.id} movie={movie} type={watchType} />
         ))}
