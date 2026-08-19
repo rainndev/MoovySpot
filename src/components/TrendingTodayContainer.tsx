@@ -31,13 +31,16 @@ const InterestCard = ({ movie, type }: InterestCardProps) => {
         {image ? (
           <div className="flex flex-col items-center">
             <div className="to-logo-background/50 from-logo-white/20 rounded-4xl bg-linear-to-b via-[#292929] p-1 font-mono text-[10px] font-medium tracking-[0.08em] text-white/80 uppercase shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]">
-              <img
-                src={image}
-                alt={title}
-                loading="lazy"
-                draggable={false}
-                className="h-26 w-40 rounded-[30px] object-cover md:h-40 md:w-54"
-              />
+              <div className="relative overflow-hidden rounded-[30px]">
+                <img
+                  src={image}
+                  alt={title}
+                  loading="lazy"
+                  draggable={false}
+                  className="h-26 w-40 rounded-[30px] object-cover md:h-40 md:w-54"
+                />
+                <div className="pointer-events-none absolute inset-0 bg-linear-to-b from-transparent to-black/70" />
+              </div>
             </div>
             <div className="to-logo-background/50 from-logo-white/20 mt-2 h-1.5 w-[40%] rounded-full bg-linear-to-b via-[#292929] md:h-2" />
           </div>
