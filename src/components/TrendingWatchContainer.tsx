@@ -63,7 +63,7 @@ const TrendingWatchContainer = ({ data }: TrendingWatchContainerProps) => {
   if (!galleryItems.length) return null;
 
   return (
-    <div className="relative h-110 w-full md:h-150">
+    <div className="relative mx-auto h-110 w-full max-w-7xl md:h-150">
       <CircularGallery
         items={galleryItems}
         onItemClick={handleItemClick}
