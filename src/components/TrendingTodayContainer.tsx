@@ -82,7 +82,7 @@ const TrendingTodayContainer = ({ data }: TrendingTodayContainerProps) => {
     .slice(0, 9);
 
   return (
-    <div className="relative isolate flex items-center py-20">
+    <div className="relative isolate flex items-center md:py-20">
       {/* grid pattern background */}
       <div className="bg-logo-black absolute inset-0 -z-10 h-full w-full bg-[linear-gradient(to_right,#1a1a1a_1px,transparent_1px),linear-gradient(to_bottom,#1a1a1a_1px,transparent_1px)] mask-[radial-gradient(circle_at_center,black_30%,transparent_70%)] bg-size-[6rem_4rem] [-webkit-mask-image:radial-gradient(circle_at_center,black_30%,transparent_70%)]" />
 
