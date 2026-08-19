@@ -29,13 +29,15 @@ const InterestCard = ({ movie, type }: InterestCardProps) => {
         className="shrink-0"
       >
         {image ? (
-          <img
-            src={image}
-            alt={title}
-            loading="lazy"
-            draggable={false}
-            className="h-26 w-30 rounded-xl object-cover md:h-40 md:w-44"
-          />
+          <div className="to-logo-black via-logo-white/20 from-logo-blue/90 rounded-3xl bg-linear-to-br p-px md:p-0.5">
+            <img
+              src={image}
+              alt={title}
+              loading="lazy"
+              draggable={false}
+              className="h-26 w-30 rounded-3xl object-cover md:h-40 md:w-44"
+            />
+          </div>
         ) : (
           <div className="bg-logo-white/10 text-logo-white/50 flex h-20 w-24 items-center justify-center rounded-xl text-center text-[0.6rem] md:h-24 md:w-28">
             No Image
