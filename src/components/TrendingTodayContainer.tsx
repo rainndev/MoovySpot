@@ -2,8 +2,6 @@ import { formatImagePath } from "@/lib/watch-utils";
 import { useWatchTypeStore } from "@/store/WatchTypeStore";
 import type { MediaItem, MediaResponse, MediaType } from "@/types/TMDBTypes";
 import { Link } from "@tanstack/react-router";
-import { AnimatePresence, motion } from "motion/react";
-import { useEffect, useState } from "react";
 
 interface TrendingTodayContainerProps {
   data: MediaResponse;
@@ -63,7 +61,7 @@ const InterestCard = ({ movie, type }: InterestCardProps) => {
           to="/details/$id"
           params={{ id: String(movie.id) }}
           search={{ type }}
-          className="bg-logo-white/10 text-logo-white hover:bg-logo-white/20 mt-1 inline-flex w-fit items-center gap-1.5 rounded-md px-3 py-1.5 text-xs transition-colors duration-200"
+          className="border-logo-white/10 text-logo-white hover:bg-logo-white/20 mt-1 inline-flex w-fit items-center gap-1.5 rounded-full border px-6 py-1.5 text-xs transition-colors duration-200"
         >
           Details
         </Link>
@@ -77,45 +75,14 @@ const TrendingTodayContainer = ({ data }: TrendingTodayContainerProps) => {
   const movies = (data?.results ?? [])
     .filter((item) => item.backdrop_path || item.poster_path)
     .slice(0, 12);
-  const backdrops = movies.filter((item) => item.backdrop_path);
-  const [backdropIndex, setBackdropIndex] = useState(0);
-
-  useEffect(() => {
-    if (backdrops.length < 2) return;
-
-    const interval = window.setInterval(() => {
-      setBackdropIndex((current) => (current + 1) % backdrops.length);
-    }, 3000);
-
-    return () => window.clearInterval(interval);
-  }, [backdrops.length]);
 
   if (!movies.length) return null;
 
-  const activeBackdrop = backdrops[backdropIndex % backdrops.length];
-
   return (
     <div className="relative isolate flex items-center overflow-hidden py-4 md:py-20">
-      <div className="absolute inset-0 -z-20 bg-black">
-        <AnimatePresence initial={false} mode="sync">
-          {activeBackdrop?.backdrop_path && (
-            <motion.img
-              key={activeBackdrop.id}
-              src={formatImagePath(activeBackdrop.backdrop_path, "w1280")}
-              alt=""
-              initial={{ opacity: 0, scale: 1.03 }}
-              animate={{ opacity: 0.55, scale: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.8, ease: "easeInOut" }}
-              className="absolute right-0 h-full w-full object-cover"
-            />
-          )}
-        </AnimatePresence>
-      </div>
-
       {/* Dark gradient masks keep the cards readable as backdrops change. */}
-      <div className="from-logo-black via-logo-black/35 to-logo-black absolute inset-0 -z-10 bg-gradient-to-r" />
-      <div className="from-logo-black/90 to-logo-black/90 absolute inset-0 -z-10 bg-gradient-to-b via-transparent" />
+      <div className="from-logo-black via-logo-black/35 to-logo-black absolute inset-0 -z-10 bg-linear-to-r" />
+      <div className="from-logo-black/90 to-logo-black/90 absolute inset-0 -z-10 bg-linear-to-b via-transparent" />
 
       {/* grid pattern background */}
       <div className="absolute inset-0 -z-10 h-full w-full bg-[linear-gradient(to_right,rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.05)_1px,transparent_1px)] mask-[radial-gradient(circle_at_center,black_30%,transparent_70%)] bg-size-[6rem_4rem] [-webkit-mask-image:radial-gradient(circle_at_center,black_30%,transparent_70%)]" />
