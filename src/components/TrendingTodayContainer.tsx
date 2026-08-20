@@ -93,7 +93,7 @@ const TrendingTodayContainer = ({ data }: TrendingTodayContainerProps) => {
       <div className="from-logo-black/90 to-logo-black/90 absolute inset-0 -z-10 bg-linear-to-b via-transparent" />
 
       {/* grid pattern background */}
-      <div className="absolute inset-0 -z-10 h-full w-full bg-[linear-gradient(to_right,rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.05)_1px,transparent_1px)] mask-[radial-gradient(circle_at_center,black_30%,transparent_70%)] bg-size-[6rem_4rem] [-webkit-mask-image:radial-gradient(circle_at_center,black_30%,transparent_70%)]" />
+      <div className="absolute inset-0 -z-10 h-full w-full bg-[radial-gradient(#1e1e1e_1px,transparent_1px)] mask-[radial-gradient(circle_at_center,black_30%,transparent_70%)] bg-size-[16px_16px]" />
 
       <div className="hide-scrollbar 3xl:grid-cols-5 mx-auto flex w-full max-w-7xl snap-x snap-mandatory gap-3 overflow-x-auto sm:grid sm:grid-cols-2 sm:overflow-visible xl:grid-cols-3">
         {movies.map((movie: MediaItem) => (
