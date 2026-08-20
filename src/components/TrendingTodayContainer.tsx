@@ -42,7 +42,6 @@ const InterestCard = ({ movie, type }: InterestCardProps) => {
                 <div className="pointer-events-none absolute inset-0 bg-linear-to-b from-transparent to-black/70" />
               </div>
             </div>
-            <div className="to-logo-background/50 from-logo-white/20 mt-2 h-1.5 w-[40%] rounded-full bg-linear-to-b via-[#292929] md:h-2" />
           </div>
         ) : (
           <div className="bg-logo-white/10 text-logo-white/50 flex h-20 w-24 items-center justify-center rounded-xl text-center text-[0.6rem] md:h-24 md:w-28">
@@ -51,7 +50,7 @@ const InterestCard = ({ movie, type }: InterestCardProps) => {
         )}
       </Link>
 
-      <div className="flex min-w-0 flex-1 flex-col justify-center gap-1">
+      <div className="flex min-w-0 flex-1 flex-col justify-end gap-1">
         <Link
           to="/details/$id"
           params={{ id: String(movie.id) }}
