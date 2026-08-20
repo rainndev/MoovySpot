@@ -3,6 +3,7 @@ import { useWatchTypeStore } from "@/store/WatchTypeStore";
 import type { MediaItem, MediaResponse, MediaType } from "@/types/TMDBTypes";
 import { Link } from "@tanstack/react-router";
 import { motion } from "motion/react";
+import { useState } from "react";
 
 interface TrendingTodayContainerProps {
   data: MediaResponse;
@@ -15,6 +16,7 @@ interface InterestCardProps {
 }
 
 const InterestCard = ({ movie, type, rank }: InterestCardProps) => {
+  const [hoverRotation, setHoverRotation] = useState(0);
   const title = movie.title || movie.name || "Untitled";
   const image = formatImagePath(
     movie.backdrop_path || movie.poster_path,
@@ -26,9 +28,12 @@ const InterestCard = ({ movie, type, rank }: InterestCardProps) => {
     <motion.div
       whileHover={{
         scale: 1.04,
-        rotate: rank % 2 === 0 ? 1 : -1,
+        rotate: hoverRotation,
       }}
       whileTap={{ scale: 0.98 }}
+      onHoverStart={() => {
+        setHoverRotation(Math.random() * 6 - 3);
+      }}
       transition={{
         type: "spring",
         stiffness: 280,
