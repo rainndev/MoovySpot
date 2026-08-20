@@ -10,9 +10,10 @@ interface TrendingTodayContainerProps {
 interface InterestCardProps {
   movie: MediaItem;
   type: MediaType;
+  rank: number;
 }
 
-const InterestCard = ({ movie, type }: InterestCardProps) => {
+const InterestCard = ({ movie, type, rank }: InterestCardProps) => {
   const title = movie.title || movie.name || "Untitled";
   const image = formatImagePath(
     movie.backdrop_path || movie.poster_path,
@@ -21,7 +22,13 @@ const InterestCard = ({ movie, type }: InterestCardProps) => {
   const totalInterest = (movie.vote_count ?? 0).toLocaleString();
 
   return (
-    <div className="flex w-[85vw] max-w-sm shrink-0 snap-start gap-3 rounded-2xl p-3 transition-colors duration-200 sm:w-auto sm:max-w-none">
+    <div className="flex w-[85vw] max-w-sm shrink-0 snap-start items-center gap-3 rounded-2xl p-3 transition-colors duration-200 sm:w-auto sm:max-w-none">
+      <span
+        aria-label={`Trend rank ${rank}`}
+        className="text-logo-blue text-shadow-logo-blue text-shadow-2xl w-10 shrink-0 text-center font-[ClashDisplay] text-7xl leading-none font-semibold sm:w-12 sm:text-9xl"
+      >
+        {rank}
+      </span>
       <Link
         to="/details/$id"
         params={{ id: String(movie.id) }}
@@ -63,15 +70,6 @@ const InterestCard = ({ movie, type }: InterestCardProps) => {
         <p className="text-logo-white/50 text-xs">
           Total Interest: {totalInterest}
         </p>
-
-        <Link
-          to="/details/$id"
-          params={{ id: String(movie.id) }}
-          search={{ type }}
-          className="border-logo-white/10 text-logo-white hover:bg-logo-white/20 mt-1 inline-flex w-fit items-center gap-1.5 rounded-full border px-6 py-1.5 text-xs transition-colors duration-200"
-        >
-          Details
-        </Link>
       </div>
     </div>
   );
@@ -81,7 +79,7 @@ const TrendingTodayContainer = ({ data }: TrendingTodayContainerProps) => {
   const watchType = useWatchTypeStore((state) => state.watchType);
   const movies = (data?.results ?? [])
     .filter((item) => item.backdrop_path || item.poster_path)
-    .slice(0, 12);
+    .slice(0, 10);
 
   if (!movies.length) return null;
 
@@ -95,8 +93,13 @@ const TrendingTodayContainer = ({ data }: TrendingTodayContainerProps) => {
       <div className="absolute inset-0 -z-10 h-full w-full bg-[radial-gradient(#1e1e1e_1px,transparent_1px)] mask-[radial-gradient(circle_at_center,black_30%,transparent_70%)] bg-size-[16px_16px]" />
 
       <div className="hide-scrollbar 3xl:grid-cols-5 mx-auto flex w-full max-w-7xl snap-x snap-mandatory gap-3 overflow-x-auto sm:grid sm:grid-cols-2 sm:overflow-visible xl:grid-cols-3">
-        {movies.map((movie: MediaItem) => (
-          <InterestCard key={movie.id} movie={movie} type={watchType} />
+        {movies.map((movie: MediaItem, index) => (
+          <InterestCard
+            key={movie.id}
+            movie={movie}
+            type={watchType}
+            rank={index + 1}
+          />
         ))}
       </div>
     </div>
