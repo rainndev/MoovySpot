@@ -158,3 +158,86 @@
 .navigation-active {
   @apply text-logo-blue drop-shadow-logo-blue drop-shadow-[0_0_15px_rgba(0,0,0,0.8)] transition duration-300 ease-in-out md:drop-shadow-[0_0_20px_rgba(0,0,0,0.8)];
 }
+
+.popcorn-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  width: 34px;
+  height: 34px;
+  opacity: 0;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.popcorn-cursor svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  filter: drop-shadow(0 2px 6px rgb(0 0 0 / 50%));
+  transition: transform 100ms ease-out;
+}
+
+.popcorn-cursor.open svg {
+  transform: scale(1.08) rotate(-4deg);
+}
+
+.popcorn-cursor.clicked svg {
+  animation: popcorn-cursor-shake 350ms ease-out;
+}
+
+.popcorn-kernel {
+  position: fixed;
+  z-index: 9998;
+  opacity: 1;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+.popcorn-kernel svg {
+  display: block;
+  overflow: visible;
+}
+
+@keyframes popcorn-cursor-shake {
+  0% {
+    transform: rotate(0deg) scale(1);
+  }
+  20% {
+    transform: rotate(-10deg) scale(0.95);
+  }
+  45% {
+    transform: rotate(8deg) scale(1.05);
+  }
+  70% {
+    transform: rotate(-4deg) scale(1);
+  }
+  100% {
+    transform: rotate(0deg) scale(1);
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  html,
+  body,
+  a,
+  button,
+  input,
+  select,
+  textarea,
+  label,
+  [role="button"] {
+    cursor: none !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .popcorn-cursor svg {
+    transition: none;
+  }
+
+  .popcorn-cursor.clicked svg {
+    animation: none;
+  }
+}

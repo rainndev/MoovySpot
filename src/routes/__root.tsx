@@ -1,5 +1,6 @@
 import BottomNav from "@/components/BottomNav";
 import Navigation from "@/components/Navigation";
+import PopcornCursor from "@/components/PopcornCursor";
 import SearchModal from "@/components/SearchModal";
 import { useSearchModalStore } from "@/store/SearchModalStore";
 import { Outlet, createRootRoute } from "@tanstack/react-router";
@@ -15,6 +16,7 @@ function RootComponent() {
 
   return (
     <React.Fragment>
+      <PopcornCursor />
       <AnimatePresence mode="wait">
         {isSearchOpen && <SearchModal />}
       </AnimatePresence>
