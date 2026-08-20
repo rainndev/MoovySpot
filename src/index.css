@@ -221,13 +221,9 @@
 @media (hover: hover) and (pointer: fine) {
   html,
   body,
-  a,
-  button,
-  input,
-  select,
-  textarea,
-  label,
-  [role="button"] {
+  body *,
+  body *::before,
+  body *::after {
     cursor: none !important;
   }
 }
