@@ -17,6 +17,7 @@ interface InterestCardProps {
 
 const InterestCard = ({ movie, type, rank }: InterestCardProps) => {
   const [hoverRotation, setHoverRotation] = useState(0);
+  const isFeatured = rank === 1;
   const title = movie.title || movie.name || "Untitled";
   const image = formatImagePath(
     movie.backdrop_path || movie.poster_path,
@@ -41,11 +42,15 @@ const InterestCard = ({ movie, type, rank }: InterestCardProps) => {
         mass: 0.7,
       }}
       style={{ transformOrigin: "center" }}
-      className="relative flex w-[85vw] max-w-sm shrink-0 snap-start items-center gap-3 rounded-2xl p-3 sm:w-auto sm:max-w-none"
+      className={`relative flex w-[85vw] max-w-sm shrink-0 snap-start items-center gap-3 rounded-2xl p-3 sm:w-auto sm:max-w-none ${
+        isFeatured ? "sm:col-span-2 sm:gap-6" : ""
+      }`}
     >
       <span
         aria-label={`Trend rank ${rank}`}
-        className="text-logo-blue text-shadow-logo-blue text-shadow-2xl w-10 shrink-0 text-center font-[ClashDisplay] text-7xl leading-none font-semibold sm:w-12 sm:text-9xl"
+        className={`text-logo-blue text-shadow-logo-blue text-shadow-2xl w-10 shrink-0 text-center font-[ClashDisplay] text-7xl leading-none font-semibold sm:w-12 sm:text-9xl ${
+          isFeatured ? "sm:w-24 sm:text-[15rem]" : ""
+        }`}
       >
         {rank}
       </span>
@@ -64,7 +69,9 @@ const InterestCard = ({ movie, type, rank }: InterestCardProps) => {
                   alt={title}
                   loading="lazy"
                   draggable={false}
-                  className="h-26 w-40 rounded-[30px] object-cover md:h-40 md:w-54"
+                  className={`h-26 w-40 rounded-[30px] object-cover md:h-40 md:w-54 ${
+                    isFeatured ? "sm:h-52 sm:w-80 lg:h-60 lg:w-96" : ""
+                  }`}
                 />
                 <div className="pointer-events-none absolute inset-0 bg-linear-to-b from-transparent to-black/70" />
               </div>
@@ -82,12 +89,16 @@ const InterestCard = ({ movie, type, rank }: InterestCardProps) => {
           to="/details/$id"
           params={{ id: String(movie.id) }}
           search={{ type }}
-          className="hover:text-logo-blue truncate font-[ClashDisplay] text-[clamp(1.125rem,2.5vw,1.25rem)] font-medium text-white transition-colors"
+          className={`hover:text-logo-blue truncate font-[ClashDisplay] text-[clamp(1.125rem,2.5vw,1.25rem)] font-medium text-white transition-colors ${
+            isFeatured ? "font-black sm:text-5xl" : ""
+          }`}
         >
           {title}
         </Link>
 
-        <p className="text-logo-white/50 text-xs">
+        <p
+          className={`text-logo-white/50 text-xs ${isFeatured ? "sm:text-lg" : ""}`}
+        >
           Total Interest: {totalInterest}
         </p>
       </div>
