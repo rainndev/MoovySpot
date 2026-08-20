@@ -2,6 +2,7 @@ import { formatImagePath } from "@/lib/watch-utils";
 import { useWatchTypeStore } from "@/store/WatchTypeStore";
 import type { MediaItem, MediaResponse, MediaType } from "@/types/TMDBTypes";
 import { Link } from "@tanstack/react-router";
+import { motion } from "motion/react";
 
 interface TrendingTodayContainerProps {
   data: MediaResponse;
@@ -22,7 +23,21 @@ const InterestCard = ({ movie, type, rank }: InterestCardProps) => {
   const totalInterest = (movie.vote_count ?? 0).toLocaleString();
 
   return (
-    <div className="flex w-[85vw] max-w-sm shrink-0 snap-start items-center gap-3 rounded-2xl p-3 transition-colors duration-200 sm:w-auto sm:max-w-none">
+    <motion.div
+      whileHover={{
+        scale: 1.04,
+        rotate: rank % 2 === 0 ? 1 : -1,
+      }}
+      whileTap={{ scale: 0.98 }}
+      transition={{
+        type: "spring",
+        stiffness: 280,
+        damping: 18,
+        mass: 0.7,
+      }}
+      style={{ transformOrigin: "center" }}
+      className="relative flex w-[85vw] max-w-sm shrink-0 snap-start items-center gap-3 rounded-2xl p-3 sm:w-auto sm:max-w-none"
+    >
       <span
         aria-label={`Trend rank ${rank}`}
         className="text-logo-blue text-shadow-logo-blue text-shadow-2xl w-10 shrink-0 text-center font-[ClashDisplay] text-7xl leading-none font-semibold sm:w-12 sm:text-9xl"
@@ -71,7 +86,7 @@ const InterestCard = ({ movie, type, rank }: InterestCardProps) => {
           Total Interest: {totalInterest}
         </p>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
