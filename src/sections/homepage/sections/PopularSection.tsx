@@ -3,17 +3,11 @@ import { getQueryOptions } from "@/query-options/QueryOptions";
 import type { MediaItem, MediaType } from "@/types/TMDBTypes";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
-import { Star } from "lucide-react";
 import HomepageSectionState from "./HomepageSectionState";
 
 interface PopularSectionProps {
   type: MediaType;
 }
-
-const sectionTitles: Record<MediaType, string> = {
-  movie: "Popular Movies",
-  tv: "Popular TV Shows",
-};
 
 const PopularBentoGrid = ({
   items,
@@ -51,7 +45,7 @@ const PopularBentoGrid = ({
             to="/details/$id"
             params={{ id: String(movie.id) }}
             search={{ type: movie.media_type ?? type }}
-            className={`group border-logo-white/5 bg-logo-background relative min-h-0 overflow-hidden rounded-3xl border shadow-lg md:rounded-4xl ${layout}`}
+            className={`group to-logo-background/50 from-logo-white/20 relative min-h-0 overflow-hidden rounded-3xl bg-linear-to-b via-[#292929] shadow-lg md:rounded-4xl ${layout}`}
           >
             <div className="overflow-hidden p-1 font-mono text-[10px] font-medium tracking-[0.08em] text-white/80 uppercase shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]">
               <img
@@ -59,7 +53,7 @@ const PopularBentoGrid = ({
                 alt={title}
                 loading="lazy"
                 draggable="false"
-                className="absolute inset-0 h-full w-full rounded-3xl object-cover p-1 transition duration-500 group-hover:scale-105 md:rounded-4xl"
+                className="absolute inset-0 h-full w-full rounded-3xl object-cover p-1 grayscale transition duration-500 group-hover:scale-105 group-hover:grayscale-0 md:rounded-4xl"
               />
             </div>
 
@@ -67,18 +61,11 @@ const PopularBentoGrid = ({
             <div className="absolute inset-x-0 bottom-0 p-4 sm:p-6">
               <div className="flex items-end justify-between gap-2">
                 <div className="min-w-0">
-                  <h3 className="text-logo-white truncate font-[ClashDisplay] text-base font-semibold sm:text-lg">
+                  <h3 className="text-logo-white truncate font-[ClashDisplay] text-[clamp(1.125rem,2.5vw,1.25rem)] font-medium">
                     {title}
                   </h3>
-                  <p className="text-logo-white/60 mt-0.5 text-xs">
-                    {year} <span className="px-1">•</span>{" "}
-                    {type === "tv" ? "TV Series" : "Movie"}
-                  </p>
+                  <p className="text-logo-white/60 text-xs">{year}</p>
                 </div>
-                <span className="text-logo-blue flex shrink-0 items-center gap-1 text-xs font-medium">
-                  <Star className="h-3.5 w-3.5 fill-current" />
-                  {movie.vote_average.toFixed(1)}
-                </span>
               </div>
             </div>
           </Link>
@@ -96,7 +83,7 @@ const PopularSection = ({ type }: PopularSectionProps) => {
       {(data) => (
         <section className="relative mx-auto mb-10 w-full max-w-7xl">
           <h2 className="mb-5 w-full text-center font-[ClashDisplay] text-[clamp(1.125rem,3vw,1.3rem)] font-medium text-white">
-            {sectionTitles[type]}
+            Popular
           </h2>
           <PopularBentoGrid items={data.results} type={type} />
         </section>
