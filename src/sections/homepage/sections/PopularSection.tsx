@@ -51,7 +51,7 @@ const PopularBentoGrid = ({
             to="/details/$id"
             params={{ id: String(movie.id) }}
             search={{ type: movie.media_type ?? type }}
-            className={`group border-logo-white/5 bg-logo-background relative min-h-0 overflow-hidden rounded-4xl border shadow-lg ${layout}`}
+            className={`group border-logo-white/5 bg-logo-background relative min-h-0 overflow-hidden rounded-3xl border shadow-lg md:rounded-4xl ${layout}`}
           >
             <div className="overflow-hidden p-1 font-mono text-[10px] font-medium tracking-[0.08em] text-white/80 uppercase shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]">
               <img
@@ -59,7 +59,7 @@ const PopularBentoGrid = ({
                 alt={title}
                 loading="lazy"
                 draggable="false"
-                className="absolute inset-0 h-full w-full rounded-4xl object-cover p-1 transition duration-500 group-hover:scale-105"
+                className="absolute inset-0 h-full w-full rounded-3xl object-cover p-1 transition duration-500 group-hover:scale-105 md:rounded-4xl"
               />
             </div>
 
@@ -95,7 +95,7 @@ const PopularSection = ({ type }: PopularSectionProps) => {
     <HomepageSectionState query={query}>
       {(data) => (
         <section className="relative mx-auto mb-10 w-full max-w-7xl">
-          <h2 className="mb-5 w-full font-[ClashDisplay] text-[clamp(1.125rem,3vw,1.3rem)] font-medium text-white">
+          <h2 className="mb-5 w-full text-center font-[ClashDisplay] text-[clamp(1.125rem,3vw,1.3rem)] font-medium text-white">
             {sectionTitles[type]}
           </h2>
           <PopularBentoGrid items={data.results} type={type} />
