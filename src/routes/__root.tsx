@@ -20,7 +20,10 @@ function RootComponent() {
       <AnimatePresence mode="wait">
         {isSearchOpen && <SearchModal />}
       </AnimatePresence>
-      <div className="hide-scrollbar bg-logo-black text-logo-white h-dvh">
+      <div
+        data-scroll-container
+        className="hide-scrollbar bg-logo-black text-logo-white h-dvh"
+      >
         <Navigation />
         <BottomNav />
 
