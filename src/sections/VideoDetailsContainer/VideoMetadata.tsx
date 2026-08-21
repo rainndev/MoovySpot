@@ -107,32 +107,32 @@ const VideoMetadata = ({ data }: VideoMetadataProps) => {
   ];
 
   return (
-    <div className="z-2 -translate-y-20 p-3 md:-translate-y-50 md:p-10 lg:-translate-y-100">
+    <div className="z-2 mx-auto w-full max-w-7xl -translate-y-20 p-3 text-center md:-translate-y-50 md:p-10 lg:-translate-y-100">
       {/* title */}
 
-      <div>
+      <div className="flex justify-center">
         {watchLogoUrl ? (
           <img
             src={watchLogoUrl}
             onContextMenu={(e) => e.preventDefault()}
             onDragStart={(e) => e.preventDefault()}
-            className={`drop-shadow-logo-black/50 w-full max-w-[500px] object-cover py-5 drop-shadow-2xl`}
+            className="drop-shadow-logo-black/50 w-full max-w-[500px] object-contain py-5 drop-shadow-2xl"
             alt={watchTitle}
           />
         ) : (
-          <h1 className="text-logo-white mb-2 w-full text-start font-[ClashDisplay] text-[clamp(1.8rem,3vw,8rem)] font-medium">
+          <h1 className="text-logo-white mb-2 w-full text-center font-[ClashDisplay] text-[clamp(1.8rem,3vw,8rem)] font-medium">
             {watchTitle}
           </h1>
         )}
       </div>
 
       {/* tagline */}
-      <p className="text-logo-white/90 my-2 w-full text-start font-[SansationLight] text-[clamp(.7rem,3vw,1rem)] italic">
+      <p className="text-logo-white/90 my-2 w-full text-center font-[SansationLight] text-[clamp(.7rem,3vw,1rem)] italic">
         {watchTagline}
       </p>
 
       {/* genres */}
-      <div className="text-logo-white/90 mb-2 flex w-full flex-wrap items-center justify-start gap-2 font-[SansationLight] text-[clamp(.8rem,1.5vw,.9rem)]">
+      <div className="text-logo-white/90 mb-2 flex w-full flex-wrap items-center justify-center gap-2 font-[SansationLight] text-[clamp(.8rem,1.5vw,.9rem)]">
         {limitGenres.map((genre: Genre, i: number) => (
           <span
             className="border-logo-white/10 inline-block rounded-sm border px-3 py-1"
@@ -144,7 +144,7 @@ const VideoMetadata = ({ data }: VideoMetadataProps) => {
       </div>
 
       {/* year and runtime */}
-      <div className="text-logo-white/90 my-2 flex w-fit space-x-3 rounded-sm border border-white/10 px-3 py-1 font-[SansationLight] text-[clamp(.8rem,1.5vw,.9rem)]">
+      <div className="text-logo-white/90 mx-auto my-2 flex w-fit space-x-3 rounded-sm border border-white/10 px-3 py-1 font-[SansationLight] text-[clamp(.8rem,1.5vw,.9rem)]">
         <p className="flex items-center gap-2">
           <CiCalendarDate className="text-logo-blue" />
           <span>{watchDate}</span>
@@ -175,7 +175,7 @@ const VideoMetadata = ({ data }: VideoMetadataProps) => {
       </div>
 
       {/* overview */}
-      <p className="text-logo-white/90 mb-5 w-full text-start font-[SansationLight] text-[clamp(.8rem,1.8vw,1.2rem)]">
+      <p className="text-logo-white/90 mx-auto mb-5 w-full max-w-4xl text-center font-[SansationLight] text-[clamp(.8rem,1.8vw,1.2rem)]">
         {watchOverview || "No overview available."}
       </p>
 
@@ -200,11 +200,11 @@ const VideoMetadata = ({ data }: VideoMetadataProps) => {
           Cast
         </h2>
         {castList.length > 0 ? (
-          <div className="hide-scrollbar mt-4 flex gap-3 overflow-x-auto pb-2">
+          <div className="hide-scrollbar mt-4 flex gap-3 overflow-x-auto pb-2 xl:justify-center">
             {castList.map((cast: TmdbCastMember) => (
               <div
                 key={cast.id}
-                className="bg-logo-black/40 border-logo-white/10 group hover:bg-logo-black/60 w-[130px] flex-shrink-0 cursor-pointer rounded-lg border p-4 transition-all duration-300 hover:w-[160px]"
+                className="bg-logo-black/40 border-logo-white/10 group hover:bg-logo-black/60 w-[130px] flex-shrink-0 cursor-pointer rounded-lg border p-4 text-center transition-all duration-300 hover:w-[160px]"
               >
                 {cast.profile_path ? (
                   <img
@@ -234,7 +234,7 @@ const VideoMetadata = ({ data }: VideoMetadataProps) => {
 
       {/* watch button */}
       {/* to={formatWatchUrl(numericId, MEDIA_TYPE, "play")} */}
-      <div className="flex space-x-2">
+      <div className="flex flex-wrap justify-center gap-2">
         {isMovie ? (
           <Link
             params={{ id: numericId }}
@@ -284,7 +284,7 @@ const VideoMetadata = ({ data }: VideoMetadataProps) => {
 
       {/* for tv series */}
       {!isMovie && (
-        <div className="mt-5">
+        <div className="mt-5 flex flex-col items-center">
           {/* select seasons */}
           <Select
             value={String(season)}
@@ -316,7 +316,7 @@ const VideoMetadata = ({ data }: VideoMetadataProps) => {
             </div>
           )}
 
-          <div className="mt-5 grid grid-cols-2 gap-1 sm:grid-cols-3 md:gap-2 lg:grid-cols-4 xl:grid-cols-5">
+          <div className="mt-5 grid w-full grid-cols-2 gap-1 sm:grid-cols-3 md:gap-2 lg:grid-cols-4 xl:grid-cols-5">
             {seasonData &&
               seasonData.episodes.map((episode: Episode) => (
                 <Link
@@ -339,7 +339,7 @@ const VideoMetadata = ({ data }: VideoMetadataProps) => {
       {/* for movie collection */}
       {isMovie && collectionData.isSuccess && (
         <>
-          <h1 className="mt-10 font-[SansationLight] text-[clamp(.8rem,1.5vw,1rem)]">
+          <h1 className="mt-10 text-center font-[SansationLight] text-[clamp(.8rem,1.5vw,1rem)]">
             {collectionData?.data?.name}
           </h1>
           <div className="mt-5 grid w-full grid-cols-2 gap-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-6">

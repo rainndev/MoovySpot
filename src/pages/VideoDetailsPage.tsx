@@ -96,8 +96,8 @@ const VideoDetailsPage = ({ id, searchParams }: VideoDetailsPageProps) => {
 
   return (
     <section className="hide-scrollbar flex h-full w-full justify-center">
-      <div className="z-5 w-full">
-        <div className="bg-logo-black pointer-events-none absolute inset-0 h-full [mask-image:radial-gradient(ellipse_at_center,transparent_20%,#14c4b4)]" />
+      <div className="z-5 mx-auto w-full">
+        <div className="bg-logo-black pointer-events-none absolute inset-0 h-full mask-[radial-gradient(ellipse_at_center,transparent_20%,#14c4b4)]" />
         <div className="w-full pb-20">
           <div className="flex w-full flex-col">
             {/* banner poster */}
