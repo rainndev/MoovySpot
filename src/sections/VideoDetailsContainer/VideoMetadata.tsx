@@ -1,4 +1,4 @@
-import { formatImagePath, formatRuntime } from "@/lib/watch-utils";
+import { formatRuntime } from "@/lib/watch-utils";
 import { useSeasonOptions } from "@/query-options/QuerySeasonOptions";
 import type { Episode, SeasonInfo } from "@/types/TvSeriesTypes";
 import { useQueries } from "@tanstack/react-query";
@@ -8,6 +8,7 @@ import { CiCalendarDate } from "react-icons/ci";
 import { IoMdTime } from "react-icons/io";
 import { MdOutlineVideocam, MdOutlineVideocamOff } from "react-icons/md";
 
+import CastList from "@/components/CastList";
 import CollectionCard from "@/components/CollectionCard";
 import {
   Select,
@@ -18,7 +19,7 @@ import {
 } from "@/components/ui/select";
 import { useCollectionOptions } from "@/query-options/QueryCollectionOptions";
 import { useCreditsOptions } from "@/query-options/QueryCreditsOptions";
-import type { MediaItem, TmdbCastMember } from "@/types/TMDBTypes";
+import type { MediaItem } from "@/types/TMDBTypes";
 import EpisodeCard from "../../components/EpisodeCard";
 import LoadingAnimation from "../../components/LoadingAnimation";
 interface Genre {
@@ -83,7 +84,6 @@ const VideoMetadata = ({ data }: VideoMetadataProps) => {
     ],
   });
 
-  if (!seasonDetails) return;
   const { data: seasonData, isLoading, error, isError } = seasonDetails;
   const castList = (creditsData.data || []).slice(0, 12);
 
@@ -116,7 +116,7 @@ const VideoMetadata = ({ data }: VideoMetadataProps) => {
             src={watchLogoUrl}
             onContextMenu={(e) => e.preventDefault()}
             onDragStart={(e) => e.preventDefault()}
-            className="drop-shadow-logo-black/50 w-full max-w-[500px] object-contain py-5 drop-shadow-2xl"
+            className="drop-shadow-logo-black/50 w-full max-w-125 object-contain py-5 drop-shadow-2xl"
             alt={watchTitle}
           />
         ) : (
@@ -149,7 +149,7 @@ const VideoMetadata = ({ data }: VideoMetadataProps) => {
           <CiCalendarDate className="text-logo-blue" />
           <span>{watchDate}</span>
         </p>
-        <div className="bg-logo-white/10 w-[1px]" />
+        <div className="bg-logo-white/10 w-px" />
 
         {watchRuntime ? (
           <p className="flex items-center gap-2">
@@ -196,40 +196,10 @@ const VideoMetadata = ({ data }: VideoMetadataProps) => {
       </div>
 
       <div className="mt-8 mb-5">
-        <h2 className="font-[ClashDisplay] text-[clamp(1rem,3vw,1.4rem)]">
+        <h2 className="mb-2 font-[ClashDisplay] text-[clamp(1rem,3vw,1.4rem)]">
           Cast
         </h2>
-        {castList.length > 0 ? (
-          <div className="hide-scrollbar mt-4 flex gap-3 overflow-x-auto pb-2 xl:justify-center">
-            {castList.map((cast: TmdbCastMember) => (
-              <div
-                key={cast.id}
-                className="bg-logo-black/40 border-logo-white/10 group hover:bg-logo-black/60 w-[130px] flex-shrink-0 cursor-pointer rounded-lg border p-4 text-center transition-all duration-300 hover:w-[160px]"
-              >
-                {cast.profile_path ? (
-                  <img
-                    src={formatImagePath(cast.profile_path, "w300")}
-                    alt={cast.name}
-                    className="aspect-square w-full rounded-full object-cover grayscale transition-all duration-300 group-hover:grayscale-0"
-                    loading="lazy"
-                  />
-                ) : (
-                  <div className="bg-logo-white/5 text-logo-white/50 flex aspect-square w-full items-center justify-center rounded-full px-2 text-center text-[clamp(.55rem,2.5vw,.7rem)]"></div>
-                )}
-                <p className="text-logo-white group-hover:text-logo-blue mt-2 line-clamp-1 font-[ClashDisplay] text-[clamp(.65rem,2.8vw,1rem)] transition-all">
-                  {cast.name}
-                </p>
-                <p className="text-logo-white/60 line-clamp-1 text-[clamp(.55rem,2.5vw,.7rem)]">
-                  {cast.character || "Unknown"}
-                </p>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <p className="text-logo-white/60 mt-2 text-[clamp(.75rem,2.8vw,.9rem)]">
-            Cast information is unavailable.
-          </p>
-        )}
+        <CastList cast={castList ?? []} />
       </div>
 
       {/* watch button */}
