@@ -77,7 +77,7 @@ const Navigation = () => {
             : { width: isScrolled ? "auto" : "min(82vw, 36rem)" }
         }
         transition={{ type: "spring", stiffness: 260, damping: 28 }}
-        className="bg-logo-black/65 border-logo-white/5 flex items-center gap-1 rounded-full border p-4 shadow-[0_10px_35px_rgba(0,0,0,0.35)] backdrop-blur-xl"
+        className="bg-logo-black/65 border-logo-white/5 flex items-center gap-1 rounded-full border p-3 shadow-[0_10px_35px_rgba(0,0,0,0.35)] backdrop-blur-xl"
       >
         <AnimatePresence initial={false} mode="popLayout">
           {!isScrolled && (
