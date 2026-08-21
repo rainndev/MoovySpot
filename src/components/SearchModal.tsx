@@ -158,11 +158,15 @@ const SearchModal = () => {
         {/* Search results */}
 
         {!isLoading && isGridView ? (
-          <div className="hide-scrollbar mt-5 grid h-full w-full grid-cols-[repeat(auto-fit,minmax(150px,1fr))] gap-2 overflow-y-auto [mask-image:linear-gradient(to_bottom,transparent,black_100px,black_calc(100%-100px),transparent)] p-5 [-webkit-mask-image:linear-gradient(to_bottom,transparent,black_100px,black_calc(100%-100px),transparent)] md:grid-cols-[repeat(auto-fit,minmax(180px,1fr))] xl:grid-cols-[repeat(auto-fit,minmax(230px,1fr))]">
+          <div className="hide-scrollbar mt-5 grid h-full w-full grid-cols-[repeat(auto-fit,minmax(min(100%,clamp(150px,18vw,220px)),1fr))] gap-2 overflow-y-auto [mask-image:linear-gradient(to_bottom,transparent,black_100px,black_calc(100%-100px),transparent)] p-5 [-webkit-mask-image:linear-gradient(to_bottom,transparent,black_100px,black_calc(100%-100px),transparent)]">
             {data && data.results && data.results.length > 0 ? (
               data?.results?.map((watch: MediaItem) => (
                 <div key={`${type}-${watch.id}`} onClick={toggleModal}>
-                  <WatchCard movie={watch} mediaType={type} />
+                  <WatchCard
+                    movie={watch}
+                    mediaType={type}
+                    showMissingImage
+                  />
                 </div>
               ))
             ) : debouncedTerm.length > 0 ? (

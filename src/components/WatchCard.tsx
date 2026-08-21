@@ -5,9 +5,10 @@ import type { MediaItem } from "@/types/TMDBTypes";
 interface WatchCardProps {
   movie: MediaItem;
   mediaType?: "movie" | "tv";
+  showMissingImage?: boolean;
 }
 
-const WatchCard = ({ movie, mediaType }: WatchCardProps) => {
+const WatchCard = ({ movie, mediaType, showMissingImage }: WatchCardProps) => {
   const watchType = useWatchTypeStore((state) => state.watchType);
   const timeAdded = movie.timeAdded;
 
@@ -20,6 +21,7 @@ const WatchCard = ({ movie, mediaType }: WatchCardProps) => {
       }
       cardClassName="border-logo-white/10 shadow-bg border"
       imageWrapperClassName="aspect-[3/4]"
+      showMissingImage={showMissingImage}
     />
   );
 };

@@ -17,6 +17,7 @@ interface MediaPosterCardProps {
   imageClassName?: string;
   imageTestId?: string;
   showOverlay?: boolean;
+  showMissingImage?: boolean;
   topRightSlot?: ReactNode;
   children?: ReactNode;
 }
@@ -33,6 +34,7 @@ const MediaPosterCard = ({
   imageClassName,
   imageTestId,
   showOverlay = true,
+  showMissingImage = false,
   topRightSlot,
   children,
 }: MediaPosterCardProps) => {
@@ -60,7 +62,7 @@ const MediaPosterCard = ({
 
   const resolvedType = type ?? media.type ?? "movie";
 
-  if (!media.poster_path) return null;
+  if (!media.poster_path && !showMissingImage) return null;
   if (!media.title && !media.name) return null;
 
   const content = (
@@ -72,19 +74,25 @@ const MediaPosterCard = ({
         )}
       >
         <div className={cn("w-full", imageWrapperClassName)}>
-          <img
-            data-testid={imageTestId}
-            onContextMenu={(e) => e.preventDefault()}
-            onDragStart={(e) => e.preventDefault()}
-            loading="lazy"
-            src={formatImagePath(media.poster_path, "w300")}
-            alt={media.title || media.name}
-            draggable="false"
-            className={cn(
-              "aspect-[3/4] h-full w-full scale-100 object-cover opacity-90 shadow-lg transition-all duration-300 ease-in-out hover:scale-105 hover:opacity-50 active:scale-105 active:opacity-50",
-              imageClassName,
-            )}
-          />
+          {media.poster_path ? (
+            <img
+              data-testid={imageTestId}
+              onContextMenu={(e) => e.preventDefault()}
+              onDragStart={(e) => e.preventDefault()}
+              loading="lazy"
+              src={formatImagePath(media.poster_path, "w300")}
+              alt={media.title || media.name}
+              draggable="false"
+              className={cn(
+                "aspect-[3/4] h-full w-full scale-100 object-cover opacity-90 shadow-lg transition-all duration-300 ease-in-out hover:scale-105 hover:opacity-50 active:scale-105 active:opacity-50",
+                imageClassName,
+              )}
+            />
+          ) : showMissingImage ? (
+            <div className="bg-logo-white/5 text-logo-white/50 flex h-full min-h-48 w-full items-center justify-center text-center text-sm">
+              No Image
+            </div>
+          ) : null}
         </div>
 
         {topRightSlot}
