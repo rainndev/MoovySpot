@@ -5,6 +5,7 @@ import type { MediaItem, MediaResponse, MediaType } from "@/types/TMDBTypes";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
+import { FaRegStar, FaStar, FaStarHalfAlt } from "react-icons/fa";
 
 interface TrendingTodayContainerProps {
   data: MediaResponse;
@@ -18,6 +19,7 @@ interface InterestCardProps {
 
 interface MediaImage {
   file_path: string;
+  iso_639_1?: string | null;
 }
 
 const InterestCard = ({ movie, type, rank }: InterestCardProps) => {
@@ -25,11 +27,19 @@ const InterestCard = ({ movie, type, rank }: InterestCardProps) => {
   const [imageIndex, setImageIndex] = useState(0);
   const { data: imageData } = useQuery({
     ...useOptionsImages(type, movie.id),
-    enabled: isHovered,
   });
   const isFeatured = rank === 1;
   const title = movie.title || movie.name || "Untitled";
-  const totalInterest = (movie.vote_count ?? 0).toLocaleString();
+  const rating = Math.round(((movie.vote_average ?? 0) / 2) * 2) / 2;
+  const titleImage = useMemo(() => {
+    const logos = (imageData?.logos ?? []) as MediaImage[];
+    const logo =
+      logos.find((item) => item.iso_639_1 === "en") ??
+      logos.find((item) => !item.iso_639_1) ??
+      logos[0];
+
+    return logo ? formatImagePath(logo.file_path, "w300") : null;
+  }, [imageData]);
   const availableImages = useMemo(
     () =>
       [
@@ -64,13 +74,13 @@ const InterestCard = ({ movie, type, rank }: InterestCardProps) => {
     <div
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className={`relative flex w-[85vw] max-w-sm shrink-0 snap-start items-center gap-3 rounded-2xl p-3 sm:w-auto sm:max-w-none ${
+      className={`group relative flex w-[85vw] max-w-sm shrink-0 snap-start items-center gap-3 rounded-2xl p-3 sm:w-auto sm:max-w-none ${
         isFeatured ? "sm:col-span-2 sm:gap-6" : ""
       }`}
     >
       <span
         aria-label={`Trend rank ${rank}`}
-        className={`text-logo-blue text-shadow-logo-blue text-shadow-2xl w-10 shrink-0 text-center font-[ClashDisplay] text-7xl leading-none font-semibold sm:w-12 sm:text-9xl ${
+        className={`text-shadow-logo-blue text-shadow-2xl group-hover:text-logo-blue w-10 shrink-0 text-center font-[ClashDisplay] text-7xl leading-none font-semibold text-transparent transition-colors duration-300 ease-in-out [-webkit-text-stroke:2px_var(--color-logo-blue)] sm:w-12 sm:text-9xl ${
           isFeatured ? "sm:w-24 sm:text-[15rem]" : ""
         }`}
       >
@@ -80,6 +90,7 @@ const InterestCard = ({ movie, type, rank }: InterestCardProps) => {
         to="/details/$id"
         params={{ id: String(movie.id) }}
         search={{ type }}
+        aria-label={title}
         className="shrink-0"
       >
         {availableImages.length ? (
@@ -114,24 +125,46 @@ const InterestCard = ({ movie, type, rank }: InterestCardProps) => {
           </div>
         )}
       </Link>
-
       <div className="flex min-w-0 flex-1 flex-col justify-end gap-1">
         <Link
           to="/details/$id"
           params={{ id: String(movie.id) }}
           search={{ type }}
-          className={`hover:text-logo-blue truncate font-[ClashDisplay] text-[clamp(1.125rem,2.5vw,1.25rem)] font-medium text-white transition-colors ${
-            isFeatured ? "font-black sm:text-5xl" : ""
-          }`}
+          aria-label={title}
+          className="flex h-10 w-full max-w-35 items-center sm:h-14 sm:max-w-55"
         >
-          {title}
+          {titleImage ? (
+            <img
+              src={titleImage}
+              alt={`${title} title`}
+              draggable={false}
+              className="max-h-full max-w-full object-contain object-left"
+            />
+          ) : (
+            <span className="truncate font-[ClashDisplay] text-[clamp(1.125rem,2.5vw,1.25rem)] font-medium text-white">
+              {title}
+            </span>
+          )}
         </Link>
-
-        <p
-          className={`text-logo-white/50 text-xs ${isFeatured ? "sm:text-lg" : ""}`}
+        <div
+          aria-label={`${rating} out of 5 stars`}
+          className={`text-logo-blue flex w-fit items-center ${isFeatured ? "md:text-lg" : "text-[10px] md:text-xs"}`}
         >
-          Total Interest: {totalInterest}
-        </p>
+          {Array.from({ length: 5 }, (_, index) => {
+            const starValue = index + 1;
+
+            if (rating >= starValue) {
+              return <FaStar key={starValue} aria-hidden="true" />;
+            }
+
+            if (rating >= starValue - 0.5) {
+              return <FaStarHalfAlt key={starValue} aria-hidden="true" />;
+            }
+
+            return <FaRegStar key={starValue} aria-hidden="true" />;
+          })}
+          <span className="text-logo-white ml-1">{rating.toFixed(1)}</span>
+        </div>
       </div>
     </div>
   );
