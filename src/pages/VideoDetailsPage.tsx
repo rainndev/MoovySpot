@@ -95,7 +95,7 @@ const VideoDetailsPage = ({ id, searchParams }: VideoDetailsPageProps) => {
   }
 
   return (
-    <section className="hide-scrollbar flex h-full w-full justify-center md:pl-25">
+    <section className="hide-scrollbar flex h-full w-full justify-center md:pt-24">
       <div className="z-5 w-full">
         <div className="bg-logo-black pointer-events-none absolute inset-0 h-full [mask-image:radial-gradient(ellipse_at_center,transparent_20%,#14c4b4)]" />
         <div className="w-full pb-20">

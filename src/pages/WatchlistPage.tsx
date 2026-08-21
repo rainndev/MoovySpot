@@ -31,7 +31,7 @@ const WatchlistPage = () => {
   }
 
   return (
-    <div className="flex h-dvh w-full flex-col items-center p-3 md:p-10">
+    <div className="flex h-dvh w-full flex-col items-center p-3 md:px-10 md:pt-28 md:pb-10">
       {/* header */}
 
       <div className="mt-5 mb-10 w-full">

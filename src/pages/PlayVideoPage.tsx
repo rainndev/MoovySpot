@@ -126,7 +126,7 @@ const PlayVideoPage = ({ id, searchParams }: PlayVideoPageProps) => {
   }
 
   return (
-    <div className="bg-logo-black text-logo-white min-h-dvh w-full p-3 md:p-10">
+    <div className="bg-logo-black text-logo-white min-h-dvh w-full p-3 md:px-10 md:pt-28 md:pb-10">
       <div className="mx-auto flex w-full flex-col gap-5">
         <div className="flex flex-col">
           <p className="text-logo-white/50 text-[clamp(.65rem,2vw,.85rem)] tracking-[0.3em] uppercase">
