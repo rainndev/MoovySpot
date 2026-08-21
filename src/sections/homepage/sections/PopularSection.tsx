@@ -81,11 +81,21 @@ const PopularSection = ({ type }: PopularSectionProps) => {
   return (
     <HomepageSectionState query={query}>
       {(data) => (
-        <section className="relative mx-auto mb-10 w-full max-w-7xl">
-          <h2 className="mb-5 w-full text-center font-[ClashDisplay] text-[clamp(1.125rem,3vw,1.3rem)] font-medium text-white">
+        <section className="relative isolate mx-auto mb-10 w-full max-w-7xl">
+          <div
+            aria-hidden="true"
+            className="bg-logo-blue/35 pointer-events-none absolute top-12 -left-12 z-0 size-56 rounded-full blur-[75px] sm:size-80 md:top-20 md:-left-24 md:size-112 md:blur-[110px]"
+          />
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute right-0 -bottom-12 z-0 size-56 rounded-full bg-violet-500/30 blur-[75px] sm:-right-10 sm:size-80 md:-right-20 md:-bottom-20 md:size-112 md:blur-[110px]"
+          />
+          <h2 className="relative z-10 mb-5 w-full text-center font-[ClashDisplay] text-[clamp(1.125rem,3vw,1.3rem)] font-medium text-white">
             Popular
           </h2>
-          <PopularBentoGrid items={data.results} type={type} />
+          <div className="relative z-10">
+            <PopularBentoGrid items={data.results} type={type} />
+          </div>
         </section>
       )}
     </HomepageSectionState>
