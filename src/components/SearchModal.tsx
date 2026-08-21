@@ -81,7 +81,7 @@ const SearchModal = () => {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
       transition={{ duration: 0.3 }}
-      className="bg-opacity-50 bg-logo-black/10 text-logo-white fixed inset-0 z-50 flex items-center justify-center p-5 backdrop-blur-md md:p-10"
+      className="bg-opacity-50 bg-logo-black/10 text-logo-white fixed inset-0 z-100 flex items-center justify-center p-5 backdrop-blur-md md:p-10"
     >
       {/* Search input container */}
       <motion.div
@@ -93,7 +93,7 @@ const SearchModal = () => {
             damping: 25,
           },
         }}
-        className={`bg-logo-black/85 text-md border-logo-white/5 flex w-full flex-col items-start rounded-xl border pb-5 shadow-lg ${isGridView ? "h-full w-full" : "max-h-[80vh] max-w-5xl"} overflow-hidden`}
+        className={`bg-logo-black/85 text-md border-logo-white/5 flex w-full max-w-7xl flex-col items-start overflow-hidden rounded-3xl border pb-5 shadow-lg ${isGridView ? "h-full" : "max-h-[80vh]"}`}
       >
         {/* Search icon and input field */}
         <div className="flex w-full items-center p-4 px-5">
