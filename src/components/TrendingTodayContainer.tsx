@@ -4,6 +4,7 @@ import { useWatchTypeStore } from "@/store/WatchTypeStore";
 import type { MediaItem, MediaResponse, MediaType } from "@/types/TMDBTypes";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
+import { motion } from "motion/react";
 import { useEffect, useMemo, useState } from "react";
 import { FaRegStar, FaStar, FaStarHalfAlt } from "react-icons/fa";
 
@@ -24,6 +25,7 @@ interface MediaImage {
 
 const InterestCard = ({ movie, type, rank }: InterestCardProps) => {
   const [isHovered, setIsHovered] = useState(false);
+  const [imageRotation, setImageRotation] = useState(0);
   const [imageIndex, setImageIndex] = useState(0);
   const { data: imageData } = useQuery({
     ...useOptionsImages(type, movie.id),
@@ -72,7 +74,10 @@ const InterestCard = ({ movie, type, rank }: InterestCardProps) => {
 
   return (
     <div
-      onMouseEnter={() => setIsHovered(true)}
+      onMouseEnter={() => {
+        setImageRotation(Math.random() * 6 - 3);
+        setIsHovered(true);
+      }}
       onMouseLeave={() => setIsHovered(false)}
       className={`group relative flex w-[85vw] max-w-sm shrink-0 snap-start items-center gap-3 rounded-2xl p-3 sm:w-auto sm:max-w-none ${
         isFeatured ? "sm:col-span-2 sm:gap-6" : ""
@@ -94,7 +99,11 @@ const InterestCard = ({ movie, type, rank }: InterestCardProps) => {
         className="shrink-0"
       >
         {availableImages.length ? (
-          <div className="flex flex-col items-center">
+          <motion.div
+            animate={{ rotate: isHovered ? imageRotation : 0, scale: isHovered ? 1.04 : 1 }}
+            transition={{ type: "spring", stiffness: 280, damping: 18 }}
+            className="flex flex-col items-center"
+          >
             <div className="to-logo-background/50 from-logo-white/20 rounded-4xl bg-linear-to-b via-[#292929] p-1 font-mono text-[10px] font-medium tracking-[0.08em] text-white/80 uppercase shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]">
               <div className="relative overflow-hidden rounded-[30px]">
                 <div
@@ -118,7 +127,7 @@ const InterestCard = ({ movie, type, rank }: InterestCardProps) => {
                 <div className="pointer-events-none absolute inset-0 bg-linear-to-b from-transparent to-black/70" />
               </div>
             </div>
-          </div>
+          </motion.div>
         ) : (
           <div className="bg-logo-white/10 text-logo-white/50 flex h-20 w-24 items-center justify-center rounded-xl text-center text-[0.6rem] md:h-24 md:w-28">
             No Image
