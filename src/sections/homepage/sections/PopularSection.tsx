@@ -3,6 +3,7 @@ import { getQueryOptions } from "@/query-options/QueryOptions";
 import type { MediaItem, MediaType } from "@/types/TMDBTypes";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
+import { motion, useReducedMotion } from "motion/react";
 import HomepageSectionState from "./HomepageSectionState";
 
 interface PopularSectionProps {
@@ -61,7 +62,7 @@ const PopularBentoGrid = ({
             <div className="absolute inset-x-0 bottom-0 p-4 sm:p-6">
               <div className="flex items-end justify-between gap-2">
                 <div className="min-w-0">
-                  <h3 className="text-logo-white truncate font-[ClashDisplay] text-[clamp(1.125rem,2.5vw,1.25rem)] font-medium">
+                  <h3 className="text-logo-white truncate font-[ClashDisplay] font-medium">
                     {title}
                   </h3>
                   <p className="text-logo-white/60 text-xs">{year}</p>
@@ -77,17 +78,38 @@ const PopularBentoGrid = ({
 
 const PopularSection = ({ type }: PopularSectionProps) => {
   const query = useQuery(getQueryOptions(type, "popular"));
+  const shouldReduceMotion = useReducedMotion();
 
   return (
     <HomepageSectionState query={query}>
       {(data) => (
         <section className="relative isolate mx-auto mb-10 w-full max-w-7xl">
-          <div
+          <motion.div
             aria-hidden="true"
+            animate={
+              shouldReduceMotion
+                ? undefined
+                : { opacity: [0.55, 1, 0.55], scale: [0.92, 1.12, 0.92] }
+            }
+            transition={{
+              duration: 7,
+              ease: "easeInOut",
+              repeat: Infinity,
+            }}
             className="bg-logo-blue/35 pointer-events-none absolute top-12 -left-12 z-0 size-56 rounded-full blur-[75px] sm:size-80 md:top-20 md:-left-24 md:size-112 md:blur-[110px]"
           />
-          <div
+          <motion.div
             aria-hidden="true"
+            animate={
+              shouldReduceMotion
+                ? undefined
+                : { opacity: [0.45, 0.9, 0.45], scale: [1.08, 0.94, 1.08] }
+            }
+            transition={{
+              duration: 9,
+              ease: "easeInOut",
+              repeat: Infinity,
+            }}
             className="pointer-events-none absolute right-0 -bottom-12 z-0 size-56 rounded-full bg-violet-500/30 blur-[75px] sm:-right-10 sm:size-80 md:-right-20 md:-bottom-20 md:size-112 md:blur-[110px]"
           />
           <h2 className="relative z-10 mb-5 w-full text-center font-[ClashDisplay] text-[clamp(1.125rem,3vw,1.3rem)] font-medium text-white">
