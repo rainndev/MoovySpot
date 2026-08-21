@@ -80,7 +80,7 @@ const CategoryPage = () => {
   }
 
   return (
-    <div className="flex h-dvh w-full flex-col items-center p-3 pb-20 md:p-10 md:pl-25">
+    <div className="flex h-dvh w-full flex-col items-center p-3 pb-20 md:p-10">
       {/* header */}
       <div className="flex w-full flex-col items-center">
         <h1 className="mt-5 mb-2 w-full text-start font-[ClashDisplay] text-[clamp(1.3rem,3vw,2rem)] font-medium">
