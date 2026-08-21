@@ -1,9 +1,10 @@
 import { formatImagePath } from "@/lib/watch-utils";
+import { useOptionsImages } from "@/query-options/QueryOptions";
 import { useWatchTypeStore } from "@/store/WatchTypeStore";
 import type { MediaItem, MediaResponse, MediaType } from "@/types/TMDBTypes";
+import { useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
-import { motion } from "motion/react";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 interface TrendingTodayContainerProps {
   data: MediaResponse;
@@ -15,33 +16,54 @@ interface InterestCardProps {
   rank: number;
 }
 
+interface MediaImage {
+  file_path: string;
+}
+
 const InterestCard = ({ movie, type, rank }: InterestCardProps) => {
-  const [hoverRotation, setHoverRotation] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
+  const [imageIndex, setImageIndex] = useState(0);
+  const { data: imageData } = useQuery({
+    ...useOptionsImages(type, movie.id),
+    enabled: isHovered,
+  });
   const isFeatured = rank === 1;
   const title = movie.title || movie.name || "Untitled";
-  const image = formatImagePath(
-    movie.backdrop_path || movie.poster_path,
-    "w300",
-  );
   const totalInterest = (movie.vote_count ?? 0).toLocaleString();
+  const availableImages = useMemo(
+    () =>
+      [
+        movie.backdrop_path || movie.poster_path,
+        ...((imageData?.backdrops ?? []) as MediaImage[]).map(
+          (item) => item.file_path,
+        ),
+        ...((imageData?.posters ?? []) as MediaImage[]).map(
+          (item) => item.file_path,
+        ),
+      ].filter((path, index, images) => path && images.indexOf(path) === index),
+    [imageData, movie.backdrop_path, movie.poster_path],
+  );
+
+  useEffect(() => {
+    setImageIndex(0);
+  }, [movie.id]);
+
+  useEffect(() => {
+    if (!isHovered || availableImages.length < 2) return;
+
+    const interval = window.setInterval(() => {
+      setImageIndex(
+        (currentIndex) => (currentIndex + 1) % availableImages.length,
+      );
+    }, 1000);
+
+    return () => window.clearInterval(interval);
+  }, [availableImages.length, isHovered]);
 
   return (
-    <motion.div
-      whileHover={{
-        scale: 1.04,
-        rotate: hoverRotation,
-      }}
-      whileTap={{ scale: 0.98 }}
-      onHoverStart={() => {
-        setHoverRotation(Math.random() * 6 - 3);
-      }}
-      transition={{
-        type: "spring",
-        stiffness: 280,
-        damping: 18,
-        mass: 0.7,
-      }}
-      style={{ transformOrigin: "center" }}
+    <div
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
       className={`relative flex w-[85vw] max-w-sm shrink-0 snap-start items-center gap-3 rounded-2xl p-3 sm:w-auto sm:max-w-none ${
         isFeatured ? "sm:col-span-2 sm:gap-6" : ""
       }`}
@@ -60,19 +82,28 @@ const InterestCard = ({ movie, type, rank }: InterestCardProps) => {
         search={{ type }}
         className="shrink-0"
       >
-        {image ? (
+        {availableImages.length ? (
           <div className="flex flex-col items-center">
             <div className="to-logo-background/50 from-logo-white/20 rounded-4xl bg-linear-to-b via-[#292929] p-1 font-mono text-[10px] font-medium tracking-[0.08em] text-white/80 uppercase shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]">
               <div className="relative overflow-hidden rounded-[30px]">
-                <img
-                  src={image}
-                  alt={title}
-                  loading="lazy"
-                  draggable={false}
-                  className={`h-26 w-40 rounded-[30px] object-cover md:h-40 md:w-54 ${
+                <div
+                  className={`relative h-26 w-40 md:h-40 md:w-54 ${
                     isFeatured ? "sm:h-52 sm:w-80 lg:h-60 lg:w-96" : ""
                   }`}
-                />
+                >
+                  {availableImages.map((path, index) => (
+                    <img
+                      key={path}
+                      src={formatImagePath(path, "w300")}
+                      alt={index === 0 ? title : `${title} still ${index}`}
+                      loading={index === 0 ? "lazy" : undefined}
+                      draggable={false}
+                      className={`absolute inset-0 h-full w-full rounded-[30px] object-cover transition-opacity duration-700 ${
+                        index === imageIndex ? "opacity-100" : "opacity-0"
+                      }`}
+                    />
+                  ))}
+                </div>
                 <div className="pointer-events-none absolute inset-0 bg-linear-to-b from-transparent to-black/70" />
               </div>
             </div>
@@ -102,7 +133,7 @@ const InterestCard = ({ movie, type, rank }: InterestCardProps) => {
           Total Interest: {totalInterest}
         </p>
       </div>
-    </motion.div>
+    </div>
   );
 };
 
