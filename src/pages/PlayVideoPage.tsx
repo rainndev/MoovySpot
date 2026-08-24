@@ -44,6 +44,7 @@ const PlayVideoPage = ({ id, searchParams }: PlayVideoPageProps) => {
     isError,
     error,
     watchTitle,
+    watchLogoUrl,
     watchSeasonsData,
   } = useWatchData(MEDIA_TYPE ?? "movie", resolvedId);
 
@@ -132,9 +133,19 @@ const PlayVideoPage = ({ id, searchParams }: PlayVideoPageProps) => {
           <p className="text-logo-white/50 text-[clamp(.65rem,2vw,.85rem)] tracking-[0.3em] uppercase">
             Now Playing
           </p>
-          <h1 className="font-[ClashDisplay] text-[clamp(1.5rem,3vw,2rem)] font-medium">
-            {watchTitle}
-          </h1>
+          {watchLogoUrl ? (
+            <img
+              src={watchLogoUrl}
+              alt={watchTitle}
+              onContextMenu={(e) => e.preventDefault()}
+              onDragStart={(e) => e.preventDefault()}
+              className="mt-1 h-[clamp(2.25rem,6vw,4rem)] w-auto max-w-[min(100%,22rem)] object-contain object-left"
+            />
+          ) : (
+            <h1 className="font-[ClashDisplay] text-[clamp(1.5rem,3vw,2rem)] font-medium">
+              {watchTitle}
+            </h1>
+          )}
         </div>
 
         <div className="flex flex-col gap-5">
