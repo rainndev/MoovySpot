@@ -243,7 +243,7 @@ const PlayVideoPage = ({ id, searchParams }: PlayVideoPageProps) => {
                     Could not load episodes.
                   </div>
                 )}
-                <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+                <div className="grid grid-cols-2 gap-1 sm:grid-cols-3 md:gap-2 lg:grid-cols-4">
                   {seasonData?.episodes?.map((episode: Episode) => {
                     const isActiveEpisode =
                       episode.episode_number === currentEpisode;
@@ -269,7 +269,7 @@ const PlayVideoPage = ({ id, searchParams }: PlayVideoPageProps) => {
             ) : (
               <div className="space-y-3">
                 {upNextMovies.length > 0 ? (
-                  <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+                  <div className="grid grid-cols-2 gap-1.5 sm:grid-cols-3 md:gap-2 lg:grid-cols-4">
                     {upNextMovies.map((movie: MediaItem) => {
                       const year = movie.release_date
                         ? new Date(movie.release_date).getFullYear()
@@ -286,7 +286,7 @@ const PlayVideoPage = ({ id, searchParams }: PlayVideoPageProps) => {
                           search={{ type: "movie" }}
                           className={`block rounded-xl border p-1 transition-all duration-300 ${isActiveMovie ? "border-logo-blue bg-logo-blue/10" : "border-white/10 bg-black/30 hover:bg-white/10"}`}
                         >
-                          <div className="bg-logo-white/5 border-logo-white/2 relative flex w-full cursor-pointer flex-col overflow-hidden rounded-sm border md:rounded-lg">
+                          <div className="bg-logo-white/5 border-logo-white/2 relative flex w-full cursor-pointer flex-col overflow-hidden rounded-md border">
                             {movie.backdrop_path ? (
                               <img
                                 src={formatImagePath(
