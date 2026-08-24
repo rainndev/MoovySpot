@@ -10,7 +10,7 @@ const Hero = () => {
       <div className="text-center text-pretty md:pl-25">
         <h1
           data-testid="hero-title"
-          className="font-[ClashDisplay] text-[clamp(2rem,3vw,7rem)] font-semibold"
+          className="font-[ClashDisplay] text-[clamp(2rem,6vw,5rem)] leading-[1.1] font-semibold"
         >
           Your M
           {/* The "o" in Movie is swapped for a slow-spinning film reel.
@@ -49,7 +49,7 @@ const Hero = () => {
         </h1>
         <p
           data-testid="hero-description"
-          className="text-logo-white/75 mt-2 font-[SansationLight] text-[clamp(1rem,3vw,1.3rem)] text-pretty"
+          className="text-logo-white/75 mx-auto mt-4 max-w-2xl font-[SansationLight] text-[clamp(1rem,2.5vw,1.375rem)] text-pretty"
         >
           Discover the ultimate movie night experience with our curated
           selection
