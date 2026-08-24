@@ -1,21 +1,23 @@
 import { test, expect } from "@playwright/test";
 
 test.describe("Watchlist", () => {
-  test("should add/remove movie to watch list", async ({ page }) => {
-    await page.goto("http://localhost:5173/");
-
-    const movie = page.locator(".absolute.inset-0.h-full").first();
-    const favoriteButton = page.getByTestId("favorite-button");
-    const watchlistButton = page.getByRole("link").nth(1);
-    const numberOFMovieAdded = page.getByText("item");
-    const NoMovieMessage = page.getByRole("heading", {
-      name: "Please add movies/shows to your watchlist",
-      exact: true,
+  test.beforeEach(async ({ page }) => {
+    await page.addInitScript(() => {
+      localStorage.removeItem("watch-list-store");
     });
+  });
+
+  test("should add/remove movie to watch list", async ({ page }) => {
+    await page.goto("/");
+
+    const favoriteButton = page.getByTestId("favorite-button");
+    const watchlistButton = page.getByRole("link", { name: "Watchlist" });
+    const numberOFMovieAdded = page.getByText("1 item", { exact: true });
+    const NoMovieMessage = page.getByRole("heading", { name: "Please add movies/shows to your watchlist", exact: true });
     const editWatchListButton = page.getByTestId("edit-watchlist");
     const deleteItem = page.getByTestId("delete-item-watchlist");
 
-    await movie.click();
+    await page.getByRole("heading", { name: "Trending Today" }).locator("..").getByRole("link").first().click({ force: true });
     await favoriteButton.click();
     await watchlistButton.click();
 
@@ -31,20 +33,16 @@ test.describe("Watchlist", () => {
   });
 
   test("item should be redirect to play page", async ({ page }) => {
-    await page.goto("http://localhost:5173/");
+    await page.goto("/");
 
-    const movie = page.locator(".absolute.inset-0.h-full").first();
     const favoriteButton = page.getByTestId("favorite-button");
-    const watchlistButton = page.getByRole("link").nth(1);
-    const numberOFMovieAdded = page.getByText("item");
-    const NoMovieMessage = page.getByRole("heading", {
-      name: "Please add movies/shows to your watchlist",
-      exact: true,
-    });
+    const watchlistButton = page.getByRole("link", { name: "Watchlist" });
+    const numberOFMovieAdded = page.getByText("1 item", { exact: true });
+    const NoMovieMessage = page.getByRole("heading", { name: "Please add movies/shows to your watchlist", exact: true });
 
     const watchListItem = page.getByTestId("movie-item-watchlist");
 
-    await movie.click();
+    await page.getByRole("heading", { name: "Trending Today" }).locator("..").getByRole("link").first().click({ force: true });
     await favoriteButton.click();
     await watchlistButton.click();
 

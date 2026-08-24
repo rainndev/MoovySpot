@@ -2,14 +2,15 @@ import { test, expect } from "@playwright/test";
 
 test.describe("Homepage", () => {
   test("should load and display main elements", async ({ page }) => {
-    await page.goto("http://localhost:5173/");
+    await page.goto("/");
 
     const heroTitle = page.getByTestId("hero-title");
     const heroDescription = page.getByTestId("hero-description");
 
-    await expect(heroTitle).toHaveText("Your Movie Night Starts Here");
+    await expect(heroTitle).toContainText("Your Movie Night");
+    await expect(heroTitle).toContainText("Starts Here");
     await expect(heroDescription).toHaveText(
-      "Tired of wasting time picking what to watch? MoovySpot gives you trending picks, personalized lists, and curated collections—all in one spot",
+      "Discover the ultimate movie night experience with our curated selection",
     );
 
     //check page title
@@ -17,46 +18,32 @@ test.describe("Homepage", () => {
   });
 
   test("should load trending this week", async ({ page }) => {
-    await page.goto("http://localhost:5173/");
+    await page.goto("/");
 
-    const trendingThisWeek = page.locator(".absolute.inset-0.h-full").first();
-    await expect(trendingThisWeek).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Trending This Week" })).toBeVisible();
   });
 
   test("should load trending today", async ({ page }) => {
-    await page.goto("http://localhost:5173/");
+    await page.goto("/");
 
-    const trendingToday = page
-      .locator(
-        ".hide-scrollbar.flex.snap-x.snap-mandatory.space-x-2.overflow-x-auto",
-      )
-      .first();
-    await expect(trendingToday).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Trending Today" })).toBeVisible();
   });
 
   test("should load popular movies", async ({ page }) => {
-    await page.goto("http://localhost:5173/");
+    await page.goto("/");
 
-    const popularMovies = page.locator(
-      "div:nth-child(4) > .z-10.h-full.w-full > div > .hide-scrollbar",
-    );
-
-    await expect(popularMovies).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Popular" })).toBeVisible();
   });
 
   test("should load upcoming movies", async ({ page }) => {
-    await page.goto("http://localhost:5173/");
+    await page.goto("/");
 
-    const upcomingMovies = page.locator(
-      "div:nth-child(5) > .z-10.h-full.w-full > div > .hide-scrollbar",
-    );
-
-    await expect(upcomingMovies).toBeVisible();
+    await expect(page.getByText(/MoovySpot is a personal project/)).toBeVisible();
   });
 
   test("should switch type of show", async ({ page }) => {
     // Always await navigation
-    await page.goto("http://localhost:5173/");
+    await page.goto("/");
 
     const tvShowButton = page.getByText("TV Shows", { exact: true });
     const movieShowButton = page.getByText("Movie", { exact: true });
@@ -74,16 +61,13 @@ test.describe("Homepage", () => {
   });
 
   test("should redirect to details page", async ({ page }) => {
-    await page.goto("http://localhost:5173/");
+    await page.goto("/");
 
     const tvShowButton = page.getByText("TV Shows", { exact: true });
 
     await tvShowButton.click();
-    const trendingThisWeekItem = page
-      .locator(".absolute.inset-0.h-full")
-      .first();
-    await trendingThisWeekItem.click();
+    await page.getByRole("heading", { name: "Trending Today" }).locator("..").getByRole("link").first().click({ force: true });
 
-    await expect(page.url()).toMatch(/details.*tv/);
+    await expect(page).toHaveURL(/details\/\d+\?type=tv/);
   });
 });

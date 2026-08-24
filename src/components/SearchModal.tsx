@@ -113,6 +113,7 @@ const SearchModal = () => {
           </div>
 
           <div
+            data-testid="close-search-button"
             onClick={() => toggleModal()}
             className="text-logo-white/50 hover:text-logo-white ml-2 cursor-pointer text-xl transition-colors duration-300 ease-in-out"
           >

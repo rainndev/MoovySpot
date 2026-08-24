@@ -1,14 +1,14 @@
 import { expect, test } from "@playwright/test";
 
 test.describe("Category Page", () => {
-  const categoryUrl = "http://localhost:5173/category";
+  const categoryUrl = "/category";
 
   test("should switch type of show", async ({ page }) => {
     await page.goto(categoryUrl);
 
     const categoryHeading = page.getByRole("heading", { name: /Category/i });
-    const tvShowButton = page.getByText("TV Show");
-    const movieButton = page.getByText("Movie");
+    const tvShowButton = page.getByText("TV Show", { exact: true });
+    const movieButton = page.getByText("Movie", { exact: true });
     const actionButton = page.getByText("Action");
     const actionAdventureButton = page.getByText("Action & Adventure");
 
@@ -29,7 +29,7 @@ test.describe("Category Page", () => {
     await page.goto(categoryUrl);
 
     const tvShowButton = page.getByText("TV Show");
-    const firstItem = page.locator(".mt-5.grid >> a").first();
+    const firstItem = page.locator("a[href^='/details/']").first();
 
     // Wait for items to load before interacting
     await firstItem.waitFor();
@@ -37,7 +37,7 @@ test.describe("Category Page", () => {
     // Movie details navigation
     await Promise.all([page.waitForURL(/details.*movie/), firstItem.click()]);
 
-    await page.goBack();
+    await page.goto(categoryUrl, { waitUntil: "domcontentloaded" });
 
     // Switch to TV show and navigate again
     await tvShowButton.click();

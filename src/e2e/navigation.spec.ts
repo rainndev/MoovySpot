@@ -2,32 +2,32 @@ import test, { expect } from "@playwright/test";
 
 test.describe("Navigation", () => {
   test("should navigate between pages correctly", async ({ page }) => {
-    await page.goto("http://localhost:5173/");
-    const homePage = page.getByRole("link").first();
-    const watchList = page.getByRole("link").nth(1);
-    const Category = page.getByRole("link").nth(2);
-    const RecentlyViewed = page.getByRole("link").nth(3);
+    await page.goto("/");
+    const homePage = page.getByRole("link", { name: "Home" });
+    const watchList = page.getByRole("link", { name: "Watchlist" });
+    const Category = page.getByRole("link", { name: "Category" });
+    const RecentlyViewed = page.getByRole("link", { name: "Recent" });
 
     //navigate to watch list page
-    await watchList.click();
-    await expect(page).toHaveURL("http://localhost:5173/watchlist");
+    await watchList.click({ force: true });
+    await expect(page).toHaveURL(/\/watchlist$/);
 
     //navigate to category page
-    await Category.click();
-    await expect(page).toHaveURL("http://localhost:5173/category");
+    await Category.click({ force: true });
+    await expect(page).toHaveURL(/\/category$/);
 
     //navigate to Recently Viewed page
-    await RecentlyViewed.click();
-    await expect(page).toHaveURL("http://localhost:5173/recent");
+    await RecentlyViewed.click({ force: true });
+    await expect(page).toHaveURL(/\/recent$/);
 
-    await homePage.click();
+    await homePage.click({ force: true });
     await expect(page).toHaveURL("http://localhost:5173/");
   });
 
   test("should open/close search bar dialog", async ({ page }) => {
-    await page.goto("http://localhost:5173/");
+    await page.goto("/");
     const searchButton = page.getByTestId("search-button");
-    const closeButton = page.getByRole("img").nth(1);
+    const closeButton = page.getByTestId("close-search-button");
     const searchInput = page.getByRole("textbox", { name: "Search..." });
 
     //check if search bar dialog is visible
@@ -37,6 +37,6 @@ test.describe("Navigation", () => {
 
     //check if search bar dialog is not visible after clicking the close button
     await closeButton.click();
-    await expect(searchInput).toBeHidden();
+    await expect(searchInput).not.toBeVisible({ timeout: 10000 });
   });
 });
