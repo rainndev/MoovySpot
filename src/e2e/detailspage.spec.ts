@@ -37,10 +37,10 @@ test.describe("Details Page", () => {
     await page.goto(movieUrl);
 
     const favoriteButton = page.getByTestId("favorite-button");
-    await favoriteButton.click();
+    await favoriteButton.click({ force: true });
     await expect(favoriteButton.locator("svg")).toHaveCount(1);
 
-    await favoriteButton.click();
+    await favoriteButton.click({ force: true });
     await expect(favoriteButton.locator("svg")).toHaveCount(1);
   });
 

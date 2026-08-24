@@ -26,7 +26,9 @@ test.describe("Navigation", () => {
 
   test("should open/close search bar dialog", async ({ page }) => {
     await page.goto("/");
-    const searchButton = page.getByTestId("search-button");
+    const searchButton = page.locator(
+      '[data-testid="search-button"]:visible, [data-testid="mobile-search-button"]:visible',
+    );
     const closeButton = page.getByTestId("close-search-button");
     const searchInput = page.getByRole("textbox", { name: "Search..." });
 

@@ -28,7 +28,9 @@ test.describe("Search Movie", () => {
     });
     await page.goto("/");
 
-    const searchButton = page.getByTestId("search-button");
+    const searchButton = page.locator(
+      '[data-testid="search-button"]:visible, [data-testid="mobile-search-button"]:visible',
+    );
     const searchInput = page.getByRole("textbox", { name: "Search..." });
     const noResultText = page.getByText("No results found", { exact: true });
     const narutoMovieSearchItem = page.getByRole("link").filter({ hasText: "Naruto" }).first();

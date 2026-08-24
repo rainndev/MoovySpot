@@ -17,8 +17,13 @@ const BottomNav = () => {
   return (
     <div className="bg-logo-black/50 border-logo-blue/20 fixed bottom-0 left-0 z-20 w-full overflow-hidden rounded-tl-3xl rounded-tr-3xl border-t backdrop-blur-lg md:hidden">
       <ul className="text-logo-white flex w-full justify-between px-8 py-5 text-xl">
-        {navigationOptions.map(({ slug, icon }) => (
-          <Link to={slug} key={slug} onClick={() => setSelectedOption(slug)}>
+        {navigationOptions.map(({ name, slug, icon }) => (
+          <Link
+            to={slug}
+            key={slug}
+            aria-label={name}
+            onClick={() => setSelectedOption(slug)}
+          >
             <motion.li
               initial={{ opacity: 0.9, y: 0 }}
               whileHover={{ scale: 1.1, opacity: 1 }}
@@ -31,6 +36,10 @@ const BottomNav = () => {
         ))}
 
         <li
+          data-testid="mobile-search-button"
+          aria-label="Search"
+          role="button"
+          tabIndex={0}
           onClick={() => {
             toggleSearchModal();
           }}
