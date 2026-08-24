@@ -79,75 +79,82 @@ const InterestCard = ({ movie, type, rank }: InterestCardProps) => {
         setIsHovered(true);
       }}
       onMouseLeave={() => setIsHovered(false)}
-      className={`group relative flex w-[85vw] max-w-sm shrink-0 snap-start items-center gap-3 rounded-2xl p-3 sm:w-auto sm:max-w-none ${
+      className={`group relative flex w-[85vw] max-w-sm shrink-0 snap-start flex-col gap-3 rounded-2xl p-3 sm:w-auto sm:max-w-none sm:flex-row sm:items-center ${
         isFeatured ? "sm:col-span-2 sm:gap-6" : ""
       }`}
     >
-      <span
-        aria-label={`Trend rank ${rank}`}
-        className={`text-shadow-logo-blue text-shadow-2xl group-hover:text-logo-blue w-10 shrink-0 text-center font-[ClashDisplay] text-7xl leading-none font-semibold text-transparent transition-colors duration-300 ease-in-out [-webkit-text-stroke:2px_var(--color-logo-blue)] sm:w-12 sm:text-9xl ${
-          isFeatured ? "sm:w-24 sm:text-[15rem]" : ""
-        }`}
-      >
-        {rank}
-      </span>
-      <Link
-        to="/details/$id"
-        params={{ id: String(movie.id) }}
-        search={{ type }}
-        aria-label={title}
-        className="shrink-0"
-      >
-        {availableImages.length ? (
-          <motion.div
-            animate={{ rotate: isHovered ? imageRotation : 0, scale: isHovered ? 1.04 : 1 }}
-            transition={{ type: "spring", stiffness: 280, damping: 18 }}
-            className="flex flex-col items-center"
-          >
-            <div className="to-logo-background/50 from-logo-white/20 rounded-4xl bg-linear-to-b via-[#292929] p-1 font-mono text-[10px] font-medium tracking-[0.08em] text-white/80 uppercase shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]">
-              <div className="relative overflow-hidden rounded-[30px]">
-                <div
-                  className={`relative h-26 w-40 md:h-40 md:w-54 ${
-                    isFeatured ? "sm:h-52 sm:w-80 lg:h-60 lg:w-96" : ""
-                  }`}
-                >
-                  {availableImages.map((path, index) => (
-                    <img
-                      key={path}
-                      src={formatImagePath(path, "w300")}
-                      alt={index === 0 ? title : `${title} still ${index}`}
-                      loading={index === 0 ? "lazy" : undefined}
-                      draggable={false}
-                      className={`absolute inset-0 h-full w-full rounded-[30px] object-cover transition-opacity duration-700 ${
-                        index === imageIndex ? "opacity-100" : "opacity-0"
-                      }`}
-                    />
-                  ))}
-                </div>
-                <div className="pointer-events-none absolute inset-0 bg-linear-to-b from-transparent to-black/70" />
-              </div>
-            </div>
-          </motion.div>
-        ) : (
-          <div className="bg-logo-white/10 text-logo-white/50 flex h-20 w-24 items-center justify-center rounded-xl text-center text-[0.6rem] md:h-24 md:w-28">
-            No Image
-          </div>
-        )}
-      </Link>
-      <div className="flex min-w-0 flex-1 flex-col justify-end gap-1">
+      <div className="flex items-center gap-3 sm:contents">
+        <span
+          aria-label={`Trend rank ${rank}`}
+          className={`text-shadow-logo-blue text-shadow-2xl group-hover:text-logo-blue w-10 shrink-0 text-center font-[ClashDisplay] text-9xl leading-none font-semibold text-transparent transition-colors duration-300 ease-in-out [-webkit-text-stroke:2px_var(--color-logo-blue)] sm:w-12 sm:text-9xl ${
+            isFeatured ? "sm:w-24 sm:text-[15rem]" : ""
+          }`}
+        >
+          {rank}
+        </span>
         <Link
           to="/details/$id"
           params={{ id: String(movie.id) }}
           search={{ type }}
           aria-label={title}
-          className="flex h-10 w-full max-w-35 items-center sm:h-14 sm:max-w-55"
+          className="min-w-0 flex-1 sm:flex-none sm:shrink-0"
+        >
+          {availableImages.length ? (
+            <motion.div
+              animate={{
+                rotate: isHovered ? imageRotation : 0,
+                scale: isHovered ? 1.04 : 1,
+              }}
+              transition={{ type: "spring", stiffness: 280, damping: 18 }}
+              className="flex w-full flex-col items-center sm:w-auto"
+            >
+              <div className="to-logo-background/50 from-logo-white/20 w-full rounded-2xl bg-linear-to-b via-[#292929] p-1 font-mono text-[10px] font-medium tracking-[0.08em] text-white/80 uppercase shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] sm:w-auto sm:rounded-4xl">
+                <div className="relative overflow-hidden rounded-[15px] sm:rounded-[30px]">
+                  <div
+                    className={`relative aspect-video w-full sm:aspect-auto ${
+                      isFeatured
+                        ? "sm:h-52 sm:w-80 lg:h-60 lg:w-96"
+                        : "sm:h-26 sm:w-40 md:h-40 md:w-54"
+                    }`}
+                  >
+                    {availableImages.map((path, index) => (
+                      <img
+                        key={path}
+                        src={formatImagePath(path, "w300")}
+                        alt={index === 0 ? title : `${title} still ${index}`}
+                        loading={index === 0 ? "lazy" : undefined}
+                        draggable={false}
+                        className={`absolute inset-0 h-full w-full rounded-[15px] object-cover transition-opacity duration-700 sm:rounded-[30px] ${
+                          index === imageIndex ? "opacity-100" : "opacity-0"
+                        }`}
+                      />
+                    ))}
+                  </div>
+                  <div className="pointer-events-none absolute inset-0 bg-linear-to-b from-transparent to-black/70" />
+                </div>
+              </div>
+            </motion.div>
+          ) : (
+            <div className="bg-logo-white/10 text-logo-white/50 flex aspect-video w-full items-center justify-center rounded-xl text-center text-[0.6rem] sm:aspect-auto sm:h-20 sm:w-24 md:h-24 md:w-28">
+              No Image
+            </div>
+          )}
+        </Link>
+      </div>
+      <div className="flex min-w-0 flex-col items-center justify-end gap-1 sm:flex-1 sm:items-start">
+        <Link
+          to="/details/$id"
+          params={{ id: String(movie.id) }}
+          search={{ type }}
+          aria-label={title}
+          className="flex h-10 w-full max-w-35 items-center justify-center sm:h-14 sm:max-w-55 sm:justify-start"
         >
           {titleImage ? (
             <img
               src={titleImage}
               alt={`${title} title`}
               draggable={false}
-              className="max-h-full max-w-full object-contain object-left"
+              className="max-h-full max-w-full object-contain object-center sm:object-left"
             />
           ) : (
             <span className="truncate font-[ClashDisplay] text-[clamp(1.125rem,2.5vw,1.25rem)] font-medium text-white">
