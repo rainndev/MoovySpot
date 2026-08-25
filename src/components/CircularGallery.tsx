@@ -172,6 +172,66 @@ function createTextTexture(
   return { texture, width: canvas.width, height: canvas.height };
 }
 
+function createRankTexture(gl: GL, rank: number): Texture {
+  const canvas = document.createElement("canvas");
+  canvas.width = 120;
+  canvas.height = 160;
+  const context = canvas.getContext("2d");
+  if (!context) throw new Error("Could not get 2d context");
+
+  context.fillStyle = "#14c4b4";
+  context.beginPath();
+  context.moveTo(8, 0);
+  context.lineTo(112, 0);
+  context.lineTo(112, 122);
+  context.lineTo(60, 153);
+  context.lineTo(8, 122);
+  context.closePath();
+  context.fill();
+
+  context.fillStyle = "#ffffff";
+  context.textAlign = "center";
+  context.font = "700 22px Arial, sans-serif";
+  context.fillText("TOP", 60, 38);
+  context.font = "700 48px Arial, sans-serif";
+  context.fillText(String(rank).padStart(2, "0"), 60, 93);
+
+  return new Texture(gl, {
+    image: canvas,
+    generateMipmaps: false,
+  });
+}
+
+function createRankProgram(gl: GL, texture: Texture): Program {
+  return new Program(gl, {
+    depthTest: false,
+    depthWrite: false,
+    vertex: `
+      attribute vec3 position;
+      attribute vec2 uv;
+      uniform mat4 modelViewMatrix;
+      uniform mat4 projectionMatrix;
+      varying vec2 vUv;
+      void main() {
+        vUv = uv;
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+      }
+    `,
+    fragment: `
+      precision highp float;
+      uniform sampler2D tMap;
+      varying vec2 vUv;
+      void main() {
+        vec4 color = texture2D(tMap, vUv);
+        if (color.a < 0.05) discard;
+        gl_FragColor = color;
+      }
+    `,
+    uniforms: { tMap: { value: texture } },
+    transparent: true,
+  });
+}
+
 interface TitleProps {
   gl: GL;
   plane: Mesh;
@@ -298,6 +358,7 @@ class Media {
   program!: Program;
   plane!: Mesh;
   title!: Title;
+  rankBadge!: Mesh;
   scale!: number;
   padding!: number;
   width!: number;
@@ -340,6 +401,7 @@ class Media {
     this.createShader();
     this.createMesh();
     this.createTitle();
+    this.createRankBadge();
     this.onResize();
   }
 
@@ -463,6 +525,16 @@ class Media {
     });
   }
 
+  createRankBadge() {
+    const originalItemCount = Math.max(this.length / 2, 1);
+    const rank = (this.index % originalItemCount) + 1;
+    const texture = createRankTexture(this.gl, rank);
+    const program = createRankProgram(this.gl, texture);
+    const geometry = new Plane(this.gl);
+    this.rankBadge = new Mesh(this.gl, { geometry, program });
+    this.rankBadge.setParent(this.plane);
+  }
+
   update(
     scroll: { current: number; last: number },
     direction: "right" | "left",
@@ -531,6 +603,27 @@ class Media {
       this.plane.scale.x,
       this.plane.scale.y,
     ];
+
+    // Keep the badge integrated with the card while anchoring it to the
+    // card's top-left corner at every viewport size.
+    if (this.rankBadge) {
+      const badgeHeight = this.plane.scale.y * 0.22;
+      const badgeWidth = badgeHeight * (120 / 160);
+      const inset = Math.min(this.plane.scale.x, this.plane.scale.y) * 0.035;
+      // The badge is parented to the image plane, so its transform must use
+      // the plane's local normalized coordinates rather than world units.
+      this.rankBadge.scale.set(
+        badgeWidth / this.plane.scale.x,
+        badgeHeight / this.plane.scale.y,
+        1,
+      );
+      this.rankBadge.position.set(
+        -0.5 + badgeWidth / this.plane.scale.x / 2 + inset / this.plane.scale.x,
+        0.5 - badgeHeight / this.plane.scale.y / 2 - inset / this.plane.scale.y,
+        0.1,
+      );
+    }
+
     this.padding = 2;
     this.width = this.plane.scale.x + this.padding;
     this.widthTotal = this.width * this.length;
