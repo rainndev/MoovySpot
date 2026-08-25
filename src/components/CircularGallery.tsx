@@ -191,9 +191,9 @@ function createRankTexture(gl: GL, rank: number): Texture {
 
   context.fillStyle = "#ffffff";
   context.textAlign = "center";
-  context.font = "700 22px Arial, sans-serif";
+  context.font = '700 22px "ClashDisplay", sans-serif';
   context.fillText("TOP", 60, 38);
-  context.font = "700 48px Arial, sans-serif";
+  context.font = '700 48px "ClashDisplay", sans-serif';
   context.fillText(String(rank).padStart(2, "0"), 60, 93);
 
   return new Texture(gl, {
