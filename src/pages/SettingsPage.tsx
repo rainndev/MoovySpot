@@ -9,6 +9,7 @@ const SettingsPage = () => {
     (state) => state.setCustomCursorEnabled,
   );
   const [isDesktop, setIsDesktop] = useState(false);
+  const isCustomCursorActive = isDesktop && customCursorEnabled;
 
   useEffect(() => {
     const mediaQuery = window.matchMedia("(min-width: 768px)");
@@ -48,15 +49,15 @@ const SettingsPage = () => {
             <button
               type="button"
               role="switch"
-              aria-checked={customCursorEnabled}
+              aria-checked={isCustomCursorActive}
               aria-label="Custom cursor"
               data-testid="custom-cursor-switch"
               disabled={!isDesktop}
               onClick={() => setCustomCursorEnabled(!customCursorEnabled)}
-              className={`relative h-7 w-12 shrink-0 overflow-hidden rounded-full transition-colors disabled:cursor-not-allowed ${isDesktop && customCursorEnabled ? "bg-logo-blue" : "bg-logo-white/20"}`}
+              className={`relative h-7 w-12 shrink-0 overflow-hidden rounded-full transition-colors disabled:cursor-not-allowed ${isCustomCursorActive ? "bg-logo-blue" : "bg-logo-white/20"}`}
             >
               <span
-                className={`absolute top-1 left-1 size-5 rounded-full bg-white shadow transition-transform duration-200 ${isDesktop && customCursorEnabled ? "translate-x-5" : "translate-x-0"}`}
+                className={`absolute top-1 left-1 size-5 rounded-full bg-white shadow transition-transform duration-200 ${isCustomCursorActive ? "translate-x-5" : "translate-x-0"}`}
               />
             </button>
           </div>

@@ -13,6 +13,7 @@ test.describe("Settings", () => {
     if (!isDesktop) {
       await expect(customCursorSwitch).toBeVisible();
       await expect(customCursorSwitch).toBeDisabled();
+      await expect(customCursorSwitch).toHaveAttribute("aria-checked", "false");
       await expect(page.getByText("Desktop only", { exact: true })).toBeVisible();
       return;
     }
