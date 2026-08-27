@@ -7,6 +7,7 @@ test.describe("Navigation", () => {
     const watchList = page.getByRole("link", { name: "Watchlist" });
     const Category = page.getByRole("link", { name: "Category" });
     const RecentlyViewed = page.getByRole("link", { name: "Recent" });
+    const Settings = page.getByRole("link", { name: "Settings" });
 
     //navigate to watch list page
     await watchList.click({ force: true });
@@ -22,6 +23,10 @@ test.describe("Navigation", () => {
     await RecentlyViewed.click({ force: true });
     await expect(page).toHaveURL(/\/recent$/);
     await expect(page).toHaveTitle("MoovySpot | Recently Viewed");
+
+    await Settings.click({ force: true });
+    await expect(page).toHaveURL(/\/settings$/);
+    await expect(page).toHaveTitle("MoovySpot | Settings");
 
     await homePage.click({ force: true });
     await expect(page).toHaveURL("http://localhost:5173/");

@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { useSettingsStore } from "@/store/SettingsStore";
 
 const kernelShapes = [
   "M9 14 C4 13 3 8 6 5 C8 2 12 1 15 3 C18 0 22 1 23 4 C26 3 29 6 27 9 C30 11 28 15 24 15 C24 18 19 19 17 16 C14 19 9 17 9 14 Z",
@@ -12,6 +13,9 @@ const interactiveSelector =
 
 const PopcornCursor = () => {
   const cursorRef = useRef<HTMLDivElement>(null);
+  const customCursorEnabled = useSettingsStore(
+    (state) => state.customCursorEnabled,
+  );
 
   useEffect(() => {
     const cursor = cursorRef.current;
@@ -20,6 +24,7 @@ const PopcornCursor = () => {
     const kernels = new Set<HTMLElement>();
 
     if (!cursor || !finePointer.matches) return;
+    document.documentElement.classList.add("custom-cursor-enabled");
 
     const handleMouseMove = (event: MouseEvent) => {
       cursor.style.opacity = "1";
@@ -121,8 +126,11 @@ const PopcornCursor = () => {
       window.removeEventListener("mouseup", handleMouseUp);
       document.removeEventListener("mouseleave", handleMouseLeave);
       kernels.forEach((kernel) => kernel.remove());
+      document.documentElement.classList.remove("custom-cursor-enabled");
     };
-  }, []);
+  }, [customCursorEnabled]);
+
+  if (!customCursorEnabled) return null;
 
   return (
     <div ref={cursorRef} className="popcorn-cursor" aria-hidden="true">

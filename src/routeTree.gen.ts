@@ -15,6 +15,7 @@ import { Route as PlayIdRouteImport } from './routes/play.$id'
 import { Route as DetailsIdRouteImport } from './routes/details.$id'
 
 const WatchlistLazyRouteImport = createFileRoute('/watchlist')()
+const SettingsLazyRouteImport = createFileRoute('/settings')()
 const RecentLazyRouteImport = createFileRoute('/recent')()
 const CategoryLazyRouteImport = createFileRoute('/category')()
 const IndexLazyRouteImport = createFileRoute('/')()
@@ -24,6 +25,11 @@ const WatchlistLazyRoute = WatchlistLazyRouteImport.update({
   path: '/watchlist',
   getParentRoute: () => rootRouteImport,
 } as any).lazy(() => import('./routes/watchlist.lazy').then((d) => d.Route))
+const SettingsLazyRoute = SettingsLazyRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => rootRouteImport,
+} as any).lazy(() => import('./routes/settings.lazy').then((d) => d.Route))
 const RecentLazyRoute = RecentLazyRouteImport.update({
   id: '/recent',
   path: '/recent',
@@ -54,6 +60,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexLazyRoute
   '/category': typeof CategoryLazyRoute
   '/recent': typeof RecentLazyRoute
+  '/settings': typeof SettingsLazyRoute
   '/watchlist': typeof WatchlistLazyRoute
   '/details/$id': typeof DetailsIdRoute
   '/play/$id': typeof PlayIdRoute
@@ -62,6 +69,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexLazyRoute
   '/category': typeof CategoryLazyRoute
   '/recent': typeof RecentLazyRoute
+  '/settings': typeof SettingsLazyRoute
   '/watchlist': typeof WatchlistLazyRoute
   '/details/$id': typeof DetailsIdRoute
   '/play/$id': typeof PlayIdRoute
@@ -71,6 +79,7 @@ export interface FileRoutesById {
   '/': typeof IndexLazyRoute
   '/category': typeof CategoryLazyRoute
   '/recent': typeof RecentLazyRoute
+  '/settings': typeof SettingsLazyRoute
   '/watchlist': typeof WatchlistLazyRoute
   '/details/$id': typeof DetailsIdRoute
   '/play/$id': typeof PlayIdRoute
@@ -81,6 +90,7 @@ export interface FileRouteTypes {
     | '/'
     | '/category'
     | '/recent'
+    | '/settings'
     | '/watchlist'
     | '/details/$id'
     | '/play/$id'
@@ -89,6 +99,7 @@ export interface FileRouteTypes {
     | '/'
     | '/category'
     | '/recent'
+    | '/settings'
     | '/watchlist'
     | '/details/$id'
     | '/play/$id'
@@ -97,6 +108,7 @@ export interface FileRouteTypes {
     | '/'
     | '/category'
     | '/recent'
+    | '/settings'
     | '/watchlist'
     | '/details/$id'
     | '/play/$id'
@@ -106,6 +118,7 @@ export interface RootRouteChildren {
   IndexLazyRoute: typeof IndexLazyRoute
   CategoryLazyRoute: typeof CategoryLazyRoute
   RecentLazyRoute: typeof RecentLazyRoute
+  SettingsLazyRoute: typeof SettingsLazyRoute
   WatchlistLazyRoute: typeof WatchlistLazyRoute
   DetailsIdRoute: typeof DetailsIdRoute
   PlayIdRoute: typeof PlayIdRoute
@@ -118,6 +131,13 @@ declare module '@tanstack/react-router' {
       path: '/watchlist'
       fullPath: '/watchlist'
       preLoaderRoute: typeof WatchlistLazyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsLazyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/recent': {
@@ -162,6 +182,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexLazyRoute: IndexLazyRoute,
   CategoryLazyRoute: CategoryLazyRoute,
   RecentLazyRoute: RecentLazyRoute,
+  SettingsLazyRoute: SettingsLazyRoute,
   WatchlistLazyRoute: WatchlistLazyRoute,
   DetailsIdRoute: DetailsIdRoute,
   PlayIdRoute: PlayIdRoute,

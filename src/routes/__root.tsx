@@ -22,6 +22,7 @@ function RootComponent() {
       "/watchlist": "MoovySpot | Watchlist",
       "/category": "MoovySpot | Category",
       "/recent": "MoovySpot | Recently Viewed",
+      "/settings": "MoovySpot | Settings",
     };
 
     if (staticTitles[pathname]) {

@@ -219,11 +219,11 @@
 }
 
 @media (hover: hover) and (pointer: fine) {
-  html,
-  body,
-  body *,
-  body *::before,
-  body *::after {
+  html.custom-cursor-enabled,
+  html.custom-cursor-enabled body,
+  html.custom-cursor-enabled body *,
+  html.custom-cursor-enabled body *::before,
+  html.custom-cursor-enabled body *::after {
     cursor: none !important;
   }
 }

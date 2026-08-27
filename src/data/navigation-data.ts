@@ -1,6 +1,7 @@
 import { BiHistory, BiSolidCategoryAlt } from "react-icons/bi";
 import { GoHomeFill } from "react-icons/go";
 import { LuListVideo } from "react-icons/lu";
+import { LuSettings } from "react-icons/lu";
 
 export const navigationOptions = [
   {
@@ -25,6 +26,11 @@ export const navigationOptions = [
     name: "Recent",
     slug: "/recent",
     icon: BiHistory,
+  },
+  {
+    name: "Settings",
+    slug: "/settings",
+    icon: LuSettings,
   },
 ] as const;
 
