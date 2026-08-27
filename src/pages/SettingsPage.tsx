@@ -40,7 +40,7 @@ const SettingsPage = () => {
           <div className="flex items-center justify-between gap-6">
             <div>
               <div className="flex flex-wrap items-center gap-2">
-                <h2 className="font-[ClashDisplay] text-lg font-medium">
+                <h2 className="font-[ClashDisplay] text-base font-medium sm:text-lg">
                   Custom cursor
                 </h2>
                 {!isDesktop && (
@@ -49,7 +49,7 @@ const SettingsPage = () => {
                   </span>
                 )}
               </div>
-              <p className="text-logo-white/50 mt-1 max-w-md font-[SansationLight] text-sm">
+              <p className="text-logo-white/50 mt-1 max-w-md font-[SansationLight] text-xs sm:text-sm">
                 Use the animated popcorn cursor on desktop devices.
               </p>
             </div>
@@ -74,11 +74,11 @@ const SettingsPage = () => {
           <div className="flex items-center justify-between gap-6">
             <div>
               <div className="flex flex-wrap items-center gap-2">
-                <h2 className="font-[ClashDisplay] text-lg font-medium">
+                <h2 className="font-[ClashDisplay] text-base font-medium sm:text-lg">
                   Low Power Mode
                 </h2>
               </div>
-              <p className="text-logo-white/50 mt-1 max-w-lg font-[SansationLight] text-sm">
+              <p className="text-logo-white/50 mt-1 max-w-lg font-[SansationLight] text-xs sm:text-sm">
                 Reduces motion and graphics for televisions, low-memory
                 hardware, and other low-power devices.
               </p>
