@@ -8,6 +8,12 @@ const SettingsPage = () => {
   const setCustomCursorEnabled = useSettingsStore(
     (state) => state.setCustomCursorEnabled,
   );
+  const lowPowerModeEnabled = useSettingsStore(
+    (state) => state.lowPowerModeEnabled,
+  );
+  const setLowPowerModeEnabled = useSettingsStore(
+    (state) => state.setLowPowerModeEnabled,
+  );
   const [isDesktop, setIsDesktop] = useState(false);
   const isCustomCursorActive = isDesktop && customCursorEnabled;
 
@@ -27,9 +33,10 @@ const SettingsPage = () => {
         </h1>
       </header>
 
-      <section
-        className={`border-logo-white/10 rounded-2xl border p-5 md:p-6 ${isDesktop ? "bg-logo-white/5" : "bg-logo-white/[0.025] opacity-60"}`}
-      >
+      <div className="space-y-3">
+        <section
+          className={`border-logo-white/10 rounded-2xl border p-5 md:p-6 ${isDesktop ? "bg-logo-white/5" : "bg-logo-white/[0.025] opacity-60"}`}
+        >
           <div className="flex items-center justify-between gap-6">
             <div>
               <div className="flex flex-wrap items-center gap-2">
@@ -61,7 +68,37 @@ const SettingsPage = () => {
               />
             </button>
           </div>
-      </section>
+        </section>
+
+        <section className="border-logo-white/10 bg-logo-white/5 rounded-2xl border p-5 md:p-6">
+          <div className="flex items-center justify-between gap-6">
+            <div>
+              <div className="flex flex-wrap items-center gap-2">
+                <h2 className="font-[ClashDisplay] text-lg font-medium">
+                  Low Power Mode
+                </h2>
+              </div>
+              <p className="text-logo-white/50 mt-1 max-w-lg font-[SansationLight] text-sm">
+                Reduces motion and graphics for televisions, low-memory
+                hardware, and other low-power devices.
+              </p>
+            </div>
+            <button
+              type="button"
+              role="switch"
+              aria-checked={lowPowerModeEnabled}
+              aria-label="Low Power Mode"
+              data-testid="low-power-mode-switch"
+              onClick={() => setLowPowerModeEnabled(!lowPowerModeEnabled)}
+              className={`relative h-7 w-12 shrink-0 overflow-hidden rounded-full transition-colors ${lowPowerModeEnabled ? "bg-logo-blue" : "bg-logo-white/20"}`}
+            >
+              <span
+                className={`absolute top-1 left-1 size-5 rounded-full bg-white shadow transition-transform duration-200 ${lowPowerModeEnabled ? "translate-x-5" : "translate-x-0"}`}
+              />
+            </button>
+          </div>
+        </section>
+      </div>
     </main>
   );
 };

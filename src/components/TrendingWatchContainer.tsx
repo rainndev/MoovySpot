@@ -1,8 +1,10 @@
 import { formatImagePath } from "@/lib/watch-utils";
 import { useWatchTypeStore } from "@/store/WatchTypeStore";
+import { useSettingsStore } from "@/store/SettingsStore";
 import type { MediaItem, MediaResponse } from "@/types/TMDBTypes";
 import { useNavigate } from "@tanstack/react-router";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import CircularGallery from "./CircularGallery";
 
 interface TrendingWatchContainerProps {
@@ -12,6 +14,10 @@ interface TrendingWatchContainerProps {
 const TrendingWatchContainer = ({ data }: TrendingWatchContainerProps) => {
   const navigate = useNavigate();
   const watchType = useWatchTypeStore((state) => state.watchType);
+  const lowPowerModeEnabled = useSettingsStore(
+    (state) => state.lowPowerModeEnabled,
+  );
+  const sectionRef = useRef<HTMLDivElement>(null);
 
   // Desktop bends the gallery upward (-2); mobile uses a gentle downward bend (1).
   const [isDesktop, setIsDesktop] = useState(
@@ -60,10 +66,27 @@ const TrendingWatchContainer = ({ data }: TrendingWatchContainerProps) => {
     [trending, navigate, watchType],
   );
 
+  const scrollOneCard = useCallback((direction: "left" | "right") => {
+    const gallery = sectionRef.current?.querySelector<HTMLElement>(
+      '[aria-label="Movie gallery"]',
+    );
+    const card = gallery?.querySelector<HTMLElement>("button");
+    if (!gallery || !card) return;
+
+    const gap = Number.parseFloat(getComputedStyle(gallery).columnGap) || 16;
+    gallery.scrollBy({
+      left: (card.offsetWidth + gap) * (direction === "right" ? 1 : -1),
+      behavior: "smooth",
+    });
+  }, []);
+
   if (!galleryItems.length) return null;
 
   return (
-    <div className="relative mx-auto h-110 w-full max-w-7xl md:h-150">
+    <div
+      ref={sectionRef}
+      className="relative mx-auto h-110 w-full max-w-7xl md:h-150"
+    >
       <CircularGallery
         items={galleryItems}
         onItemClick={handleItemClick}
@@ -74,6 +97,30 @@ const TrendingWatchContainer = ({ data }: TrendingWatchContainerProps) => {
         scrollSpeed={2}
         font="bold 30px ClashDisplay"
       />
+
+      {lowPowerModeEnabled && isDesktop && (
+        <div
+          className="pointer-events-none absolute top-1/2 -right-14 -left-14 z-20 flex -translate-y-1/2 items-center justify-between"
+          data-testid="low-power-gallery-arrows"
+        >
+          <button
+            type="button"
+            aria-label="Previous trending movie"
+            onClick={() => scrollOneCard("left")}
+            className="pointer-events-auto flex size-11 items-center justify-center rounded-full border border-white/15 bg-logo-black/75 text-white shadow-xl backdrop-blur-md transition-colors hover:border-logo-blue hover:text-logo-blue focus-visible:ring-2 focus-visible:ring-logo-blue focus-visible:outline-none"
+          >
+            <FiChevronLeft className="text-2xl" />
+          </button>
+          <button
+            type="button"
+            aria-label="Next trending movie"
+            onClick={() => scrollOneCard("right")}
+            className="pointer-events-auto flex size-11 items-center justify-center rounded-full border border-white/15 bg-logo-black/75 text-white shadow-xl backdrop-blur-md transition-colors hover:border-logo-blue hover:text-logo-blue focus-visible:ring-2 focus-visible:ring-logo-blue focus-visible:outline-none"
+          >
+            <FiChevronRight className="text-2xl" />
+          </button>
+        </div>
+      )}
 
       {/* Gradient fade on the scroll edges */}
       <div className="from-logo-black pointer-events-none absolute inset-y-0 left-0 z-10 w-16 bg-linear-to-r to-transparent md:w-40" />

@@ -9,6 +9,7 @@ import {
   Transform,
 } from "ogl";
 import { useEffect, useRef } from "react";
+import { useSettingsStore } from "@/store/SettingsStore";
 
 import "./CircularGallery.css";
 
@@ -174,27 +175,28 @@ function createTextTexture(
 
 function createRankTexture(gl: GL, rank: number): Texture {
   const canvas = document.createElement("canvas");
-  canvas.width = 120;
-  canvas.height = 160;
+  canvas.width = 104;
+  canvas.height = 148;
   const context = canvas.getContext("2d");
   if (!context) throw new Error("Could not get 2d context");
 
   context.fillStyle = "#14c4b4";
   context.beginPath();
-  context.moveTo(8, 0);
-  context.lineTo(112, 0);
-  context.lineTo(112, 122);
-  context.lineTo(60, 153);
-  context.lineTo(8, 122);
+  context.moveTo(0, 0);
+  context.lineTo(104, 0);
+  context.lineTo(104, 112);
+  context.lineTo(52, 144);
+  context.lineTo(0, 112);
   context.closePath();
   context.fill();
 
   context.fillStyle = "#ffffff";
   context.textAlign = "center";
-  context.font = '700 22px "ClashDisplay", sans-serif';
-  context.fillText("TOP", 60, 38);
-  context.font = '700 48px "ClashDisplay", sans-serif';
-  context.fillText(String(rank).padStart(2, "0"), 60, 93);
+  context.textBaseline = "middle";
+  context.font = '700 20px "ClashDisplay", sans-serif';
+  context.fillText("TOP", 52, 30);
+  context.font = '700 46px "ClashDisplay", sans-serif';
+  context.fillText(String(rank).padStart(2, "0"), 52, 72);
 
   return new Texture(gl, {
     image: canvas,
@@ -608,8 +610,7 @@ class Media {
     // card's top-left corner at every viewport size.
     if (this.rankBadge) {
       const badgeHeight = this.plane.scale.y * 0.22;
-      const badgeWidth = badgeHeight * (120 / 160);
-      const inset = Math.min(this.plane.scale.x, this.plane.scale.y) * 0.035;
+      const badgeWidth = badgeHeight * (104 / 148);
       // The badge is parented to the image plane, so its transform must use
       // the plane's local normalized coordinates rather than world units.
       this.rankBadge.scale.set(
@@ -618,8 +619,8 @@ class Media {
         1,
       );
       this.rankBadge.position.set(
-        -0.5 + badgeWidth / this.plane.scale.x / 2 + inset / this.plane.scale.x,
-        0.5 - badgeHeight / this.plane.scale.y / 2 - inset / this.plane.scale.y,
+        -0.5 + badgeWidth / this.plane.scale.x / 2,
+        0.5 - badgeHeight / this.plane.scale.y / 2,
         0.1,
       );
     }
@@ -1022,6 +1023,9 @@ export default function CircularGallery({
   onItemClick,
 }: CircularGalleryProps) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const lowPowerModeEnabled = useSettingsStore(
+    (state) => state.lowPowerModeEnabled,
+  );
   // Keep the latest click handler in a ref so changing it does not tear down
   // and rebuild the WebGL scene.
   const onItemClickRef = useRef(onItemClick);
@@ -1029,6 +1033,7 @@ export default function CircularGallery({
     onItemClickRef.current = onItemClick;
   }, [onItemClick]);
   useEffect(() => {
+    if (lowPowerModeEnabled) return;
     if (!containerRef.current) return;
     let app: App | undefined;
     let isMounted = true;
@@ -1050,6 +1055,7 @@ export default function CircularGallery({
       if (app) app.destroy();
     };
   }, [
+    lowPowerModeEnabled,
     items,
     bend,
     textColor,
@@ -1059,6 +1065,47 @@ export default function CircularGallery({
     scrollSpeed,
     scrollEase,
   ]);
+  if (lowPowerModeEnabled) {
+    const linearItems = items ?? [];
+
+    return (
+      <div
+        className="flex w-full snap-x snap-mandatory gap-4 overflow-x-auto px-4 py-8 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        role="region"
+        aria-label="Movie gallery"
+      >
+        {linearItems.map((item, index) => (
+          <button
+            type="button"
+            key={`${item.text}-${index}`}
+            className="group relative block w-[min(72vw,18rem)] shrink-0 snap-start text-center transition-transform duration-200 hover:-translate-y-1 focus-visible:rounded-2xl focus-visible:ring-2 focus-visible:ring-logo-blue focus-visible:outline-none"
+            onClick={() => onItemClickRef.current?.(index)}
+            aria-label={item.text}
+          >
+            <span className="relative block overflow-hidden rounded-2xl border border-white/10 bg-white/5 shadow-lg">
+              <img
+                src={item.image}
+                alt={item.text}
+                loading="lazy"
+                draggable={false}
+                className="aspect-[7/9] w-full object-cover opacity-90 transition duration-300 group-hover:scale-105 group-hover:opacity-100"
+              />
+              <span className="pointer-events-none absolute top-0 left-0 flex h-[4.7rem] w-[3.25rem] flex-col items-center bg-logo-blue pt-2 font-[ClashDisplay] font-bold text-white [clip-path:polygon(0_0,100%_0,100%_76%,50%_100%,0_76%)]">
+                <span className="text-[0.65rem] leading-none">TOP</span>
+                <span className="mt-1 text-xl leading-none">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+              </span>
+            </span>
+            <span className="mt-4 block truncate px-2 font-[ClashDisplay] text-lg font-semibold text-white">
+              {item.text}
+            </span>
+          </button>
+        ))}
+      </div>
+    );
+  }
+
   return (
     <div
       className="circular-gallery"

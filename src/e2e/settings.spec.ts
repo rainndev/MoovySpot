@@ -34,4 +34,15 @@ test.describe("Settings", () => {
     await page.reload();
     await expect(customCursorSwitch).toHaveAttribute("aria-checked", "false");
   });
+
+  test("toggles Low Power Mode", async ({ page }) => {
+    await page.goto("/settings");
+    const lowPowerModeSwitch = page.getByRole("switch", {
+      name: "Low Power Mode",
+    });
+
+    await expect(lowPowerModeSwitch).toHaveAttribute("aria-checked", "false");
+    await lowPowerModeSwitch.click();
+    await expect(lowPowerModeSwitch).toHaveAttribute("aria-checked", "true");
+  });
 });

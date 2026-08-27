@@ -4,6 +4,7 @@ import { formatImagePath } from "@/lib/watch-utils";
 import { getQueryOptions } from "@/query-options/QueryOptions";
 import { useQueries } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
+import { useSettingsStore } from "@/store/SettingsStore";
 
 interface Movie {
   id: number;
@@ -42,6 +43,9 @@ const getWallConfig = (width: number): WallConfig => {
 };
 
 export function DriftWallBG() {
+  const lowPowerModeEnabled = useSettingsStore(
+    (state) => state.lowPowerModeEnabled,
+  );
   const [page1, page2] = useQueries({
     queries: [
       getQueryOptions("movie", "popular", 1),
@@ -52,7 +56,6 @@ export function DriftWallBG() {
   const [config, setConfig] = useState<WallConfig>(() =>
     getWallConfig(typeof window !== "undefined" ? window.innerWidth : 1280),
   );
-
   useEffect(() => {
     const handleResize = () => setConfig(getWallConfig(window.innerWidth));
     handleResize();
@@ -82,6 +85,38 @@ export function DriftWallBG() {
       image: formatImagePath(movie.backdrop_path, config.size),
       title: movie.title ?? movie.name,
     }));
+
+  if (lowPowerModeEnabled) {
+    const backdrops = items.filter((item) => item.image).slice(0, 24);
+
+    return (
+      <div
+        className="absolute inset-0 overflow-hidden bg-logo-black"
+        data-testid="low-power-backdrop-grid"
+        aria-hidden="true"
+      >
+        <div className="absolute top-1/2 left-1/2 grid h-[135%] w-[135%] -translate-x-1/2 -translate-y-1/2 rotate-[-6deg] grid-cols-4 gap-2 opacity-45 sm:grid-cols-5 sm:gap-3 lg:grid-cols-6">
+          {backdrops.map((item, index) => (
+            <div
+              key={`${item.image}-${index}`}
+              className="overflow-hidden rounded-lg border border-white/5 bg-white/5 shadow-lg sm:rounded-xl"
+            >
+              <img
+                src={item.image}
+                alt=""
+                loading={index < 8 ? "eager" : "lazy"}
+                decoding="async"
+                draggable={false}
+                className="aspect-video h-full w-full object-cover grayscale-[20%]"
+              />
+            </div>
+          ))}
+        </div>
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-logo-black via-logo-black/45 to-logo-black/60" />
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_5%,#0c0c0c_90%)]" />
+      </div>
+    );
+  }
 
   return (
     <div className="h-full w-full overflow-hidden">
