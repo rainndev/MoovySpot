@@ -11,17 +11,21 @@ test.describe("Navigation", () => {
     //navigate to watch list page
     await watchList.click({ force: true });
     await expect(page).toHaveURL(/\/watchlist$/);
+    await expect(page).toHaveTitle("MoovySpot | Watchlist");
 
     //navigate to category page
     await Category.click({ force: true });
     await expect(page).toHaveURL(/\/category$/);
+    await expect(page).toHaveTitle("MoovySpot | Category");
 
     //navigate to Recently Viewed page
     await RecentlyViewed.click({ force: true });
     await expect(page).toHaveURL(/\/recent$/);
+    await expect(page).toHaveTitle("MoovySpot | Recently Viewed");
 
     await homePage.click({ force: true });
     await expect(page).toHaveURL("http://localhost:5173/");
+    await expect(page).toHaveTitle("MoovySpot");
   });
 
   test("should open/close search bar dialog", async ({ page }) => {

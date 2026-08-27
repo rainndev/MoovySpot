@@ -79,6 +79,12 @@ const VideoDetailsPage = ({ id, searchParams }: VideoDetailsPageProps) => {
   };
 
   useEffect(() => {
+    if (watchTitle) {
+      document.title = `MoovySpot | ${watchTitle}`;
+    }
+  }, [watchTitle]);
+
+  useEffect(() => {
     if (watchData?.data) {
       addRecentlyView({
         ...watchData.data,

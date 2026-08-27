@@ -71,6 +71,12 @@ const PlayVideoPage = ({ id, searchParams }: PlayVideoPageProps) => {
     }
   }, [serverOptions]);
 
+  useEffect(() => {
+    if (watchTitle) {
+      document.title = `MoovySpot | ${watchTitle}`;
+    }
+  }, [watchTitle]);
+
   const [seasonQuery, collectionQuery, similarQuery] = useQueries({
     queries: [
       {

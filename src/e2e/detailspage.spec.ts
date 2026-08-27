@@ -8,11 +8,13 @@ test.describe("Details Page", () => {
     page,
   }) => {
     await page.goto(movieUrl);
+    await expect(page).toHaveTitle(/^MoovySpot \| (?!Details$).+/);
 
     const watchNowButton = page.getByRole("button", { name: "Watch Now" });
     await Promise.all([page.waitForURL(/play.*movie/), watchNowButton.click()]);
 
     await expect(page).toHaveURL(/play.*movie/);
+    await expect(page).toHaveTitle(/^MoovySpot \| (?!Now Playing$).+/);
   });
 
   test("should redirect to Play page after clicking watch episode for TV", async ({
