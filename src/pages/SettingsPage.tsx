@@ -30,7 +30,9 @@ const SettingsPage = () => {
         <section className="border-logo-white/10 bg-logo-white/5 rounded-2xl border p-5 md:p-6">
           <div className="flex items-center justify-between gap-6">
             <div>
-              <h2 className="font-[ClashDisplay] text-lg">Custom cursor</h2>
+              <h2 className="font-[ClashDisplay] text-lg font-medium">
+                Custom cursor
+              </h2>
               <p className="text-logo-white/50 mt-1 max-w-md font-[SansationLight] text-sm">
                 Use the animated popcorn cursor on desktop devices.
               </p>
@@ -42,10 +44,10 @@ const SettingsPage = () => {
               aria-label="Custom cursor"
               data-testid="custom-cursor-switch"
               onClick={() => setCustomCursorEnabled(!customCursorEnabled)}
-              className={`relative h-7 w-12 shrink-0 rounded-full transition-colors ${customCursorEnabled ? "bg-logo-blue" : "bg-logo-white/20"}`}
+              className={`relative h-7 w-12 shrink-0 overflow-hidden rounded-full transition-colors ${customCursorEnabled ? "bg-logo-blue" : "bg-logo-white/20"}`}
             >
               <span
-                className={`absolute top-1 size-5 rounded-full bg-white shadow transition-transform ${customCursorEnabled ? "translate-x-6" : "translate-x-1"}`}
+                className={`absolute top-1 left-1 size-5 rounded-full bg-white shadow transition-transform duration-200 ${customCursorEnabled ? "translate-x-5" : "translate-x-0"}`}
               />
             </button>
           </div>

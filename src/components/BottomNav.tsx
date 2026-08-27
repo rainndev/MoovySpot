@@ -16,7 +16,7 @@ const BottomNav = () => {
 
   return (
     <div className="bg-logo-black/50 border-logo-blue/20 fixed bottom-0 left-0 z-20 w-full overflow-hidden rounded-tl-3xl rounded-tr-3xl border-t backdrop-blur-lg md:hidden">
-      <ul className="text-logo-white flex w-full justify-between px-8 py-5 text-xl">
+      <ul className="text-logo-white flex w-full justify-between px-8 py-5 text-lg">
         {navigationOptions.map(({ name, slug, icon }) => (
           <Link
             to={slug}
