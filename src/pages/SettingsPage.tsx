@@ -26,13 +26,21 @@ const SettingsPage = () => {
         </h1>
       </header>
 
-      {isDesktop && (
-        <section className="border-logo-white/10 bg-logo-white/5 rounded-2xl border p-5 md:p-6">
+      <section
+        className={`border-logo-white/10 rounded-2xl border p-5 md:p-6 ${isDesktop ? "bg-logo-white/5" : "bg-logo-white/[0.025] opacity-60"}`}
+      >
           <div className="flex items-center justify-between gap-6">
             <div>
-              <h2 className="font-[ClashDisplay] text-lg font-medium">
-                Custom cursor
-              </h2>
+              <div className="flex flex-wrap items-center gap-2">
+                <h2 className="font-[ClashDisplay] text-lg font-medium">
+                  Custom cursor
+                </h2>
+                {!isDesktop && (
+                  <span className="border-logo-white/10 bg-logo-white/5 text-logo-white/50 rounded-full border px-2 py-0.5 text-[0.65rem] font-semibold tracking-wider uppercase">
+                    Desktop only
+                  </span>
+                )}
+              </div>
               <p className="text-logo-white/50 mt-1 max-w-md font-[SansationLight] text-sm">
                 Use the animated popcorn cursor on desktop devices.
               </p>
@@ -43,16 +51,16 @@ const SettingsPage = () => {
               aria-checked={customCursorEnabled}
               aria-label="Custom cursor"
               data-testid="custom-cursor-switch"
+              disabled={!isDesktop}
               onClick={() => setCustomCursorEnabled(!customCursorEnabled)}
-              className={`relative h-7 w-12 shrink-0 overflow-hidden rounded-full transition-colors ${customCursorEnabled ? "bg-logo-blue" : "bg-logo-white/20"}`}
+              className={`relative h-7 w-12 shrink-0 overflow-hidden rounded-full transition-colors disabled:cursor-not-allowed ${isDesktop && customCursorEnabled ? "bg-logo-blue" : "bg-logo-white/20"}`}
             >
               <span
-                className={`absolute top-1 left-1 size-5 rounded-full bg-white shadow transition-transform duration-200 ${customCursorEnabled ? "translate-x-5" : "translate-x-0"}`}
+                className={`absolute top-1 left-1 size-5 rounded-full bg-white shadow transition-transform duration-200 ${isDesktop && customCursorEnabled ? "translate-x-5" : "translate-x-0"}`}
               />
             </button>
           </div>
-        </section>
-      )}
+      </section>
     </main>
   );
 };

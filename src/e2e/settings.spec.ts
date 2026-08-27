@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 
 test.describe("Settings", () => {
-  test("shows the custom cursor setting only on desktop", async ({ page }) => {
+  test("limits the custom cursor setting to desktop", async ({ page }) => {
     await page.goto("/settings");
     await page.evaluate(() => localStorage.removeItem("moovyspot-settings"));
     await page.reload();
@@ -11,7 +11,9 @@ test.describe("Settings", () => {
     const isDesktop = (page.viewportSize()?.width ?? 0) >= 768;
 
     if (!isDesktop) {
-      await expect(customCursorSwitch).toHaveCount(0);
+      await expect(customCursorSwitch).toBeVisible();
+      await expect(customCursorSwitch).toBeDisabled();
+      await expect(page.getByText("Desktop only", { exact: true })).toBeVisible();
       return;
     }
 
