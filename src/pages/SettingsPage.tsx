@@ -1,5 +1,5 @@
 import { useSettingsStore } from "@/store/SettingsStore";
-import { useEffect, useState } from "react";
+import { useIsDesktop } from "@/hooks/use-media-query";
 
 const SettingsPage = () => {
   const customCursorEnabled = useSettingsStore(
@@ -14,16 +14,8 @@ const SettingsPage = () => {
   const setLowPowerModeEnabled = useSettingsStore(
     (state) => state.setLowPowerModeEnabled,
   );
-  const [isDesktop, setIsDesktop] = useState(false);
+  const isDesktop = useIsDesktop();
   const isCustomCursorActive = isDesktop && customCursorEnabled;
-
-  useEffect(() => {
-    const mediaQuery = window.matchMedia("(min-width: 768px)");
-    const updateViewport = () => setIsDesktop(mediaQuery.matches);
-    updateViewport();
-    mediaQuery.addEventListener("change", updateViewport);
-    return () => mediaQuery.removeEventListener("change", updateViewport);
-  }, []);
 
   return (
     <main className="mx-auto flex min-h-dvh w-full max-w-7xl flex-col p-3 pb-20 md:px-10 md:pt-28 md:pb-10">

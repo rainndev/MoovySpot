@@ -1,9 +1,10 @@
 import { formatImagePath } from "@/lib/watch-utils";
 import { useWatchTypeStore } from "@/store/WatchTypeStore";
 import { useSettingsStore } from "@/store/SettingsStore";
+import { useIsDesktop } from "@/hooks/use-media-query";
 import type { MediaItem, MediaResponse } from "@/types/TMDBTypes";
 import { useNavigate } from "@tanstack/react-router";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useMemo, useRef } from "react";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import CircularGallery from "./CircularGallery";
 
@@ -18,21 +19,7 @@ const TrendingWatchContainer = ({ data }: TrendingWatchContainerProps) => {
     (state) => state.lowPowerModeEnabled,
   );
   const sectionRef = useRef<HTMLDivElement>(null);
-
-  // Desktop bends the gallery upward (-2); mobile uses a gentle downward bend (1).
-  const [isDesktop, setIsDesktop] = useState(
-    () =>
-      typeof window !== "undefined" &&
-      window.matchMedia("(min-width: 768px)").matches,
-  );
-
-  useEffect(() => {
-    const mq = window.matchMedia("(min-width: 768px)");
-    const onChange = (e: MediaQueryListEvent) => setIsDesktop(e.matches);
-    setIsDesktop(mq.matches);
-    mq.addEventListener("change", onChange);
-    return () => mq.removeEventListener("change", onChange);
-  }, []);
+  const isDesktop = useIsDesktop();
 
   const trending = useMemo(() => {
     if (!data?.results?.length) return [];

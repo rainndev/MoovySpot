@@ -1,4 +1,5 @@
 import { type CSSProperties, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useMediaQuery } from '@/hooks/use-media-query';
 import './DriftWall.css';
 
 export interface DriftWallItem {
@@ -47,9 +48,6 @@ const DEFAULT_ITEMS: DriftWallItem[] = Array.from({ length: 15 }, (_, i) => {
   };
 });
 
-const prefersReducedMotion = (): boolean =>
-  typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
 const columnFactor = (index: number, variance: number): number => {
   const pseudo = ((index * 0.6180339887 + 0.35) % 1) * 2 - 1;
   return 1 + variance * pseudo;
@@ -96,15 +94,7 @@ const DriftWall = ({
   const [containerHeight, setContainerHeight] = useState(600);
   const [activeId, setActiveId] = useState<string | null>(null);
   const activeIdRef = useRef<string | null>(null);
-  const [reduced, setReduced] = useState(false);
-
-  useEffect(() => {
-    setReduced(prefersReducedMotion());
-    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const onChange = (e: MediaQueryListEvent) => setReduced(e.matches);
-    mq.addEventListener('change', onChange);
-    return () => mq.removeEventListener('change', onChange);
-  }, []);
+  const reduced = useMediaQuery('(prefers-reduced-motion: reduce)');
 
   const columnItems = useMemo<DriftWallItem[][]>(() => {
     const cols: DriftWallItem[][] = Array.from({ length: columns }, () => []);
