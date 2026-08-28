@@ -16,7 +16,11 @@ export const useSettingsStore = create<SettingsStore>()(
       setCustomCursorEnabled: (enabled) =>
         set({ customCursorEnabled: enabled }),
       setLowPowerModeEnabled: (enabled) =>
-        set({ lowPowerModeEnabled: enabled }),
+        set(
+          enabled
+            ? { lowPowerModeEnabled: true, customCursorEnabled: false }
+            : { lowPowerModeEnabled: false },
+        ),
     }),
     {
       name: "moovyspot-settings",
