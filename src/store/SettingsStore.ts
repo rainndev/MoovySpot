@@ -1,9 +1,11 @@
+import { isTVBrowser } from "@/lib/tv-detection";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 interface SettingsStore {
   customCursorEnabled: boolean;
   lowPowerModeEnabled: boolean;
+  tvAutoDetectionDone: boolean;
   setCustomCursorEnabled: (enabled: boolean) => void;
   setLowPowerModeEnabled: (enabled: boolean) => void;
 }
@@ -13,6 +15,7 @@ export const useSettingsStore = create<SettingsStore>()(
     (set) => ({
       customCursorEnabled: true,
       lowPowerModeEnabled: false,
+      tvAutoDetectionDone: false,
       setCustomCursorEnabled: (enabled) =>
         set({ customCursorEnabled: enabled }),
       setLowPowerModeEnabled: (enabled) =>
@@ -36,6 +39,17 @@ export const useSettingsStore = create<SettingsStore>()(
         }
 
         return state;
+      },
+      onRehydrateStorage: () => (state) => {
+        if (state?.tvAutoDetectionDone) return;
+
+        queueMicrotask(() => {
+          useSettingsStore.setState({ tvAutoDetectionDone: true });
+
+          if (isTVBrowser()) {
+            useSettingsStore.getState().setLowPowerModeEnabled(true);
+          }
+        });
       },
     },
   ),
