@@ -1,6 +1,5 @@
 import EpisodeCard from "@/components/EpisodeCard";
 import ErrorUI from "@/components/ErrorUI";
-import LoadingAnimation from "@/components/LoadingAnimation";
 import ServerLoader from "@/components/ServerLoader";
 import { serverUrlOption } from "@/data/server-data";
 import {
@@ -14,6 +13,9 @@ import { useCollectionOptions } from "@/query-options/QueryCollectionOptions";
 import { useSimilarOptions } from "@/query-options/QueryOptions";
 import { useSeasonOptions } from "@/query-options/QuerySeasonOptions";
 import type { PlaySearch } from "@/routes/play.$id";
+import PlayVideoSkeleton, {
+  PlayCardGridSkeleton,
+} from "@/sections/PlayVideoContainer/PlayVideoSkeleton";
 import type { MediaItem } from "@/types/TMDBTypes";
 import type { Episode, SeasonInfo } from "@/types/TvSeriesTypes";
 import { useQueries } from "@tanstack/react-query";
@@ -152,7 +154,7 @@ const PlayVideoPage = ({ id, searchParams }: PlayVideoPageProps) => {
     serverOptions.length === 0;
 
   if (isLoading || !server) {
-    return <LoadingAnimation />;
+    return <PlayVideoSkeleton />;
   }
 
   if (showInvalidState) {
@@ -336,7 +338,7 @@ const PlayVideoPage = ({ id, searchParams }: PlayVideoPageProps) => {
 
             {isTv ? (
               <div className="space-y-3">
-                {seasonQuery.isLoading && <LoadingAnimation />}
+                {seasonQuery.isLoading && <PlayCardGridSkeleton />}
                 {seasonQuery.isError && (
                   <div className="text-logo-white/70 text-sm">
                     Could not load episodes.
@@ -367,7 +369,9 @@ const PlayVideoPage = ({ id, searchParams }: PlayVideoPageProps) => {
               </div>
             ) : (
               <div className="space-y-3">
-                {upNextMovies.length > 0 ? (
+                {collectionQuery.isLoading || similarQuery.isLoading ? (
+                  <PlayCardGridSkeleton />
+                ) : upNextMovies.length > 0 ? (
                   <div className="grid grid-cols-2 gap-1.5 sm:grid-cols-3 md:gap-2 lg:grid-cols-4">
                     {upNextMovies.map((movie: MediaItem) => {
                       const year = movie.release_date

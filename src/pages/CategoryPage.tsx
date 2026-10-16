@@ -1,7 +1,9 @@
 import CategoryCard from "@/components/CategoryCard";
 import ErrorUI from "@/components/ErrorUI";
-import LoadingAnimation from "@/components/LoadingAnimation";
 import { useGenreOptions } from "@/query-options/QueryGenreOptions";
+import CategoryGridSkeleton, {
+  CategoryGenreSkeleton,
+} from "@/sections/CategoryContainer/CategorySkeleton";
 import type { MediaItem, MediaType } from "@/types/TMDBTypes";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import axios from "axios";
@@ -122,27 +124,30 @@ const CategoryPage = () => {
               {genre.name}
             </li>
           )) || []}
+
+          {!GenreList && <CategoryGenreSkeleton />}
         </ul>
       </div>
 
       {/* loading state */}
-      {isLoading && <LoadingAnimation />}
-      {/* movies list */}
+      {isLoading ? (
+        <CategoryGridSkeleton />
+      ) : (
+        <div className="mt-5 grid w-full grid-cols-2 gap-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-6">
+          {data?.pages.map((page, i) => (
+            <Fragment key={i}>
+              {page.results.map((data: MediaItem) => (
+                <CategoryCard
+                  key={data.id}
+                  movie={{ ...data, type: selectedType }}
+                />
+              ))}
+            </Fragment>
+          ))}
 
-      <div className="mt-5 grid w-full grid-cols-2 gap-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-6">
-        {data?.pages.map((page, i) => (
-          <Fragment key={i}>
-            {page.results.map((data: MediaItem) => (
-              <CategoryCard
-                key={data.id}
-                movie={{ ...data, type: selectedType }}
-              />
-            ))}
-          </Fragment>
-        ))}
-
-        <div className="h-20 w-full" ref={loadMoreRef}></div>
-      </div>
+          <div className="h-20 w-full" ref={loadMoreRef}></div>
+        </div>
+      )}
     </div>
   );
 };
