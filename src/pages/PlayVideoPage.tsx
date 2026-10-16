@@ -209,6 +209,12 @@ const PlayVideoPage = ({ id, searchParams }: PlayVideoPageProps) => {
                   serverStatus === "loading") && (
                   <ServerLoader
                     phase={serverStatus === "probing" ? "checking" : "loading"}
+                    serverName={server.name}
+                    attempt={Math.min(
+                      failedNames.length + 1,
+                      serverOptions.length,
+                    )}
+                    total={serverOptions.length}
                   />
                 )}
 
