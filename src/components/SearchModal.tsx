@@ -1,6 +1,7 @@
 import { usePrefetchMedia } from "@/hooks/use-prefetch-media";
 import { cn } from "@/lib/utils";
 import { formatImagePath } from "@/lib/watch-utils";
+import { useGenreOptions } from "@/query-options/QueryGenreOptions";
 import { useSearchOptions } from "@/query-options/QueryOptions";
 import { useSearchModalStore } from "@/store/SearchModalStore";
 import type { MediaItem, MediaType } from "@/types/TMDBTypes";
@@ -78,10 +79,12 @@ const StateMessage = ({
 
 const SearchResultRow = ({
   item,
+  genres,
   onSelect,
   onPrefetch,
 }: {
   item: MediaItem;
+  genres: string[];
   onSelect: () => void;
   onPrefetch: (id: number, type: MediaType) => void;
 }) => {
@@ -99,54 +102,60 @@ const SearchResultRow = ({
       onClick={onSelect}
       onMouseEnter={() => onPrefetch(item.id, kind)}
       onFocus={() => onPrefetch(item.id, kind)}
-      className="hover:bg-logo-white/5 focus-visible:bg-logo-white/5 flex w-full items-start gap-3 rounded-xl p-2 transition-colors sm:gap-4 sm:p-3"
+      className="hover:bg-logo-white/5 focus-visible:bg-logo-white/5 flex w-full items-start gap-3 rounded-lg p-2 transition-colors"
     >
-      <div className="bg-logo-white/5 aspect-[2/3] w-12 shrink-0 overflow-hidden rounded-md sm:w-14">
-        {item.poster_path ? (
-          <img
-            src={formatImagePath(item.poster_path, "w300")}
-            alt={title}
-            loading="lazy"
-            draggable={false}
-            className="h-full w-full object-cover"
-          />
-        ) : (
-          <div className="text-logo-white/25 flex h-full w-full items-center justify-center text-[0.6rem]">
-            N/A
-          </div>
+      <div className="relative shrink-0">
+        <div className="bg-logo-white/5 aspect-[2/3] w-12 overflow-hidden rounded-lg sm:w-14">
+          {item.poster_path ? (
+            <img
+              src={formatImagePath(item.poster_path, "w300")}
+              alt={title}
+              loading="lazy"
+              draggable={false}
+              className="h-full w-full object-cover"
+            />
+          ) : (
+            <div className="text-logo-white/25 flex h-full w-full items-center justify-center text-[0.6rem]">
+              N/A
+            </div>
+          )}
+        </div>
+        {year && (
+          <span className="border-logo-white/10 text-logo-white/80 bg-logo-black/80 absolute -top-1.5 -right-1.5 rounded-full border px-2 py-0.5 text-[0.6rem] font-semibold backdrop-blur-sm">
+            {year}
+          </span>
         )}
       </div>
 
-      <div className="min-w-0 flex-1 py-0.5">
-        <div className="flex items-start justify-between gap-3">
+      <div className="flex min-w-0 flex-1 items-start justify-between gap-3 py-0.5">
+        <div className="min-w-0">
           <p
             data-testid="search-result-title"
-            className="text-logo-white truncate font-[ClashDisplay] text-[clamp(.9rem,3vw,1.05rem)]"
+            className="text-logo-white truncate font-[ClashDisplay] text-[clamp(.95rem,3.4vw,1.05rem)] font-medium"
           >
             {title}
           </p>
-          {rating > 0 && (
-            <span className="text-logo-blue flex shrink-0 items-center gap-1 text-[clamp(.68rem,2.6vw,.78rem)]">
-              <Star className="size-3 fill-current" aria-hidden="true" />
-              {rating.toFixed(1)}
-            </span>
+          {genres.length > 0 && (
+            <p className="text-logo-white/45 mt-1 flex flex-wrap items-center gap-x-1.5 text-[clamp(.68rem,2.6vw,.78rem)]">
+              {genres.map((genre, index) => (
+                <span key={genre} className="flex items-center">
+                  {index > 0 && (
+                    <span className="mr-1.5" aria-hidden="true">
+                      •
+                    </span>
+                  )}
+                  {genre}
+                </span>
+              ))}
+            </p>
           )}
         </div>
 
-        <p className="text-logo-white/45 mt-0.5 flex flex-wrap items-center gap-x-2 text-[clamp(.68rem,2.6vw,.78rem)]">
-          {year && <span>{year}</span>}
-          {year && item.original_language && <span aria-hidden="true">•</span>}
-          {item.original_language && (
-            <span className="uppercase">{item.original_language}</span>
-          )}
-          <span aria-hidden="true">•</span>
-          <span>{kind === "movie" ? "Movie" : "TV"}</span>
-        </p>
-
-        {item.overview && (
-          <p className="text-logo-white/35 mt-1 line-clamp-2 text-[clamp(.7rem,2.6vw,.8rem)]">
-            {item.overview}
-          </p>
+        {rating > 0 && (
+          <span className="text-logo-blue mt-0.5 flex shrink-0 items-center gap-1 text-[clamp(.68rem,2.6vw,.78rem)]">
+            <Star className="size-3 fill-current" aria-hidden="true" />
+            {rating.toFixed(1)}
+          </span>
         )}
       </div>
     </Link>
@@ -162,6 +171,8 @@ const SearchModal = () => {
   const [sort, setSort] = useState<SortKey>("relevance");
   const inputRef = useRef<HTMLInputElement>(null);
   const prefetchMedia = usePrefetchMedia();
+  const { data: movieGenres } = useGenreOptions("movie");
+  const { data: tvGenres } = useGenreOptions("tv");
 
   useEffect(() => {
     const timer = window.setTimeout(
@@ -213,6 +224,19 @@ const SearchModal = () => {
         return items;
     }
   }, [data, sort]);
+
+  const genreNames = useMemo(() => {
+    const toMap = (genres?: { id: number; name: string }[]) =>
+      new Map((genres ?? []).map((genre) => [genre.id, genre.name]));
+    return { movie: toMap(movieGenres), tv: toMap(tvGenres) };
+  }, [movieGenres, tvGenres]);
+
+  // Search results only carry genre ids, so resolve the first couple to names.
+  const genresFor = (item: MediaItem) =>
+    (item.genre_ids ?? [])
+      .map((id) => genreNames[mediaKind(item)].get(id))
+      .filter((name): name is string => Boolean(name))
+      .slice(0, 2);
 
   const hasTerm = debouncedTerm.length > 0;
   const showLoading = hasTerm && !data && isFetching;
@@ -429,6 +453,7 @@ const SearchModal = () => {
                   <SearchResultRow
                     key={`${mediaKind(item)}-${item.id}`}
                     item={item}
+                    genres={genresFor(item)}
                     onSelect={() => toggleModal()}
                     onPrefetch={prefetchMedia}
                   />
