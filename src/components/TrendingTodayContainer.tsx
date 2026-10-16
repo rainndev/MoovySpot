@@ -1,3 +1,4 @@
+import { usePrefetchMedia } from "@/hooks/use-prefetch-media";
 import { formatImagePath } from "@/lib/watch-utils";
 import { useOptionsImages } from "@/query-options/QueryOptions";
 import { useWatchTypeStore } from "@/store/WatchTypeStore";
@@ -30,6 +31,7 @@ const InterestCard = ({ movie, type, rank }: InterestCardProps) => {
   const { data: imageData } = useQuery({
     ...useOptionsImages(type, movie.id),
   });
+  const prefetchMedia = usePrefetchMedia();
   const isFeatured = rank === 1;
   const title = movie.title || movie.name || "Untitled";
   const rating = Math.round(((movie.vote_average ?? 0) / 2) * 2) / 2;
@@ -97,6 +99,8 @@ const InterestCard = ({ movie, type, rank }: InterestCardProps) => {
           params={{ id: String(movie.id) }}
           search={{ type }}
           aria-label={title}
+          onMouseEnter={() => prefetchMedia(movie.id, type)}
+          onFocus={() => prefetchMedia(movie.id, type)}
           className="min-w-0 flex-1 sm:flex-none sm:shrink-0"
         >
           {availableImages.length ? (
@@ -147,6 +151,8 @@ const InterestCard = ({ movie, type, rank }: InterestCardProps) => {
           params={{ id: String(movie.id) }}
           search={{ type }}
           aria-label={title}
+          onMouseEnter={() => prefetchMedia(movie.id, type)}
+          onFocus={() => prefetchMedia(movie.id, type)}
           className="flex h-10 w-full max-w-35 items-center justify-center sm:h-14 sm:max-w-55 sm:justify-start"
         >
           {titleImage ? (

@@ -1,3 +1,4 @@
+import { usePrefetchMedia } from "@/hooks/use-prefetch-media";
 import { formatImagePath } from "@/lib/watch-utils";
 import { getQueryOptions } from "@/query-options/QueryOptions";
 import type { MediaItem, MediaType } from "@/types/TMDBTypes";
@@ -17,6 +18,7 @@ const PopularBentoGrid = ({
   items: MediaItem[];
   type: MediaType;
 }) => {
+  const prefetchMedia = usePrefetchMedia();
   const cards = items
     .filter((item) => item.backdrop_path || item.poster_path)
     .slice(0, 9);
@@ -46,6 +48,10 @@ const PopularBentoGrid = ({
             to="/details/$id"
             params={{ id: String(movie.id) }}
             search={{ type: movie.media_type ?? type }}
+            onMouseEnter={() =>
+              prefetchMedia(movie.id, movie.media_type ?? type)
+            }
+            onFocus={() => prefetchMedia(movie.id, movie.media_type ?? type)}
             className={`group to-logo-background/50 from-logo-white/20 relative min-h-0 overflow-hidden rounded-3xl bg-linear-to-b via-[#292929] shadow-lg md:rounded-4xl ${layout}`}
           >
             <div className="overflow-hidden p-1 font-mono text-[10px] font-medium tracking-[0.08em] text-white/80 uppercase shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]">

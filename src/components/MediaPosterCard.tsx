@@ -1,3 +1,4 @@
+import { usePrefetchMedia } from "@/hooks/use-prefetch-media";
 import { cn } from "@/lib/utils";
 import { formatImagePath } from "@/lib/watch-utils";
 import type { MediaItem, MediaType } from "@/types/TMDBTypes";
@@ -40,6 +41,7 @@ const MediaPosterCard = ({
 }: MediaPosterCardProps) => {
   const ref = useRef<HTMLDivElement>(null);
   const controls = useAnimation();
+  const prefetchMedia = usePrefetchMedia();
   const inView = useInView(ref, {
     amount: 0.3,
     once: true,
@@ -112,6 +114,9 @@ const MediaPosterCard = ({
       params={{ id: String(media.id) }}
       search={{ type: resolvedType }}
       to="/details/$id"
+      onMouseEnter={() => !disableLink && prefetchMedia(media.id, resolvedType)}
+      onFocus={() => !disableLink && prefetchMedia(media.id, resolvedType)}
+      onTouchStart={() => !disableLink && prefetchMedia(media.id, resolvedType)}
     >
       {animated ? (
         <motion.div

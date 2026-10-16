@@ -1,3 +1,4 @@
+import { usePrefetchMedia } from "@/hooks/use-prefetch-media";
 import { formatImagePath } from "@/lib/watch-utils";
 import { useSearchOptions } from "@/query-options/QueryOptions";
 import { useSearchModalStore } from "@/store/SearchModalStore";
@@ -45,6 +46,7 @@ const SearchModal = () => {
     enabled: debouncedTerm.length > 0,
     refetchOnWindowFocus: false,
   });
+  const prefetchMedia = usePrefetchMedia();
 
   if (isError)
     return (
@@ -163,11 +165,7 @@ const SearchModal = () => {
             {data && data.results && data.results.length > 0 ? (
               data?.results?.map((watch: MediaItem) => (
                 <div key={`${type}-${watch.id}`} onClick={toggleModal}>
-                  <WatchCard
-                    movie={watch}
-                    mediaType={type}
-                    showMissingImage
-                  />
+                  <WatchCard movie={watch} mediaType={type} showMissingImage />
                 </div>
               ))
             ) : debouncedTerm.length > 0 ? (
@@ -204,6 +202,8 @@ const SearchModal = () => {
                       params={{ id: String(watch.id) }}
                       search={{ type }}
                       to="/details/$id"
+                      onMouseEnter={() => prefetchMedia(watch.id, type)}
+                      onFocus={() => prefetchMedia(watch.id, type)}
                       onClick={() => toggleModal()}
                       className="hover:bg-logo-white/10 flex w-full cursor-pointer p-4 px-5 py-2 transition-colors duration-300 ease-in-out"
                     >
