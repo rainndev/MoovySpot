@@ -20,13 +20,6 @@ export const serverUrlOption: ServerOption[] = [
     tvLink: "https://111movies.com/tv/##id##/##season##/##episode##",
   },
   {
-    name: "Gamma",
-    movieLink:
-      "https://vidjoy.pro/embed/movie/##id##?adFree=true&autoplay=true",
-    tvLink:
-      "https://vidjoy.pro/embed/tv/##id##/##season##/##episode##?adFree=true&autoplay=true",
-  },
-  {
     name: "Delta",
     movieLink: "https://player.vidsrc.co/embed/movie/##id##",
     tvLink: "https://player.vidsrc.co/embed/tv/##id##/##season##/##episode##",

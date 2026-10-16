@@ -1,7 +1,12 @@
 import EpisodeCard from "@/components/EpisodeCard";
 import ErrorUI from "@/components/ErrorUI";
 import LoadingAnimation from "@/components/LoadingAnimation";
+import ServerLoader from "@/components/ServerLoader";
 import { serverUrlOption } from "@/data/server-data";
+import {
+  useServerFailover,
+  type FailoverServer,
+} from "@/hooks/use-server-failover";
 import { useWatchData } from "@/hooks/use-watch-data";
 import { formatImagePath } from "@/lib/watch-utils";
 import { useCollectionOptions } from "@/query-options/QueryCollectionOptions";
@@ -12,8 +17,11 @@ import type { MediaItem } from "@/types/TMDBTypes";
 import type { Episode, SeasonInfo } from "@/types/TvSeriesTypes";
 import { useQueries } from "@tanstack/react-query";
 import { Link, useNavigate } from "@tanstack/react-router";
-import { useEffect, useMemo, useState } from "react";
-import { FaServer } from "react-icons/fa6";
+import { RefreshCw } from "lucide-react";
+import { useEffect, useMemo, useRef } from "react";
+import { FaForwardStep, FaServer } from "react-icons/fa6";
+import { IoWarningOutline } from "react-icons/io5";
+import { toast } from "sonner";
 
 import {
   Select,
@@ -36,7 +44,6 @@ const PlayVideoPage = ({ id, searchParams }: PlayVideoPageProps) => {
   const isTv = MEDIA_TYPE === "tv";
   const numericId = Number(id);
   const resolvedId = Number.isFinite(numericId) ? numericId : 0;
-  const [server, setServer] = useState("");
 
   const {
     collection_id,
@@ -52,24 +59,54 @@ const PlayVideoPage = ({ id, searchParams }: PlayVideoPageProps) => {
     searchParams.season ?? watchSeasonsData[0]?.season_number ?? 1;
   const currentEpisode = searchParams.episode ?? 1;
 
-  const serverOptions = useMemo(() => {
-    return serverUrlOption.map((option) => {
-      if (isMovie) {
-        return option.movieLink.replace("##id##", String(resolvedId));
-      }
-
-      return option.tvLink
-        .replace("##id##", String(resolvedId))
-        .replace("##season##", String(currentSeason))
-        .replace("##episode##", String(currentEpisode));
-    });
+  const serverOptions = useMemo<FailoverServer[]>(() => {
+    return serverUrlOption.map((option) => ({
+      name: option.name,
+      url: isMovie
+        ? option.movieLink.replace("##id##", String(resolvedId))
+        : option.tvLink
+            .replace("##id##", String(resolvedId))
+            .replace("##season##", String(currentSeason))
+            .replace("##episode##", String(currentEpisode)),
+    }));
   }, [currentEpisode, currentSeason, isMovie, resolvedId]);
 
-  useEffect(() => {
-    if (serverOptions.length > 0) {
-      setServer(serverOptions[0]);
+  const {
+    server,
+    status: serverStatus,
+    failedNames,
+    isExhausted,
+    markReady,
+    selectServer,
+    reportUnavailable,
+    retry: retryServers,
+  } = useServerFailover(serverOptions, {
+    enabled: !isLoading && serverOptions.length > 0,
+    onSwitch: (next, previous) => {
+      toast("Server unavailable", {
+        description: `${previous.name} did not respond — switched to ${next.name}.`,
+      });
+    },
+    onExhausted: () => {
+      toast("No working server", {
+        description: "Every source failed to load. Retry or pick one manually.",
+      });
+    },
+  });
+
+  const iframeRef = useRef<HTMLIFrameElement | null>(null);
+
+  const handleIframeLoad = () => {
+    try {
+      const href = iframeRef.current?.contentWindow?.location.href;
+      // A frame still parked on about:blank never rendered a player, so keep the
+      // failover watchdog running instead of marking the server healthy.
+      if (href === "about:blank") return;
+    } catch {
+      // Cross-origin access throws for a normally loaded embed — expected.
     }
-  }, [serverOptions]);
+    markReady();
+  };
 
   useEffect(() => {
     if (watchTitle) {
@@ -157,15 +194,55 @@ const PlayVideoPage = ({ id, searchParams }: PlayVideoPageProps) => {
         <div className="flex flex-col gap-5">
           <section className="space-y-4">
             <div className="overflow-hidden rounded-2xl border border-white/10 bg-black shadow-2xl shadow-black/40">
-              <div className="aspect-video w-full">
+              <div className="relative aspect-video w-full">
                 <iframe
+                  key={server.url}
+                  ref={iframeRef}
                   data-testid="play-main-video"
                   className="bg-logo-white/5 h-full w-full"
                   allowFullScreen
                   frameBorder="0"
-                  src={server}
+                  src={serverStatus === "probing" ? undefined : server.url}
                   title={watchTitle}
+                  onLoad={handleIframeLoad}
                 />
+
+                {(serverStatus === "probing" ||
+                  serverStatus === "loading") && (
+                  <ServerLoader
+                    serverName={server.name}
+                    phase={serverStatus === "probing" ? "checking" : "loading"}
+                    attempt={Math.min(
+                      failedNames.length + 1,
+                      serverOptions.length,
+                    )}
+                    total={serverOptions.length}
+                  />
+                )}
+
+                {isExhausted && (
+                  <div className="bg-logo-black/90 absolute inset-0 z-10 flex flex-col items-center justify-center gap-5 px-6 text-center backdrop-blur-sm">
+                    <div className="rounded-full bg-red-500/10 p-3">
+                      <IoWarningOutline className="text-3xl text-red-300" />
+                    </div>
+                    <div className="flex flex-col items-center gap-2">
+                      <h2 className="font-[ClashDisplay] text-logo-white text-[clamp(1rem,2.2vw,1.35rem)] font-medium">
+                        No working server
+                      </h2>
+                      <p className="text-logo-white/60 text-[clamp(.75rem,1.2vw,.95rem)]">
+                        Every source failed to load for this title.
+                      </p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={retryServers}
+                      className="bg-logo-blue text-logo-black hover:bg-logo-blue/90 flex items-center gap-2 rounded-lg px-6 py-2 text-sm font-medium transition-all duration-300"
+                    >
+                      <RefreshCw className="size-4" />
+                      Retry servers
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
 
@@ -176,31 +253,47 @@ const PlayVideoPage = ({ id, searchParams }: PlayVideoPageProps) => {
                   Server
                 </p>
                 <p className="text-logo-white/80 text-[clamp(0.75rem,1vw,1rem)]">
-                  Choose a streaming source
+                  Auto-switches when a source is unavailable
                 </p>
               </div>
-              <Select
-                value={server}
-                onValueChange={(value: string) => setServer(value)}
-              >
-                <SelectTrigger
-                  className="w-full text-[clamp(0.70rem,1vw,0.875rem)] sm:w-[150px]"
-                  data-testid="play-server-select"
+              <div className="flex w-full items-center gap-2 sm:w-auto">
+                <Select
+                  value={server.url}
+                  onValueChange={(value: string) => {
+                    const nextIndex = serverOptions.findIndex(
+                      (option) => option.url === value,
+                    );
+                    if (nextIndex !== -1) selectServer(nextIndex);
+                  }}
                 >
-                  <FaServer className="text-logo-blue shadow-logo-blue/50 shadow-2xl" />
-                  <SelectValue placeholder="Select Server" />
-                </SelectTrigger>
-                <SelectContent>
-                  {serverOptions.map((option, index) => (
-                    <SelectItem
-                      key={serverUrlOption[index].name}
-                      value={option}
-                    >
-                      {serverUrlOption[index].name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+                  <SelectTrigger
+                    className="w-full text-[clamp(0.70rem,1vw,0.875rem)] sm:w-[150px]"
+                    data-testid="play-server-select"
+                  >
+                    <FaServer className="text-logo-blue shadow-logo-blue/50 shadow-2xl" />
+                    <SelectValue placeholder="Select Server" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {serverOptions.map((option) => (
+                      <SelectItem key={option.name} value={option.url}>
+                        {option.name}
+                        {failedNames.includes(option.name) ? " · offline" : ""}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+
+                <button
+                  type="button"
+                  onClick={reportUnavailable}
+                  title="Not playing? Skip this server"
+                  data-testid="play-next-server"
+                  className="border-logo-white/10 text-logo-white/70 hover:bg-logo-white/10 hover:text-logo-white flex h-9 shrink-0 items-center gap-1.5 rounded-md border px-3 text-[clamp(0.70rem,1vw,0.875rem)] transition-colors"
+                >
+                  <FaForwardStep className="text-logo-blue" />
+                  <span className="hidden sm:inline">Next</span>
+                </button>
+              </div>
             </div>
           </section>
 
