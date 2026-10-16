@@ -10,14 +10,14 @@ export const serverUrlOption: ServerOption[] = [
   {
     name: "Alpha",
     movieLink:
-      "https://zxcstream.xyz/player/movie/##id##?autoplay=true&color=14c4b4&domainAd=moovy-spot.pages.dev",
+      "https://zxcstream.cc/player/movie/##id##?autoplay=true&color=14c4b4&domainAd=moovy-spot.pages.dev",
     tvLink:
-      "https://zxcstream.xyz/player/tv/##id##/##season##/##episode##?autoplay=true&color=14c4b4&domainAd=moovy-spot.pages.dev",
+      "https://zxcstream.cc/player/tv/##id##/##season##/##episode##?autoplay=true&color=14c4b4&domainAd=moovy-spot.pages.dev",
   },
   {
     name: "Beta",
-    movieLink: "https://111movies.com/movie/##id##",
-    tvLink: "https://111movies.com/tv/##id##/##season##/##episode##",
+    movieLink: "https://vidstuck.cc/embed/movie/##id##",
+    tvLink: "https://vidstuck.cc/embed/tv/##id##/##season##/##episode##",
   },
   {
     name: "Delta",
