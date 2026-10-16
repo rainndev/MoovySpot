@@ -59,6 +59,11 @@ const releaseTime = (item: MediaItem) => {
   return Number.isFinite(time) ? time : 0;
 };
 
+const yearOf = (item: MediaItem) => {
+  const released = releaseTime(item);
+  return released ? new Date(released).getFullYear() : null;
+};
+
 const StateMessage = ({
   icon,
   title,
@@ -90,8 +95,7 @@ const SearchResultRow = ({
 }) => {
   const kind = mediaKind(item);
   const title = displayTitle(item);
-  const released = releaseTime(item);
-  const year = released ? new Date(released).getFullYear() : null;
+  const year = yearOf(item);
   const rating = item.vote_average ?? 0;
 
   return (
@@ -431,21 +435,32 @@ const SearchModal = () => {
                 hint="Try a different keyword or switch between Movie and TV."
               />
             ) : view === "grid" ? (
-              <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
-                {results.map((item) => (
-                  <div
-                    key={`${mediaKind(item)}-${item.id}`}
-                    onClick={() => toggleModal()}
-                  >
-                    <MediaPosterCard
-                      media={item}
-                      type={mediaKind(item)}
-                      wrapperClassName="w-full"
-                      imageWrapperClassName="aspect-[3/4]"
-                      showMissingImage
-                    />
-                  </div>
-                ))}
+              <div className="grid grid-cols-3 gap-1.5 sm:grid-cols-4 sm:gap-2 md:grid-cols-5">
+                {results.map((item) => {
+                  const year = yearOf(item);
+
+                  return (
+                    <div
+                      key={`${mediaKind(item)}-${item.id}`}
+                      onClick={() => toggleModal()}
+                    >
+                      <MediaPosterCard
+                        media={item}
+                        type={mediaKind(item)}
+                        wrapperClassName="w-full"
+                        imageWrapperClassName="aspect-[3/4]"
+                        showMissingImage
+                        topRightSlot={
+                          year ? (
+                            <span className="border-logo-white/10 text-logo-white/80 bg-logo-black/80 absolute top-1.5 right-1.5 z-10 rounded-full border px-1.5 py-0.5 text-[0.55rem] font-semibold backdrop-blur-sm">
+                              {year}
+                            </span>
+                          ) : undefined
+                        }
+                      />
+                    </div>
+                  );
+                })}
               </div>
             ) : (
               <div className="flex flex-col gap-0.5">

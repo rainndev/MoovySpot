@@ -91,7 +91,7 @@ const MediaPosterCard = ({
               )}
             />
           ) : showMissingImage ? (
-            <div className="bg-logo-white/5 text-logo-white/50 flex h-full min-h-48 w-full items-center justify-center text-center text-sm">
+            <div className="bg-logo-white/5 text-logo-white/50 flex aspect-[3/4] h-full w-full items-center justify-center text-center text-sm">
               No Image
             </div>
           ) : null}
