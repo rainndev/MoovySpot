@@ -8,6 +8,7 @@ import {
   type FailoverServer,
 } from "@/hooks/use-server-failover";
 import { useWatchData } from "@/hooks/use-watch-data";
+import { cn } from "@/lib/utils";
 import { formatImagePath } from "@/lib/watch-utils";
 import { useCollectionOptions } from "@/query-options/QueryCollectionOptions";
 import { useSimilarOptions } from "@/query-options/QueryOptions";
@@ -17,10 +18,7 @@ import type { MediaItem } from "@/types/TMDBTypes";
 import type { Episode, SeasonInfo } from "@/types/TvSeriesTypes";
 import { useQueries } from "@tanstack/react-query";
 import { Link, useNavigate } from "@tanstack/react-router";
-import { RefreshCw } from "lucide-react";
 import { useEffect, useMemo, useRef } from "react";
-import { FaForwardStep, FaServer } from "react-icons/fa6";
-import { IoWarningOutline } from "react-icons/io5";
 import { toast } from "sonner";
 
 import {
@@ -210,36 +208,21 @@ const PlayVideoPage = ({ id, searchParams }: PlayVideoPageProps) => {
                 {(serverStatus === "probing" ||
                   serverStatus === "loading") && (
                   <ServerLoader
-                    serverName={server.name}
                     phase={serverStatus === "probing" ? "checking" : "loading"}
-                    attempt={Math.min(
-                      failedNames.length + 1,
-                      serverOptions.length,
-                    )}
-                    total={serverOptions.length}
                   />
                 )}
 
                 {isExhausted && (
-                  <div className="bg-logo-black/90 absolute inset-0 z-10 flex flex-col items-center justify-center gap-5 px-6 text-center backdrop-blur-sm">
-                    <div className="rounded-full bg-red-500/10 p-3">
-                      <IoWarningOutline className="text-3xl text-red-300" />
-                    </div>
-                    <div className="flex flex-col items-center gap-2">
-                      <h2 className="font-[ClashDisplay] text-logo-white text-[clamp(1rem,2.2vw,1.35rem)] font-medium">
-                        No working server
-                      </h2>
-                      <p className="text-logo-white/60 text-[clamp(.75rem,1.2vw,.95rem)]">
-                        Every source failed to load for this title.
-                      </p>
-                    </div>
+                  <div className="bg-logo-black/90 absolute inset-0 z-10 flex flex-col items-center justify-center gap-4 px-6 text-center backdrop-blur-sm">
+                    <p className="text-logo-white/60 text-[clamp(.8rem,3.2vw,.95rem)]">
+                      No servers are available for this title.
+                    </p>
                     <button
                       type="button"
                       onClick={retryServers}
-                      className="bg-logo-blue text-logo-black hover:bg-logo-blue/90 flex items-center gap-2 rounded-lg px-6 py-2 text-sm font-medium transition-all duration-300"
+                      className="bg-logo-blue text-logo-black hover:bg-logo-blue/90 h-9 rounded-lg px-5 text-[clamp(.75rem,3vw,.85rem)] font-medium transition-colors"
                     >
-                      <RefreshCw className="size-4" />
-                      Retry servers
+                      Try again
                     </button>
                   </div>
                 )}
@@ -247,16 +230,12 @@ const PlayVideoPage = ({ id, searchParams }: PlayVideoPageProps) => {
             </div>
 
             {/* server selection */}
-            <div className="flex flex-col gap-3 rounded-2xl border border-white/10 p-4 backdrop-blur-sm sm:flex-row sm:items-center sm:justify-between">
-              <div>
-                <p className="text-logo-white/50 text-[clamp(.65rem,1vw,0.75rem)] tracking-[0.25em] uppercase">
-                  Server
-                </p>
-                <p className="text-logo-white/80 text-[clamp(0.75rem,1vw,1rem)]">
-                  Auto-switches when a source is unavailable
-                </p>
-              </div>
-              <div className="flex w-full items-center gap-2 sm:w-auto">
+            <div className="border-logo-white/10 flex flex-wrap items-center justify-between gap-3 rounded-2xl border p-3 backdrop-blur-sm sm:p-4">
+              <p className="text-logo-white/50 text-[clamp(.65rem,2.6vw,.72rem)] tracking-[0.25em] uppercase">
+                Server
+              </p>
+
+              <div className="ml-auto flex items-center gap-2">
                 <Select
                   value={server.url}
                   onValueChange={(value: string) => {
@@ -267,17 +246,22 @@ const PlayVideoPage = ({ id, searchParams }: PlayVideoPageProps) => {
                   }}
                 >
                   <SelectTrigger
-                    className="w-full text-[clamp(0.70rem,1vw,0.875rem)] sm:w-[150px]"
+                    className="w-[8.75rem] text-[clamp(.72rem,3vw,.8rem)]"
                     data-testid="play-server-select"
                   >
-                    <FaServer className="text-logo-blue shadow-logo-blue/50 shadow-2xl" />
-                    <SelectValue placeholder="Select Server" />
+                    <SelectValue placeholder="Select server" />
                   </SelectTrigger>
                   <SelectContent>
                     {serverOptions.map((option) => (
-                      <SelectItem key={option.name} value={option.url}>
+                      <SelectItem
+                        key={option.name}
+                        value={option.url}
+                        className={cn(
+                          failedNames.includes(option.name) &&
+                            "text-logo-white/35",
+                        )}
+                      >
                         {option.name}
-                        {failedNames.includes(option.name) ? " · offline" : ""}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -286,12 +270,11 @@ const PlayVideoPage = ({ id, searchParams }: PlayVideoPageProps) => {
                 <button
                   type="button"
                   onClick={reportUnavailable}
-                  title="Not playing? Skip this server"
+                  title="Not playing? Try the next server"
                   data-testid="play-next-server"
-                  className="border-logo-white/10 text-logo-white/70 hover:bg-logo-white/10 hover:text-logo-white flex h-9 shrink-0 items-center gap-1.5 rounded-md border px-3 text-[clamp(0.70rem,1vw,0.875rem)] transition-colors"
+                  className="border-logo-white/10 text-logo-white/70 hover:bg-logo-white/5 hover:text-logo-white h-9 shrink-0 rounded-md border px-3 text-[clamp(.72rem,3vw,.8rem)] transition-colors"
                 >
-                  <FaForwardStep className="text-logo-blue" />
-                  <span className="hidden sm:inline">Next</span>
+                  Next
                 </button>
               </div>
             </div>

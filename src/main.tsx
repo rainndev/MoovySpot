@@ -42,6 +42,12 @@ if (!rootElement.innerHTML) {
             bottom: "auto",
             left: "auto",
           }}
+          mobileOffset={{
+            top: "5.5rem",
+            right: "1rem",
+            bottom: "auto",
+            left: "1rem",
+          }}
           toastOptions={{
             unstyled: true,
             duration: 1500,
