@@ -12,7 +12,7 @@ const TrendingTodaySection = ({ type }: TrendingTodaySectionProps) => {
   const query = useQuery(getQueryOptions(type, "trending_day"));
 
   return (
-    <HomepageSectionState query={query}>
+    <HomepageSectionState query={query} skeleton="ranking">
       {(data) => (
         <section className="relative mb-10">
           <h2 className="mb-5 w-full text-center font-[ClashDisplay] text-[clamp(1.125rem,3vw,1.3rem)] font-medium text-white">

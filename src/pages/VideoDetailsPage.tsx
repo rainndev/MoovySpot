@@ -1,8 +1,8 @@
 import ErrorUI from "@/components/ErrorUI";
-import LoadingAnimation from "@/components/LoadingAnimation";
 import TrailerVideo from "@/components/TrailerVideo";
 import { useWatchData } from "@/hooks/use-watch-data";
 import type { VideoDetailsPageType } from "@/routes/details.$id";
+import VideoDetailsSkeleton from "@/sections/VideoDetailsContainer/VideoDetailsSkeleton";
 import VideoMetadata from "@/sections/VideoDetailsContainer/VideoMetadata";
 import { useRecentlyViewStore } from "@/store/RecentlyViewStore";
 import { motion } from "motion/react";
@@ -94,7 +94,7 @@ const VideoDetailsPage = ({ id, searchParams }: VideoDetailsPageProps) => {
     }
   }, [watchData?.data]);
 
-  if (isLoading) return <LoadingAnimation />;
+  if (isLoading) return <VideoDetailsSkeleton />;
 
   if (isError) {
     return <ErrorUI error={error?.message} />;

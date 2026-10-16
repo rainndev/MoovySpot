@@ -87,7 +87,7 @@ const PopularSection = ({ type }: PopularSectionProps) => {
   const shouldReduceMotion = useReducedMotion();
 
   return (
-    <HomepageSectionState query={query}>
+    <HomepageSectionState query={query} skeleton="bento">
       {(data) => (
         <section className="relative isolate mx-auto mb-10 w-full max-w-7xl">
           <motion.div

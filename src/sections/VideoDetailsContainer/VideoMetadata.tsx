@@ -10,6 +10,7 @@ import { MdOutlineVideocam, MdOutlineVideocamOff } from "react-icons/md";
 
 import CastList from "@/components/CastList";
 import CollectionCard from "@/components/CollectionCard";
+import { Skeleton } from "@/components/ui/skeleton";
 import {
   Select,
   SelectContent,
@@ -21,7 +22,6 @@ import { useCollectionOptions } from "@/query-options/QueryCollectionOptions";
 import { useCreditsOptions } from "@/query-options/QueryCreditsOptions";
 import type { MediaItem } from "@/types/TMDBTypes";
 import EpisodeCard from "../../components/EpisodeCard";
-import LoadingAnimation from "../../components/LoadingAnimation";
 interface Genre {
   id: number;
   name: string;
@@ -279,7 +279,6 @@ const VideoMetadata = ({ data }: VideoMetadataProps) => {
           </Select>
 
           {/* render episode */}
-          {isLoading && <LoadingAnimation />}
           {isError && (
             <div className="text-logo-white/90 h-full w-full">
               Error: {error?.message}
@@ -287,21 +286,24 @@ const VideoMetadata = ({ data }: VideoMetadataProps) => {
           )}
 
           <div className="mt-5 grid w-full grid-cols-2 gap-1 sm:grid-cols-3 md:gap-2 lg:grid-cols-4 xl:grid-cols-5">
-            {seasonData &&
-              seasonData.episodes.map((episode: Episode) => (
-                <Link
-                  to="/play/$id"
-                  params={{ id: numericId }}
-                  search={{
-                    type: "tv",
-                    season: season,
-                    episode: episode.episode_number,
-                  }}
-                  key={episode.id}
-                >
-                  <EpisodeCard episode={episode} />
-                </Link>
-              ))}
+            {isLoading
+              ? Array.from({ length: 10 }, (_, index) => (
+                  <Skeleton key={index} className="aspect-video rounded-lg" />
+                ))
+              : seasonData?.episodes.map((episode: Episode) => (
+                  <Link
+                    to="/play/$id"
+                    params={{ id: numericId }}
+                    search={{
+                      type: "tv",
+                      season: season,
+                      episode: episode.episode_number,
+                    }}
+                    key={episode.id}
+                  >
+                    <EpisodeCard episode={episode} />
+                  </Link>
+                ))}
           </div>
         </div>
       )}
