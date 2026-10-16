@@ -20,6 +20,7 @@ import type { MediaItem } from "@/types/TMDBTypes";
 import type { Episode, SeasonInfo } from "@/types/TvSeriesTypes";
 import { useQueries } from "@tanstack/react-query";
 import { Link, useNavigate } from "@tanstack/react-router";
+import { motion, useReducedMotion } from "motion/react";
 import { useEffect, useMemo, useRef } from "react";
 import { toast } from "sonner";
 
@@ -39,6 +40,7 @@ interface PlayVideoPageProps {
 
 const PlayVideoPage = ({ id, searchParams }: PlayVideoPageProps) => {
   const navigate = useNavigate();
+  const shouldReduceMotion = useReducedMotion();
   const MEDIA_TYPE = searchParams.type;
   const isMovie = MEDIA_TYPE === "movie";
   const isTv = MEDIA_TYPE === "tv";
@@ -169,10 +171,20 @@ const PlayVideoPage = ({ id, searchParams }: PlayVideoPageProps) => {
     return <ErrorUI error={error?.message} />;
   }
 
+  const enter = (order: number) => ({
+    initial: shouldReduceMotion ? false : { opacity: 0, y: 18 },
+    animate: { opacity: 1, y: 0 },
+    transition: {
+      duration: shouldReduceMotion ? 0 : 0.45,
+      ease: "easeOut" as const,
+      delay: shouldReduceMotion ? 0 : order * 0.09,
+    },
+  });
+
   return (
     <div className="bg-logo-black text-logo-white mx-auto min-h-dvh w-full max-w-7xl p-3 md:px-10 md:pt-28 md:pb-10">
       <div className="mx-auto flex w-full flex-col gap-5">
-        <div className="flex flex-col">
+        <motion.div className="flex flex-col" {...enter(0)}>
           <p className="text-logo-white/50 text-[clamp(.65rem,2vw,.85rem)] tracking-[0.3em] uppercase">
             Now Playing
           </p>
@@ -189,10 +201,10 @@ const PlayVideoPage = ({ id, searchParams }: PlayVideoPageProps) => {
               {watchTitle}
             </h1>
           )}
-        </div>
+        </motion.div>
 
         <div className="flex flex-col gap-5">
-          <section className="space-y-4">
+          <motion.section className="space-y-4" {...enter(1)}>
             <div className="overflow-hidden rounded-2xl border border-white/10 bg-black shadow-2xl shadow-black/40">
               <div className="relative aspect-video w-full">
                 <iframe
@@ -286,11 +298,12 @@ const PlayVideoPage = ({ id, searchParams }: PlayVideoPageProps) => {
                 </button>
               </div>
             </div>
-          </section>
+          </motion.section>
 
-          <aside
+          <motion.aside
             data-testid="play-up-next"
             className="rounded-2xlbackdrop-blur-sm h-fit w-full"
+            {...enter(2)}
           >
             <div className="mb-4 flex items-end justify-between gap-3">
               <h2
@@ -429,7 +442,7 @@ const PlayVideoPage = ({ id, searchParams }: PlayVideoPageProps) => {
                 )}
               </div>
             )}
-          </aside>
+          </motion.aside>
         </div>
       </div>
     </div>
