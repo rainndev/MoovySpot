@@ -1,270 +1,442 @@
 import { usePrefetchMedia } from "@/hooks/use-prefetch-media";
+import { cn } from "@/lib/utils";
 import { formatImagePath } from "@/lib/watch-utils";
 import { useSearchOptions } from "@/query-options/QueryOptions";
 import { useSearchModalStore } from "@/store/SearchModalStore";
-import type { MediaItem } from "@/types/TMDBTypes";
-import { useQuery } from "@tanstack/react-query";
+import type { MediaItem, MediaType } from "@/types/TMDBTypes";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
+import {
+  ArrowUpDown,
+  LayoutGrid,
+  List,
+  LoaderCircle,
+  Search,
+  SearchX,
+  Star,
+  TriangleAlert,
+  X,
+} from "lucide-react";
 import { motion } from "motion/react";
-import { useEffect, useState } from "react";
-import { CiGrid41 } from "react-icons/ci";
-import { IoMdClose } from "react-icons/io";
-import { IoSearch } from "react-icons/io5";
-import { TbMoodEmpty } from "react-icons/tb";
-import LoadingAnimation from "./LoadingAnimation";
-import WatchCard from "./WatchCard";
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import MediaPosterCard from "./MediaPosterCard";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./ui/select";
 
-const parentVariant = {
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.2, staggerDirection: 1 },
-  },
+type SortKey =
+  | "relevance"
+  | "popularity"
+  | "rating"
+  | "newest"
+  | "oldest"
+  | "title";
+
+type ViewMode = "list" | "grid";
+
+const SORT_OPTIONS: { value: SortKey; label: string }[] = [
+  { value: "relevance", label: "Relevance" },
+  { value: "popularity", label: "Popularity" },
+  { value: "rating", label: "Rating" },
+  { value: "newest", label: "Newest" },
+  { value: "oldest", label: "Oldest" },
+  { value: "title", label: "Title (A–Z)" },
+];
+
+const mediaKind = (item: MediaItem): MediaType =>
+  item.title || item.release_date ? "movie" : "tv";
+
+const displayTitle = (item: MediaItem) => item.title || item.name || "Untitled";
+
+const releaseTime = (item: MediaItem) => {
+  const date = item.release_date || item.first_air_date;
+  const time = date ? new Date(date).getTime() : 0;
+  return Number.isFinite(time) ? time : 0;
 };
 
-const childVariant = {
-  hidden: { opacity: 0, y: -20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.3 } },
+const StateMessage = ({
+  icon,
+  title,
+  hint,
+}: {
+  icon: ReactNode;
+  title: string;
+  hint?: string;
+}) => (
+  <div className="text-logo-white/40 flex h-full min-h-[13rem] flex-col items-center justify-center gap-2 px-6 text-center">
+    <span className="text-logo-white/25">{icon}</span>
+    <p className="text-logo-white/60 text-[clamp(.85rem,3vw,.95rem)]">
+      {title}
+    </p>
+    {hint && <p className="text-[clamp(.72rem,2.6vw,.82rem)]">{hint}</p>}
+  </div>
+);
+
+const SearchResultRow = ({
+  item,
+  onSelect,
+  onPrefetch,
+}: {
+  item: MediaItem;
+  onSelect: () => void;
+  onPrefetch: (id: number, type: MediaType) => void;
+}) => {
+  const kind = mediaKind(item);
+  const title = displayTitle(item);
+  const released = releaseTime(item);
+  const year = released ? new Date(released).getFullYear() : null;
+  const rating = item.vote_average ?? 0;
+
+  return (
+    <Link
+      to="/details/$id"
+      params={{ id: String(item.id) }}
+      search={{ type: kind }}
+      onClick={onSelect}
+      onMouseEnter={() => onPrefetch(item.id, kind)}
+      onFocus={() => onPrefetch(item.id, kind)}
+      className="hover:bg-logo-white/5 focus-visible:bg-logo-white/5 flex w-full items-start gap-3 rounded-xl p-2 transition-colors sm:gap-4 sm:p-3"
+    >
+      <div className="bg-logo-white/5 aspect-[2/3] w-12 shrink-0 overflow-hidden rounded-md sm:w-14">
+        {item.poster_path ? (
+          <img
+            src={formatImagePath(item.poster_path, "w300")}
+            alt={title}
+            loading="lazy"
+            draggable={false}
+            className="h-full w-full object-cover"
+          />
+        ) : (
+          <div className="text-logo-white/25 flex h-full w-full items-center justify-center text-[0.6rem]">
+            N/A
+          </div>
+        )}
+      </div>
+
+      <div className="min-w-0 flex-1 py-0.5">
+        <div className="flex items-start justify-between gap-3">
+          <p
+            data-testid="search-result-title"
+            className="text-logo-white truncate font-[ClashDisplay] text-[clamp(.9rem,3vw,1.05rem)]"
+          >
+            {title}
+          </p>
+          {rating > 0 && (
+            <span className="text-logo-blue flex shrink-0 items-center gap-1 text-[clamp(.68rem,2.6vw,.78rem)]">
+              <Star className="size-3 fill-current" aria-hidden="true" />
+              {rating.toFixed(1)}
+            </span>
+          )}
+        </div>
+
+        <p className="text-logo-white/45 mt-0.5 flex flex-wrap items-center gap-x-2 text-[clamp(.68rem,2.6vw,.78rem)]">
+          {year && <span>{year}</span>}
+          {year && item.original_language && <span aria-hidden="true">•</span>}
+          {item.original_language && (
+            <span className="uppercase">{item.original_language}</span>
+          )}
+          <span aria-hidden="true">•</span>
+          <span>{kind === "movie" ? "Movie" : "TV"}</span>
+        </p>
+
+        {item.overview && (
+          <p className="text-logo-white/35 mt-1 line-clamp-2 text-[clamp(.7rem,2.6vw,.8rem)]">
+            {item.overview}
+          </p>
+        )}
+      </div>
+    </Link>
+  );
 };
 
 const SearchModal = () => {
   const toggleModal = useSearchModalStore((state) => state.toggleModal);
-  const [type, setType] = useState<"movie" | "tv">("movie");
+  const [type, setType] = useState<MediaType>("movie");
   const [searchTerm, setSearchTerm] = useState("");
-  const [debouncedTerm, setDebouncedTerm] = useState(searchTerm);
-  const [isGridView, setGridView] = useState(false);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setDebouncedTerm(searchTerm);
-    }, 1000);
-
-    return () => clearTimeout(timer);
-  }, [searchTerm]);
-
-  const { data, isLoading, error, isError } = useQuery({
-    ...useSearchOptions(debouncedTerm, 1, type),
-    enabled: debouncedTerm.length > 0,
-    refetchOnWindowFocus: false,
-  });
+  const [debouncedTerm, setDebouncedTerm] = useState("");
+  const [view, setView] = useState<ViewMode>("list");
+  const [sort, setSort] = useState<SortKey>("relevance");
+  const inputRef = useRef<HTMLInputElement>(null);
   const prefetchMedia = usePrefetchMedia();
 
-  if (isError)
-    return (
-      <motion.div
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -20 }}
-        transition={{ duration: 0.3 }}
-        className="bg-opacity-50 bg-logo-black/10 text-logo-white fixed inset-0 z-50 flex items-center justify-center p-5 backdrop-blur-md md:p-10"
-      >
-        <div className="bg-logo-black/85 border-logo-white/5 flex max-w-md flex-col items-center justify-center gap-4 rounded-xl border p-8 shadow-lg">
-          <div className="text-4xl text-red-500">⚠️</div>
-          <div className="flex flex-col items-center gap-2">
-            <h3 className="text-logo-white text-center font-semibold">
-              Search Error
-            </h3>
-            <p className="text-logo-white/60 text-center text-sm">
-              {error.message || "Failed to search. Please try again."}
-            </p>
-          </div>
-          <button
-            onClick={() => toggleModal()}
-            className="bg-logo-blue hover:bg-logo-blue/90 text-logo-black mt-2 rounded-lg px-6 py-2 font-medium transition-all duration-300"
-          >
-            Close
-          </button>
-        </div>
-      </motion.div>
+  useEffect(() => {
+    const timer = window.setTimeout(
+      () => setDebouncedTerm(searchTerm.trim()),
+      300,
     );
+    return () => window.clearTimeout(timer);
+  }, [searchTerm]);
+
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, []);
+
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") toggleModal();
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [toggleModal]);
+
+  const { data, isFetching, isError, error } = useQuery({
+    ...useSearchOptions(debouncedTerm, 1, type),
+    enabled: debouncedTerm.length > 0,
+    placeholderData: keepPreviousData,
+    refetchOnWindowFocus: false,
+  });
+
+  const results = useMemo(() => {
+    const items: MediaItem[] = data?.results ?? [];
+    // Never sort in place: React Compiler memoizes render values, so mutating a
+    // shared array can leave a previous sort order stuck in the cache.
+    const sorted = (compare: (a: MediaItem, b: MediaItem) => number) =>
+      [...items].sort(compare);
+
+    switch (sort) {
+      case "popularity":
+        return sorted((a, b) => (b.popularity ?? 0) - (a.popularity ?? 0));
+      case "rating":
+        return sorted((a, b) => (b.vote_average ?? 0) - (a.vote_average ?? 0));
+      case "newest":
+        return sorted((a, b) => releaseTime(b) - releaseTime(a));
+      case "oldest":
+        return sorted((a, b) => releaseTime(a) - releaseTime(b));
+      case "title":
+        return sorted((a, b) => displayTitle(a).localeCompare(displayTitle(b)));
+      case "relevance":
+      default:
+        return items;
+    }
+  }, [data, sort]);
+
+  const hasTerm = debouncedTerm.length > 0;
+  const showLoading = hasTerm && !data && isFetching;
+  const showEmpty =
+    hasTerm && Boolean(data) && !isFetching && results.length === 0;
+  const total = data?.total_results ?? 0;
+  const activeSort =
+    SORT_OPTIONS.find((option) => option.value === sort)?.label ?? "Relevance";
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: -20 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -20 }}
-      transition={{ duration: 0.3 }}
-      className="bg-opacity-50 bg-logo-black/10 text-logo-white fixed inset-0 z-100 flex items-center justify-center p-5 backdrop-blur-md md:p-10"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.2 }}
+      onMouseDown={(event) => {
+        if (event.target === event.currentTarget) toggleModal();
+      }}
+      className="bg-logo-black/70 fixed inset-0 z-100 flex items-start justify-center p-3 backdrop-blur-md sm:items-center sm:p-6"
     >
-      {/* Search input container */}
       <motion.div
-        layout
-        transition={{
-          layout: {
-            type: "spring",
-            stiffness: 300,
-            damping: 25,
-          },
-        }}
-        className={`bg-logo-black/85 text-md border-logo-white/5 flex w-full max-w-7xl flex-col items-start overflow-hidden rounded-3xl border pb-5 shadow-lg ${isGridView ? "h-full" : "max-h-[80vh]"}`}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Search movies and TV shows"
+        initial={{ opacity: 0, y: -12, scale: 0.99 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        exit={{ opacity: 0, y: -12, scale: 0.99 }}
+        transition={{ duration: 0.2, ease: "easeOut" }}
+        className="bg-logo-black/90 border-logo-white/10 flex h-[min(88dvh,46rem)] w-full max-w-3xl flex-col overflow-hidden rounded-2xl border shadow-2xl shadow-black/50"
       >
-        {/* Search icon and input field */}
-        <div className="flex w-full items-center p-4 px-5">
-          <IoSearch />
-          <input
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            type="text"
-            className="ml-5 w-full py-1 text-[clamp(.8rem,3vw,1rem)] focus:ring-0 focus:outline-none"
-            placeholder="Search..."
+        {/* search field */}
+        <div className="flex items-center gap-3 px-4 py-3 sm:px-5 sm:py-4">
+          <Search
+            className="text-logo-white/40 size-4 shrink-0"
+            aria-hidden="true"
           />
-          <div
-            onClick={() => setGridView(!isGridView)}
-            className={`${isGridView ? "text-logo-blue" : "text-logo-white/50"} hover:text-logo-white ml-2 cursor-pointer text-xl transition-colors duration-300 ease-in-out`}
-          >
-            <CiGrid41 />
-          </div>
-
-          <div
+          <input
+            ref={inputRef}
+            value={searchTerm}
+            onChange={(event) => setSearchTerm(event.target.value)}
+            type="text"
+            placeholder="Search..."
+            className="text-logo-white placeholder:text-logo-white/40 min-w-0 flex-1 bg-transparent text-[clamp(.85rem,3vw,1rem)] focus:outline-none"
+          />
+          {searchTerm && (
+            <button
+              type="button"
+              aria-label="Clear search"
+              onClick={() => setSearchTerm("")}
+              className="text-logo-white/40 hover:text-logo-white shrink-0 rounded-md p-1 transition-colors"
+            >
+              <X className="size-4" />
+            </button>
+          )}
+          <span
+            className="bg-logo-white/10 h-5 w-px shrink-0"
+            aria-hidden="true"
+          />
+          <button
+            type="button"
             data-testid="close-search-button"
+            aria-label="Close search"
             onClick={() => toggleModal()}
-            className="text-logo-white/50 hover:text-logo-white ml-2 cursor-pointer text-xl transition-colors duration-300 ease-in-out"
+            className="text-logo-white/40 hover:text-logo-white shrink-0 rounded-md p-1 transition-colors"
           >
-            <IoMdClose />
-          </div>
+            <X className="size-5" />
+          </button>
         </div>
-        <div className="bg bg-logo-white/5 h-[1px] w-full" />
 
-        {/* Type */}
-        <div className="flex w-full items-center space-x-2 p-5">
-          <p
-            onClick={() => setType("movie")}
-            className={`border-logo-white/20 hover:bg-logo-white/10 ${type === "movie" && "bg-logo-white/10"} rounded-sm border px-5 py-1 text-[clamp(.8rem,3vw,.9rem)] transition-colors duration-300 ease-in-out`}
-          >
-            Movie
-          </p>
-          <p
-            onClick={() => setType("tv")}
-            className={`border-logo-white/20 hover:bg-logo-white/10 ${type === "tv" && "bg-logo-white/10"} rounded-sm border px-5 py-1 text-[clamp(.8rem,3vw,.9rem)] transition-colors duration-300 ease-in-out`}
-          >
-            TV
-          </p>
-        </div>
-        {/* Loading state */}
-        {isLoading && debouncedTerm.length > 0 && (
-          <div className="flex h-96 w-full items-center justify-center">
-            <LoadingAnimation />
-          </div>
-        )}
-
-        {/* total result */}
-        {data && (
-          <motion.p
-            variants={childVariant}
-            initial="hidden"
-            animate="visible"
-            exit="hidden"
-            className="text-logo-white/50 px-5 py-2 text-[clamp(.8rem,3vw,1rem)]"
-          >
-            Total Result: {data.total_results}
-          </motion.p>
-        )}
-        {/* Search results */}
-
-        {!isLoading && isGridView ? (
-          <div className="hide-scrollbar mt-5 grid h-full w-full grid-cols-[repeat(auto-fit,minmax(min(100%,clamp(150px,18vw,220px)),1fr))] gap-2 overflow-y-auto [mask-image:linear-gradient(to_bottom,transparent,black_100px,black_calc(100%-100px),transparent)] p-5 [-webkit-mask-image:linear-gradient(to_bottom,transparent,black_100px,black_calc(100%-100px),transparent)]">
-            {data && data.results && data.results.length > 0 ? (
-              data?.results?.map((watch: MediaItem) => (
-                <div key={`${type}-${watch.id}`} onClick={toggleModal}>
-                  <WatchCard movie={watch} mediaType={type} showMissingImage />
-                </div>
-              ))
-            ) : debouncedTerm.length > 0 ? (
-              <div className="text-logo-white/50 flex h-full w-full items-center justify-center gap-2 p-4 px-5 text-[clamp(.8rem,3vw,1rem)]">
-                <TbMoodEmpty className="text-lg" />
-                <p>No results found</p>
-              </div>
-            ) : (
-              <div className="text-logo-white/50 flex h-full w-full items-center justify-center gap-2 p-4 px-5 text-[clamp(.8rem,3vw,1rem)]">
-                <IoSearch className="text-lg" />
-                <p>No search yet. Type to search...</p>
-              </div>
-            )}
-          </div>
-        ) : !isLoading ? (
+        {/* toolbar */}
+        <div className="border-logo-white/10 flex flex-wrap items-center justify-between gap-2 border-t px-4 py-2.5 sm:px-5">
           <div
-            className={`hide-scrollbar ${isGridView ? "h-full" : "max-h-[50vh]"} w-full overflow-y-auto [mask-image:linear-gradient(to_bottom,transparent,black_100px,black_calc(100%-100px),transparent)] [-webkit-mask-image:linear-gradient(to_bottom,transparent,black_100px,black_calc(100%-100px),transparent)]`}
+            role="group"
+            aria-label="Content type"
+            className="border-logo-white/10 bg-logo-white/5 flex items-center rounded-lg border p-0.5"
           >
-            {data && data.results && data.results.length > 0 ? (
-              <motion.div
-                variants={parentVariant}
-                initial="hidden"
-                animate="visible"
-                key={`${type}-${debouncedTerm}`}
-                className="flex w-full flex-col items-start space-y-2"
+            {(["movie", "tv"] as const).map((value) => (
+              <button
+                key={value}
+                type="button"
+                aria-pressed={type === value}
+                onClick={() => setType(value)}
+                className={cn(
+                  "rounded-md px-3 py-1.5 text-[clamp(.72rem,2.8vw,.82rem)] transition-colors",
+                  type === value
+                    ? "bg-logo-white/10 text-logo-white"
+                    : "text-logo-white/50 hover:text-logo-white",
+                )}
               >
-                {data.results.map((watch: MediaItem) => (
-                  <motion.div
-                    variants={childVariant}
-                    className="w-full"
-                    key={`${type}-${watch.id}`}
-                  >
-                    <Link
-                      params={{ id: String(watch.id) }}
-                      search={{ type }}
-                      to="/details/$id"
-                      onMouseEnter={() => prefetchMedia(watch.id, type)}
-                      onFocus={() => prefetchMedia(watch.id, type)}
-                      onClick={() => toggleModal()}
-                      className="hover:bg-logo-white/10 flex w-full cursor-pointer p-4 px-5 py-2 transition-colors duration-300 ease-in-out"
-                    >
-                      <div className="flex-shrink-0">
-                        {watch.poster_path ? (
-                          <img
-                            loading="lazy"
-                            className="aspect-[10/16] w-25 rounded-md object-cover md:w-30"
-                            src={formatImagePath(watch.poster_path, "w300")}
-                            alt={watch.title || watch.name || "Untitled"}
-                          />
-                        ) : (
-                          <div className="bg-logo-background text-logo-white/30 flex aspect-[10/16] w-25 animate-pulse items-center justify-center rounded-md text-[clamp(.6rem,3vw,.8rem)] md:w-30">
-                            No Image
-                          </div>
-                        )}
-                      </div>
+                {value === "movie" ? "Movie" : "TV"}
+              </button>
+            ))}
+          </div>
 
-                      <div className="flex min-w-0 flex-col items-start justify-center pl-4">
-                        {/* title */}
-                        <p className="text-logo-white truncate font-[ClashDisplay] text-[clamp(1.125rem,3vw,1.5rem)]">
-                          {watch.title || watch.name}
-                        </p>
-                        <p className="text-logo-white/50 text-sm">
-                          {watch.release_date
-                            ? new Date(watch.release_date).getFullYear()
-                            : watch.first_air_date
-                              ? new Date(watch.first_air_date).getFullYear()
-                              : "Unknown Year"}
-                        </p>
-                        <p className="text-logo-white/50 text-sm">
-                          Language: {watch.original_language.toUpperCase()}
-                        </p>
-                        <p className="text-logo-white/50 text-sm">
-                          Released date:{" "}
-                          {
-                            (
-                              watch.release_date ||
-                              watch.first_air_date ||
-                              ""
-                            ).split("-")[0]
-                          }
-                        </p>
-                      </div>
-                    </Link>
-                  </motion.div>
+          <div className="ml-auto flex items-center gap-2">
+            <div
+              role="group"
+              aria-label="View mode"
+              className="border-logo-white/10 bg-logo-white/5 flex items-center rounded-lg border p-0.5"
+            >
+              {(
+                [
+                  { value: "list", label: "List view", Icon: List },
+                  { value: "grid", label: "Grid view", Icon: LayoutGrid },
+                ] as const
+              ).map(({ value, label, Icon }) => (
+                <button
+                  key={value}
+                  type="button"
+                  aria-label={label}
+                  aria-pressed={view === value}
+                  onClick={() => setView(value)}
+                  className={cn(
+                    "rounded-md p-1.5 transition-colors",
+                    view === value
+                      ? "bg-logo-white/10 text-logo-white"
+                      : "text-logo-white/50 hover:text-logo-white",
+                  )}
+                >
+                  <Icon className="size-4" />
+                </button>
+              ))}
+            </div>
+
+            <Select
+              value={sort}
+              onValueChange={(value: string) => setSort(value as SortKey)}
+            >
+              <SelectTrigger
+                aria-label="Sort results"
+                data-testid="search-sort"
+                className="w-[8.5rem] text-[clamp(.72rem,2.8vw,.8rem)] sm:w-[10rem]"
+              >
+                <ArrowUpDown className="text-logo-white/40" />
+                <SelectValue />
+              </SelectTrigger>
+              {/* Above the modal overlay (z-100); the popper default is z-50. */}
+              <SelectContent className="z-[110]">
+                {SORT_OPTIONS.map((option) => (
+                  <SelectItem key={option.value} value={option.value}>
+                    {option.label}
+                  </SelectItem>
                 ))}
-              </motion.div>
-            ) : debouncedTerm.length > 0 ? (
-              <div className="text-logo-white/50 flex h-full min-h-[40vh] w-full items-center justify-center gap-2 p-4 px-5 text-[clamp(.8rem,3vw,1rem)]">
-                <TbMoodEmpty className="text-lg" />
-                <p>No results found</p>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+
+        {/* results */}
+        <div className="border-logo-white/10 flex min-h-0 flex-1 flex-col border-t">
+          {hasTerm && data && (
+            <div className="text-logo-white/40 flex items-center justify-between px-4 py-2 text-[clamp(.68rem,2.6vw,.78rem)] sm:px-5">
+              <span className="flex items-center gap-2">
+                <span>
+                  {total.toLocaleString()} result{total === 1 ? "" : "s"}
+                </span>
+                <span className="text-logo-white/25">
+                  · Sorted by {activeSort}
+                </span>
+              </span>
+              {isFetching && (
+                <LoaderCircle
+                  className="size-3.5 animate-spin"
+                  aria-label="Updating results"
+                />
+              )}
+            </div>
+          )}
+
+          <div className="hide-scrollbar min-h-0 flex-1 overflow-y-auto p-2 sm:p-3">
+            {isError ? (
+              <StateMessage
+                icon={<TriangleAlert className="size-6" />}
+                title="Search failed"
+                hint={error?.message ?? "Please try again."}
+              />
+            ) : !hasTerm ? (
+              <StateMessage
+                icon={<Search className="size-6" />}
+                title="Search movies and TV shows"
+                hint="Start typing to find a title."
+              />
+            ) : showLoading ? (
+              <StateMessage
+                icon={<LoaderCircle className="size-6 animate-spin" />}
+                title="Searching..."
+              />
+            ) : showEmpty ? (
+              <StateMessage
+                icon={<SearchX className="size-6" />}
+                title="No results found"
+                hint="Try a different keyword or switch between Movie and TV."
+              />
+            ) : view === "grid" ? (
+              <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+                {results.map((item) => (
+                  <div
+                    key={`${mediaKind(item)}-${item.id}`}
+                    onClick={() => toggleModal()}
+                  >
+                    <MediaPosterCard
+                      media={item}
+                      type={mediaKind(item)}
+                      wrapperClassName="w-full"
+                      imageWrapperClassName="aspect-[3/4]"
+                      showMissingImage
+                    />
+                  </div>
+                ))}
               </div>
             ) : (
-              <div className="text-logo-white/50 flex h-full min-h-[40vh] w-full items-center justify-center gap-2 p-4 px-5 text-[clamp(.8rem,3vw,1rem)]">
-                <IoSearch className="text-lg" />
-                <p>No search yet. Type to search...</p>
+              <div className="flex flex-col gap-0.5">
+                {results.map((item) => (
+                  <SearchResultRow
+                    key={`${mediaKind(item)}-${item.id}`}
+                    item={item}
+                    onSelect={() => toggleModal()}
+                    onPrefetch={prefetchMedia}
+                  />
+                ))}
               </div>
             )}
           </div>
-        ) : null}
+        </div>
       </motion.div>
     </motion.div>
   );
